@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Independence testing · CausalityTools.jl</title><script data-outdated-warner src="../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script><link href="https://fonts.googleapis.com/css?family=Montserrat|Source+Code+Pro&amp;display=swap" rel="stylesheet" type="text/css"/></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../../"><img class="docs-light-only" src="../../assets/logo.png" alt="CausalityTools.jl logo"/><img class="docs-dark-only" src="../../assets/logo-dark.png" alt="CausalityTools.jl logo"/></a><form class="docs-search" action="../../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../../">Overview</a></li><li><a class="tocitem" href="../../measures/">Association measures</a></li><li><a class="tocitem" href="../../independence/">Independence testing</a></li><li><a class="tocitem" href="../../causal_graphs/">Causal graphs</a></li><li><a class="tocitem" href="../../api/">APIs and estimators</a></li><li><a class="tocitem" href="../">Examples</a></li><li><a class="tocitem" href="../../coupled_systems/">Predefined systems</a></li><li><a class="tocitem" href="../../experimental/">Experimental</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Independence testing</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Independence testing</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/JuliaDynamics/CausalityTools.jl/blob/master/docs/src/examples/examples_independence.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="examples_independence"><a class="docs-heading-anchor" href="#examples_independence">Independence testing</a><a id="examples_independence-1"></a><a class="docs-heading-anchor-permalink" href="#examples_independence" title="Permalink"></a></h1><h2 id="quickstart_jddtest"><a class="docs-heading-anchor" href="#quickstart_jddtest"><a href="../../independence/#CausalityTools.JointDistanceDistributionTest"><code>JointDistanceDistributionTest</code></a></a><a id="quickstart_jddtest-1"></a><a class="docs-heading-anchor-permalink" href="#quickstart_jddtest" title="Permalink"></a></h2><h3 id="Bidirectionally-coupled-logistic-maps"><a class="docs-heading-anchor" href="#Bidirectionally-coupled-logistic-maps">Bidirectionally coupled logistic maps</a><a id="Bidirectionally-coupled-logistic-maps-1"></a><a class="docs-heading-anchor-permalink" href="#Bidirectionally-coupled-logistic-maps" title="Permalink"></a></h3><p>Let&#39;s use the built-in <code>logistic2_bidir</code> discrete dynamical system to create a pair of bidirectionally coupled time series and use the <a href="../../independence/#CausalityTools.JointDistanceDistributionTest"><code>JointDistanceDistributionTest</code></a> to see if we can confirm from observed time series that these variables are bidirectionally coupled. We&#39;ll use a significance level of <code>1 - α = 0.99</code>, i.e. <code>α = 0.01</code>.</p><p>We start by generating some time series and configuring the test.</p><pre><code class="language-julia hljs">using CausalityTools
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Independence testing · CausalityTools.jl</title><script data-outdated-warner src="../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script><link href="https://fonts.googleapis.com/css?family=Montserrat|Source+Code+Pro&amp;display=swap" rel="stylesheet" type="text/css"/></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../../"><img class="docs-light-only" src="../../assets/logo.png" alt="CausalityTools.jl logo"/><img class="docs-dark-only" src="../../assets/logo-dark.png" alt="CausalityTools.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit"><a href="../../">CausalityTools.jl</a></span></div><form class="docs-search" action="../../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../../">Overview</a></li><li><a class="tocitem" href="../../measures/">Association measures</a></li><li><a class="tocitem" href="../../independence/">Independence testing</a></li><li><a class="tocitem" href="../../causal_graphs/">Causal graphs</a></li><li><a class="tocitem" href="../../api/">APIs and estimators</a></li><li><a class="tocitem" href="../">Examples</a></li><li><a class="tocitem" href="../../coupled_systems/">Predefined systems</a></li><li><a class="tocitem" href="../../experimental/">Experimental</a></li><li><a class="tocitem" href="../../references/">References</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Independence testing</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Independence testing</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/JuliaDynamics/CausalityTools.jl/blob/master/docs/src/examples/examples_independence.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="examples_independence"><a class="docs-heading-anchor" href="#examples_independence">Independence testing</a><a id="examples_independence-1"></a><a class="docs-heading-anchor-permalink" href="#examples_independence" title="Permalink"></a></h1><h2 id="quickstart_jddtest"><a class="docs-heading-anchor" href="#quickstart_jddtest"><a href="../../independence/#CausalityTools.JointDistanceDistributionTest"><code>JointDistanceDistributionTest</code></a></a><a id="quickstart_jddtest-1"></a><a class="docs-heading-anchor-permalink" href="#quickstart_jddtest" title="Permalink"></a></h2><h3 id="Bidirectionally-coupled-logistic-maps"><a class="docs-heading-anchor" href="#Bidirectionally-coupled-logistic-maps">Bidirectionally coupled logistic maps</a><a id="Bidirectionally-coupled-logistic-maps-1"></a><a class="docs-heading-anchor-permalink" href="#Bidirectionally-coupled-logistic-maps" title="Permalink"></a></h3><p>Let&#39;s use the built-in <code>logistic2_bidir</code> discrete dynamical system to create a pair of bidirectionally coupled time series and use the <a href="../../independence/#CausalityTools.JointDistanceDistributionTest"><code>JointDistanceDistributionTest</code></a> to see if we can confirm from observed time series that these variables are bidirectionally coupled. We&#39;ll use a significance level of <code>1 - α = 0.99</code>, i.e. <code>α = 0.01</code>.</p><p>We start by generating some time series and configuring the test.</p><pre><code class="language-julia hljs">using CausalityTools
 sys = system(Logistic2Bidir(c_xy = 0.5, c_yx = 0.4))
 x, y = columns(first(trajectory(sys, 2000, Ttr = 10000)))
 measure = JointDistanceDistribution(D = 5, B = 5)
@@ -9,8 +9,8 @@ H₀: μ(Δ) = 0 (the input variables are independent)
 H₁: μ(Δ) &gt; 0 (there is directional dependence between the input variables)
 ----------------------------------------------------------------------------------
 Hypothetical μ(Δ): 0.0
-Observed μ(Δ):     0.4746168326099565
-p-value:           1.1269772147270984e-5
+Observed μ(Δ):     0.4651073254849726
+p-value:           2.013405909218058e-5
   α = 0.05:  ✓ Evidence favors dependence
   α = 0.01:  ✓ Evidence favors dependence
   α = 0.001: ✓ Evidence favors dependence</code></pre><pre><code class="language-julia hljs">independence(test, y, x)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">`JointDistanceDistributionTest` independence test
@@ -19,8 +19,8 @@ H₀: μ(Δ) = 0 (the input variables are independent)
 H₁: μ(Δ) &gt; 0 (there is directional dependence between the input variables)
 ----------------------------------------------------------------------------------
 Hypothetical μ(Δ): 0.0
-Observed μ(Δ):     0.4762833283475539
-p-value:           1.9097732120609834e-5
+Observed μ(Δ):     0.4617611946211756
+p-value:           3.256696257480929e-5
   α = 0.05:  ✓ Evidence favors dependence
   α = 0.01:  ✓ Evidence favors dependence
   α = 0.001: ✓ Evidence favors dependence</code></pre><p>As expected, the null hypothesis is rejected in both directions at the pre-determined  significance level, and hence we detect directional coupling in both directions.</p><h3 id="Non-coupled-logistic-maps"><a class="docs-heading-anchor" href="#Non-coupled-logistic-maps">Non-coupled logistic maps</a><a id="Non-coupled-logistic-maps-1"></a><a class="docs-heading-anchor-permalink" href="#Non-coupled-logistic-maps" title="Permalink"></a></h3><p>What happens in the example above if there is no coupling?</p><pre><code class="language-julia hljs">sys = system(Logistic2Bidir(c_xy = 0.00, c_yx = 0.0))
@@ -39,11 +39,11 @@ test_result = independence(test, x, y, z)</code></pre><pre class="documenter-exa
 H₀: &quot;The first two variables are independent, given the 3rd variable&quot;
 Hₐ: &quot;The first two variables are dependent, given the 3rd variable&quot;
 ---------------------------------------------------------------------
-Estimated: 0.9340576439184969
+Estimated: 0.8854618790027833
 Ensemble quantiles (30 permutations):
-    (99.9%): -0.04558200586996929
-    (99%):   -0.047769882191217736
-    (95%):   -0.056856172160187804
+    (99.9%): -0.026011545116251956
+    (99%):   -0.03441733412064117
+    (95%):   -0.06129450210534561
 p-value:   0.0
 α = 0.05:  ✓ Evidence favors dependence
 α = 0.01:  ✓ Evidence favors dependence
@@ -53,15 +53,15 @@ p-value:   0.0
 H₀: &quot;The first two variables are independent, given the 3rd variable&quot;
 Hₐ: &quot;The first two variables are dependent, given the 3rd variable&quot;
 ---------------------------------------------------------------------
-Estimated: -0.12798933711581117
+Estimated: -0.10336515150568282
 Ensemble quantiles (30 permutations):
-    (99.9%): -0.12758816455839295
-    (99%):   -0.12875241817920807
-    (95%):   -0.1321951500844675
-p-value:   0.03333333333333333
+    (99.9%): -0.14146832301042872
+    (99%):   -0.1449513058061334
+    (95%):   -0.1547238127486233
+p-value:   0.0
 α = 0.05:  ✓ Evidence favors dependence
-α = 0.01:  ✖ Independence cannot be rejected
-α = 0.001: ✖ Independence cannot be rejected
+α = 0.01:  ✓ Evidence favors dependence
+α = 0.001: ✓ Evidence favors dependence
 </code></pre><p>As expected, we cannot reject the null hypothesis that <span>$X$</span> and <span>$Z$</span> are conditionally independent given <span>$Y$</span>, because <span>$Y$</span> is the variable that transmits information from <span>$X$</span> to <span>$Z$</span>.</p><h3 id="example_localpermtest_teshannon"><a class="docs-heading-anchor" href="#example_localpermtest_teshannon">Transfer entropy (Shannon, differential)</a><a id="example_localpermtest_teshannon-1"></a><a class="docs-heading-anchor-permalink" href="#example_localpermtest_teshannon" title="Permalink"></a></h3><h4 id="Chain-of-random-variables-X-\\to-Y-\\to-Z-to-W"><a class="docs-heading-anchor" href="#Chain-of-random-variables-X-\\to-Y-\\to-Z-to-W">Chain of random variables <span>$X \to Y \to Z to W$</span></a><a id="Chain-of-random-variables-X-\\to-Y-\\to-Z-to-W-1"></a><a class="docs-heading-anchor-permalink" href="#Chain-of-random-variables-X-\\to-Y-\\to-Z-to-W" title="Permalink"></a></h4><p>Here, we demonstrate <a href="../../independence/#CausalityTools.LocalPermutationTest"><code>LocalPermutationTest</code></a> with the <a href="../../measures/#CausalityTools.TEShannon"><code>TEShannon</code></a> measure with default parameters and the <a href="../../api/api_condmutualinfo/#CausalityTools.FPVP"><code>FPVP</code></a> estimator. We&#39;ll use a system of four coupled logistic maps that are linked <code>X → Y → Z → W</code>.</p><pre><code class="language-julia hljs">using CausalityTools
 using Random; rng = Random.default_rng()
 s = system(Logistic4Chain(; xi = rand(4)))
@@ -72,11 +72,11 @@ test_result = independence(test, x, z)</code></pre><pre class="documenter-exampl
 H₀: &quot;The first two variables are independent&quot;
 Hₐ: &quot;The first two variables are dependent&quot;
 ---------------------------------------------------------------------
-Estimated: 0.1006314675608794
+Estimated: 0.1554922897962807
 Ensemble quantiles (50 permutations):
-    (99.9%): -0.4595917196461885
-    (99%):   -0.46076133516564755
-    (95%):   -0.46681809993657
+    (99.9%): -0.43983155430156445
+    (99%):   -0.44187281333105993
+    (95%):   -0.46079581872507486
 p-value:   0.0
 α = 0.05:  ✓ Evidence favors dependence
 α = 0.01:  ✓ Evidence favors dependence
@@ -86,11 +86,11 @@ p-value:   0.0
 H₀: &quot;The first two variables are independent, given the 3rd variable&quot;
 Hₐ: &quot;The first two variables are dependent, given the 3rd variable&quot;
 ---------------------------------------------------------------------
-Estimated: -1.2405261802126113
+Estimated: -1.2353709015120922
 Ensemble quantiles (50 permutations):
-    (99.9%): -1.1537235759262465
-    (99%):   -1.1540894313826124
-    (95%):   -1.1556316008835301
+    (99.9%): -1.1305784395993779
+    (99%):   -1.1329600860830638
+    (95%):   -1.1416748539589925
 p-value:   1.0
 α = 0.05:  ✖ Independence cannot be rejected
 α = 0.01:  ✖ Independence cannot be rejected
@@ -100,11 +100,11 @@ p-value:   1.0
 H₀: &quot;The first two variables are independent, given the 3rd variable&quot;
 Hₐ: &quot;The first two variables are dependent, given the 3rd variable&quot;
 ---------------------------------------------------------------------
-Estimated: -1.2008931201083806
+Estimated: -1.2073226229549796
 Ensemble quantiles (50 permutations):
-    (99.9%): -1.1259147178984947
-    (99%):   -1.125974787115988
-    (95%):   -1.1264621727320818
+    (99.9%): -1.1067612685812578
+    (99%):   -1.1070684326124336
+    (95%):   -1.1192747899893938
 p-value:   1.0
 α = 0.05:  ✖ Independence cannot be rejected
 α = 0.01:  ✖ Independence cannot be rejected
@@ -117,11 +117,11 @@ independence(SurrogateTest(DistanceCorrelation()), x, y)</code></pre><pre class=
 H₀: &quot;The first two variables are independent&quot;
 Hₐ: &quot;The first two variables are dependent&quot;
 ---------------------------------------------------------------------
-Estimated: 0.3665480061719932
+Estimated: 0.4035371829852535
 Ensemble quantiles (100 permutations):
-    (99.9%): 0.08596474694310072
-    (99%):   0.0835167913871058
-    (95%):   0.0756894028218146
+    (99.9%): 0.10509248764647229
+    (99%):   0.09875886612994522
+    (95%):   0.07769113906790628
 p-value:   0.0
 α = 0.05:  ✓ Evidence favors dependence
 α = 0.01:  ✓ Evidence favors dependence
@@ -135,15 +135,15 @@ independence(SurrogateTest(PartialCorrelation()), x, z, y)</code></pre><pre clas
 H₀: &quot;The first two variables are independent, given the 3rd variable&quot;
 Hₐ: &quot;The first two variables are dependent, given the 3rd variable&quot;
 ---------------------------------------------------------------------
-Estimated: -0.010707386775673088
+Estimated: 0.07611701015543638
 Ensemble quantiles (100 permutations):
-    (99.9%): 0.07271921130199754
-    (99%):   0.06850296625814406
-    (95%):   0.049650079676230086
-p-value:   0.64
-α = 0.05:  ✖ Independence cannot be rejected
-α = 0.01:  ✖ Independence cannot be rejected
-α = 0.001: ✖ Independence cannot be rejected
+    (99.9%): 0.06637805397226773
+    (99%):   0.06526249889421959
+    (95%):   0.05612441270192658
+p-value:   0.0
+α = 0.05:  ✓ Evidence favors dependence
+α = 0.01:  ✓ Evidence favors dependence
+α = 0.001: ✓ Evidence favors dependence
 </code></pre><h3 id="examples_surrogatetest_mishannon_categorical"><a class="docs-heading-anchor" href="#examples_surrogatetest_mishannon_categorical">Mutual information (<a href="../../measures/#CausalityTools.MIShannon"><code>MIShannon</code></a>, categorical)</a><a id="examples_surrogatetest_mishannon_categorical-1"></a><a class="docs-heading-anchor-permalink" href="#examples_surrogatetest_mishannon_categorical" title="Permalink"></a></h3><p>In this example, we expect the <code>preference</code> and the <code>food</code> variables to be independent.</p><pre><code class="language-julia hljs">using CausalityTools
 # Simulate
 n = 1000
@@ -155,12 +155,12 @@ independence(test, preference, food)</code></pre><pre class="documenter-example-
 H₀: &quot;The first two variables are independent&quot;
 Hₐ: &quot;The first two variables are dependent&quot;
 ---------------------------------------------------------------------
-Estimated: 0.0025508717224922185
+Estimated: 0.0020205420780307418
 Ensemble quantiles (100 permutations):
-    (99.9%): 0.00907925502074816
-    (99%):   0.00848224342298706
-    (95%):   0.004580980344107537
-p-value:   0.23
+    (99.9%): 0.005826776982264229
+    (99%):   0.004583903955940097
+    (95%):   0.0034609759807571762
+p-value:   0.18
 α = 0.05:  ✖ Independence cannot be rejected
 α = 0.01:  ✖ Independence cannot be rejected
 α = 0.001: ✖ Independence cannot be rejected
@@ -192,11 +192,11 @@ test_mi = independence(SurrogateTest(MIShannon(), Contingency()), places, experi
 H₀: &quot;The first two variables are independent&quot;
 Hₐ: &quot;The first two variables are dependent&quot;
 ---------------------------------------------------------------------
-Estimated: 0.9234726964375818
+Estimated: 0.9206443405575925
 Ensemble quantiles (100 permutations):
-    (99.9%): 0.0005966654428987779
-    (99%):   0.0005682829253683468
-    (95%):   0.0004066200042414984
+    (99.9%): 0.0010452239208276488
+    (99%):   0.0009454175116811209
+    (95%):   0.0004469588472355005
 p-value:   0.0
 α = 0.05:  ✓ Evidence favors dependence
 α = 0.01:  ✓ Evidence favors dependence
@@ -208,10 +208,10 @@ Hₐ: &quot;The first two variables are dependent, given the 3rd variable&quot;
 ---------------------------------------------------------------------
 Estimated: 0.0
 Ensemble quantiles (100 permutations):
-    (99.9%): 4.938862630669678e-16
-    (99%):   4.614334062875649e-16
-    (95%):   0.0
-p-value:   0.81
+    (99.9%): 4.625862233834927e-16
+    (99%):   4.609592991650002e-16
+    (95%):   1.7846289052751888e-17
+p-value:   0.82
 α = 0.05:  ✖ Independence cannot be rejected
 α = 0.01:  ✖ Independence cannot be rejected
 α = 0.001: ✖ Independence cannot be rejected
@@ -225,11 +225,11 @@ independence(test, x, y)</code></pre><pre class="documenter-example-output"><cod
 H₀: &quot;The first two variables are independent&quot;
 Hₐ: &quot;The first two variables are dependent&quot;
 ---------------------------------------------------------------------
-Estimated: 1.3527787390536452
+Estimated: 1.339640319002703
 Ensemble quantiles (100 permutations):
-    (99.9%): -0.35278197523735655
-    (99%):   -0.36612302307327477
-    (95%):   -0.3679209148274933
+    (99.9%): -0.3504908174154632
+    (99%):   -0.3716103846860928
+    (95%):   -0.38129911532521144
 p-value:   0.0
 α = 0.05:  ✓ Evidence favors dependence
 α = 0.01:  ✓ Evidence favors dependence
@@ -239,11 +239,11 @@ p-value:   0.0
 H₀: &quot;The first two variables are independent, given the 3rd variable&quot;
 Hₐ: &quot;The first two variables are dependent, given the 3rd variable&quot;
 ---------------------------------------------------------------------
-Estimated: 0.30732705102311475
+Estimated: 0.3122988872892116
 Ensemble quantiles (100 permutations):
-    (99.9%): -0.31369685457287366
-    (99%):   -0.316127670635822
-    (95%):   -0.32323515115500934
+    (99.9%): -0.33346627205928897
+    (99%):   -0.34277566077909716
+    (95%):   -0.35555895583899844
 p-value:   0.0
 α = 0.05:  ✓ Evidence favors dependence
 α = 0.01:  ✓ Evidence favors dependence
@@ -251,32 +251,32 @@ p-value:   0.0
 </code></pre><h3 id="examples_surrogatetest_smeasure"><a class="docs-heading-anchor" href="#examples_surrogatetest_smeasure"><a href="../../measures/#CausalityTools.SMeasure"><code>SMeasure</code></a></a><a id="examples_surrogatetest_smeasure-1"></a><a class="docs-heading-anchor-permalink" href="#examples_surrogatetest_smeasure" title="Permalink"></a></h3><pre><code class="language-julia hljs">using CausalityTools
 x, y = randn(3000), randn(3000)
 measure = SMeasure(dx = 3, dy = 3)
-s = s_measure(measure, x, y)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">0.009967015448951408</code></pre><p>The <code>s</code> statistic is larger when there is stronger coupling and smaller when there is weaker coupling. To check whether <code>s</code> is significant (i.e. large enough to claim directional dependence), we can use a <a href="../../independence/#CausalityTools.SurrogateTest"><code>SurrogateTest</code></a>, like <a href="#examples_surrogatetest_smeasure">here</a>.</p><pre><code class="language-julia hljs">test = SurrogateTest(measure)
+s = s_measure(measure, x, y)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">0.010587206753590575</code></pre><p>The <code>s</code> statistic is larger when there is stronger coupling and smaller when there is weaker coupling. To check whether <code>s</code> is significant (i.e. large enough to claim directional dependence), we can use a <a href="../../independence/#CausalityTools.SurrogateTest"><code>SurrogateTest</code></a>, like <a href="#examples_surrogatetest_smeasure">here</a>.</p><pre><code class="language-julia hljs">test = SurrogateTest(measure)
 independence(test, x, y)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">`SurrogateTest` independence test
 ---------------------------------------------------------------------
 H₀: &quot;The first two variables are independent&quot;
 Hₐ: &quot;The first two variables are dependent&quot;
 ---------------------------------------------------------------------
-Estimated: 0.009967015448951408
+Estimated: 0.010587206753590575
 Ensemble quantiles (100 permutations):
-    (99.9%): 0.010805492809962729
-    (99%):   0.01067957443994253
-    (95%):   0.0104081648757259
-p-value:   0.55
-α = 0.05:  ✖ Independence cannot be rejected
-α = 0.01:  ✖ Independence cannot be rejected
-α = 0.001: ✖ Independence cannot be rejected
+    (99.9%): 0.010581828268738384
+    (99%):   0.010562448496965818
+    (95%):   0.01043357874005052
+p-value:   0.0
+α = 0.05:  ✓ Evidence favors dependence
+α = 0.01:  ✓ Evidence favors dependence
+α = 0.001: ✓ Evidence favors dependence
 </code></pre><p>The p-value is high, and we can&#39;t reject the null at any reasonable significance level. Hence, there isn&#39;t evidence in the data to support directional coupling from <code>x</code> to <code>y</code>.</p><p>What happens if we use coupled variables?</p><pre><code class="language-julia hljs">z = x .+ 0.1y
 independence(test, x, z)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">`SurrogateTest` independence test
 ---------------------------------------------------------------------
 H₀: &quot;The first two variables are independent&quot;
 Hₐ: &quot;The first two variables are dependent&quot;
 ---------------------------------------------------------------------
-Estimated: 0.46326701754198407
+Estimated: 0.4859558666996266
 Ensemble quantiles (100 permutations):
-    (99.9%): 0.010555979230992045
-    (99%):   0.010540897277365655
-    (95%):   0.010445727137267076
+    (99.9%): 0.010678772631639894
+    (99%):   0.010651972198335795
+    (95%):   0.01042090368790041
 p-value:   0.0
 α = 0.05:  ✓ Evidence favors dependence
 α = 0.01:  ✓ Evidence favors dependence
@@ -366,4 +366,4 @@ H₁: &quot;The first two variables are dependent (given the 3rd variable, if re
 p-value (two-sided):      0.3554469503815001
   α = 0.05:  ✖ Independence cannot be rejected
   α = 0.01:  ✖ Independence cannot be rejected
-  α = 0.001: ✖ Independence cannot be rejected</code></pre><p>As expected, the correlation between <code>X</code> and <code>Z</code> significantly vanishes when conditioning on <code>Y</code>, because <code>Y</code> is solely responsible for the observed correlation between <code>X</code> and <code>Y</code>.</p></article><nav class="docs-footer"><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.25 on <span class="colophon-date" title="Saturday 2 September 2023 10:33">Saturday 2 September 2023</span>. Using Julia version 1.9.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+  α = 0.001: ✖ Independence cannot be rejected</code></pre><p>As expected, the correlation between <code>X</code> and <code>Z</code> significantly vanishes when conditioning on <code>Y</code>, because <code>Y</code> is solely responsible for the observed correlation between <code>X</code> and <code>Y</code>.</p></article><nav class="docs-footer"><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.25 on <span class="colophon-date" title="Saturday 2 September 2023 14:22">Saturday 2 September 2023</span>. Using Julia version 1.9.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
