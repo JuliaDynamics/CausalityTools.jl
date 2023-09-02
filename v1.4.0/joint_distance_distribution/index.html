@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Joint distance distribution · CausalityTools.jl</title><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.044/juliamono.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.11/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script><link href="https://fonts.googleapis.com/css?family=Montserrat|Source+Code+Pro&amp;display=swap" rel="stylesheet" type="text/css"/></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../">CausalityTools.jl</a></span></div><form class="docs-search" action="../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../">Overview</a></li><li><a class="tocitem" href="../surrogate/">Surrogate data</a></li><li><span class="tocitem">Distance based</span><ul><li class="is-active"><a class="tocitem" href>Joint distance distribution</a><ul class="internal"><li><a class="tocitem" href="#Example:-two-coupled-Lorenz-attractors"><span>Example: two coupled Lorenz attractors</span></a></li><li><a class="tocitem" href="#Reproducing-Amigo-et-al.-(2018)"><span>Reproducing Amigo et al. (2018)</span></a></li></ul></li><li><a class="tocitem" href="../s_measure/">S-measure</a></li><li><a class="tocitem" href="../cross_mapping/">Cross mapping</a></li><li><a class="tocitem" href="../pairwise_asymmetric_inference/">Pairwise asymmetric inference</a></li></ul></li><li><span class="tocitem">Information/entropy based</span><ul><li><a class="tocitem" href="../mutualinfo/">Mutual information</a></li><li><a class="tocitem" href="../conditional_mutualinfo/">Conditional mutual information</a></li><li><a class="tocitem" href="../TransferEntropy/">Transfer entropy</a></li><li><a class="tocitem" href="../predictive_asymmetry/">Predictive asymmetry</a></li><li><a class="tocitem" href="../generalized_entropy/">Generalized entropy</a></li><li><a class="tocitem" href="../info_estimators/">Estimators</a></li></ul></li><li><a class="tocitem" href="../example_systems/">Example systems</a></li><li><span class="tocitem">Utilities</span><ul><li><a class="tocitem" href="../invariant_measure/">Invariant measures and transfer operators</a></li><li><a class="tocitem" href="../dataset/">Multivariate <code>Dataset</code>s</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Distance based</a></li><li class="is-active"><a href>Joint distance distribution</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Joint distance distribution</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/JuliaDynamics/CausalityTools.jl/blob/master/docs/src/joint_distance_distribution.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="joint_distance_distribution_overview"><a class="docs-heading-anchor" href="#joint_distance_distribution_overview">Joint distance distribution</a><a id="joint_distance_distribution_overview-1"></a><a class="docs-heading-anchor-permalink" href="#joint_distance_distribution_overview" title="Permalink"></a></h1><article class="docstring"><header><a class="docstring-binding" id="CausalityTools.JointDistanceDistribution.jdd-Tuple{Any, Any}" href="#CausalityTools.JointDistanceDistribution.jdd-Tuple{Any, Any}"><code>CausalityTools.JointDistanceDistribution.jdd</code></a> — <span class="docstring-category">Method</span></header><section><div><pre><code class="language-julia hljs">jdd(source, target; distance_metric = SqEuclidean(), 
+    B::Int = 10, D::Int = 2, τ::Int = 1) → Vector{Float64}</code></pre><p>Compute the joint distance distribution <sup class="footnote-reference"><a id="citeref-1" href="#footnote-1">[1]</a></sup> from <code>source</code> to <code>target</code> using  the provided <code>distance_metric</code>, with <code>B</code> controlling the number of subintervals,  <code>D</code> the embedding dimension and <code>τ</code> the embedding lag.</p><p><strong>Example</strong></p><pre><code class="language-julia hljs">using CausalityTools
+x, y = rand(1000), rand(1000)
+
+jdd(x, y)</code></pre><p><strong>Keyword arguments</strong></p><ul><li><strong><code>distance_metric::Metric</code></strong>: An instance of a valid distance metric from <code>Distances.jl</code>.    Defaults to <code>SqEuclidean()</code>.</li><li><strong><code>B</code></strong>: The number of equidistant subintervals to divide the interval <code>[0, 1]</code> into   when comparing the normalised distances. </li><li><strong><code>D</code></strong>: Embedding dimension.</li><li><strong><code>τ</code></strong>: Embedding delay.</li></ul><p><strong>References</strong></p><p><sup class="footnote-reference"><a id="citeref-1" href="#footnote-1">[1]</a></sup> Amigó, José M., and Yoshito Hirata. &quot;Detecting directional couplings from multivariate flows by the joint distance distribution.&quot; Chaos: An Interdisciplinary Journal of Nonlinear Science 28.7 (2018): 075302.</p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaDynamics/CausalityTools.jl/blob/e1de3943a2ccb3c9997ca38e7a4fac025f1f8475/src/JointDistanceDistribution/joint_distance_distribution.jl#L9-L38">source</a></section></article><p>For the joint distance distribution to indicate a causal influence, it must be significantly  skewed towards positive values.</p><p>Providing the <code>OneSampleTTest</code> type as the first  argument to <code>jdd</code> yields a one sample t-test on the joint distance distribution. From this test, you can extract p-values and obtain  confidence intervals like in <a href="https://github.com/JuliaStats/HypothesisTests.jl">HypothesisTests.jl</a> as usual.</p><article class="docstring"><header><a class="docstring-binding" id="CausalityTools.JointDistanceDistribution.jdd-Tuple{Type{OneSampleTTest}, Any, Any}" href="#CausalityTools.JointDistanceDistribution.jdd-Tuple{Type{OneSampleTTest}, Any, Any}"><code>CausalityTools.JointDistanceDistribution.jdd</code></a> — <span class="docstring-category">Method</span></header><section><div><pre><code class="language-julia hljs">jdd(test::OneSampleTTest, source, target;
+    distance_metric = SqEuclidean(), B::Int = 10, D::Int = 2, τ::Int = 1, 
+    μ0 = 0.0) → OneSampleTTest</code></pre><p>Perform a one sample t-test to check that the joint distance distribution<sup class="footnote-reference"><a id="citeref-Amigo" href="#footnote-Amigo">[Amigo]</a></sup> computed from <code>source</code> to <code>target</code> is biased towards positive values, using the null  hypothesis that the mean of the distribution is <code>μ0</code>.</p><p>The interpretation of the t-test is that if we can reject the null, then the  joint distance distribution is biased towards positive values, and then there  exists an underlying coupling from <code>source</code> to <code>target</code>. </p><p><strong>Example</strong></p><pre><code class="language-julia hljs">using CausalityTools, HypothesisTests
+x, y = rand(1000), rand(1000)
+
+jdd(OneSampleTTest, x, y)</code></pre><p>which gives </p><pre><code class="language-julia hljs">One sample t-test
+-----------------
+Population details:
+    parameter of interest:   Mean
+    value under h_0:         0.0
+    point estimate:          0.06361857324022721
+    95% confidence interval: (0.0185, 0.1087)
+
+Test summary:
+    outcome with 95% confidence: reject h_0
+    two-sided p-value:           0.0082
+
+Details:
+    number of observations:   20
+    t-statistic:              2.9517208721082873
+    degrees of freedom:       19
+    empirical standard error: 0.0215530451545668</code></pre><p>The lower bound of the confidence interval for the mean of the joint  distance distribution is <code>0.0185</code> at confidence level <code>α = 0.05</code>. The  meaning that the test falsely detected causality from <code>x</code> to <code>y</code> between these two random time series. </p><p>To get the confidence intervals at confidence level <code>α</code>, run </p><p><code>confinf(jdd(OneSampleTTest, x, y), α)</code>. </p><p>If you just want the p-value at 95% confidence, run </p><p><code>pvalue(jdd(OneSampleTTest, x, y), tail = :right)</code></p><p><strong>Keyword arguments</strong></p><ul><li><strong><code>distance_metric::Metric</code></strong>: An instance of a valid distance metric from <code>Distances.jl</code>.    Defaults to <code>SqEuclidean()</code>.</li><li><strong><code>B</code></strong>: The number of equidistant subintervals to divide the interval <code>[0, 1]</code> into   when comparing the normalised distances. </li><li><strong><code>D</code></strong>: Embedding dimension.</li><li><strong><code>τ</code></strong>: Embedding delay.</li><li><strong><code>μ0</code></strong>: The hypothetical mean value of the joint distance distribution if there    is no coupling between <code>x</code> and <code>y</code> (default is <code>μ0 = 0.0</code>).</li></ul><p><strong>References</strong></p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaDynamics/CausalityTools.jl/blob/e1de3943a2ccb3c9997ca38e7a4fac025f1f8475/src/JointDistanceDistribution/joint_distance_distribution.jl#L107-L177">source</a></section></article><h2 id="Example:-two-coupled-Lorenz-attractors"><a class="docs-heading-anchor" href="#Example:-two-coupled-Lorenz-attractors">Example: two coupled Lorenz attractors</a><a id="Example:-two-coupled-Lorenz-attractors-1"></a><a class="docs-heading-anchor-permalink" href="#Example:-two-coupled-Lorenz-attractors" title="Permalink"></a></h2><p>The joint distance distribution was introduced in Amigo et al. (2018)<sup class="footnote-reference"><a id="citeref-Amigo2018" href="#footnote-Amigo2018">[Amigo2018]</a></sup>. Here, we&#39;ll attempt to reproduce  figures 1a and 1b from their paper, but first we&#39;ll do a couple of simple examples.</p><p>Let&#39;s start by generating some time series. We&#39;ll use the <code>lorenz_lorenz_bidir</code> example system that ships with CausalityTools, which implements their bidirectionally coupled Lorenz systems. </p><pre><code class="language-julia hljs">using CausalityTools, Plots, DynamicalSystems
+
+# Time series of length 10000, sampled every 0.1 time steps.
+ΔT, npts, Ttr = 0.1, 1000, 100
+T = npts * ΔT
+
+# Let there be unidirectional coupling from x to y
+cxy, cyx = 1.5, 0.0
+sys = lorenz_lorenz_bidir(c_xy = cxy, c_yx = cyx)
+orbit = trajectory(sys, T, ΔT = ΔT, Ttr = 500)
+x1, x2, x3, y1, y2, y3 = columns(orbit)
+plot(xlabel = &quot;Time step&quot;, ylabel = &quot;Value&quot;, size = (800, 220))
+plot!(x1, label = &quot;x1&quot;)
+plot!(y1, label = &quot;y1&quot;)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181</code></pre><p><img src="../lorenz_lorenz_timeseries.svg" alt/></p><p>Let&#39;s compute the joint distance distribution from <code>x</code> to <code>y</code>. For this example, we&#39;ll use an embedding dimension  of 10 and embedding lag of 10. In real applications, these parameters should be optimized.</p><pre><code class="language-julia hljs">jxy = jdd(x1, y1, D = 10, τ = 10)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">10-element Vector{Float64}:
+ 0.007914512229548717
+ 0.009077000588835605
+ 0.007522820460240222
+ 0.007839848267663154
+ 0.008963493213528443
+ 0.014179300645702874
+ 0.013694411928240655
+ 0.01520908094574809
+ 0.01925271326075293
+ 0.022120337594977117</code></pre><p>If <code>jxy</code> is biased towards positive values, then in the framework of the joint distance distribution, the variables are coupled and there exists a continuous functional dependence <span>$x = \phi(y)$</span>. In the context of causal inference, this is is the same as saying that <code>x</code> drives <code>y</code>. Likewise, if <code>jxy</code> is <em>not</em> biased towards positive values, then there exists no such relationship, and the variables are not coupled.</p><p>To formally test whether the distribution <code>jxy</code> is skewed torwards positive values, we can use a one-sample t-test to test the null hypothesis <code>mean(jxy) == 0</code>, and compute the right-sided p-value for the test. If <code>p &lt; 0.05</code> for the test, we take that as rejection of the null hypothesis, and accept the alternative hypothesis that <code>mean(jxy)</code> is skewed towards positive values.</p><pre><code class="language-julia hljs">pvalue(jdd(OneSampleTTest, x1, y1, D = 10, τ = 10), tail = :right)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">7.491157227771777e-6</code></pre><p>Similarly, we can also see if the joint distance distribution test provides evidence of a coupling from <code>y</code> to <code>x</code>:</p><pre><code class="language-julia hljs">pvalue(jdd(OneSampleTTest, y1, x1, D = 10, τ = 10), tail = :right)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">0.1558732437092537</code></pre><p>If the test works perfectly, then we expect <code>p &lt; 0.05</code> when computing the joint distance distribution from <code>x</code> to <code>y</code> and <code>p &gt;= 0.05</code> when computing the distribution from <code>y</code> to <code>x</code>. However, for a single finite time series realization, this might not necessarily always be the case.  </p><h2 id="Reproducing-Amigo-et-al.-(2018)"><a class="docs-heading-anchor" href="#Reproducing-Amigo-et-al.-(2018)">Reproducing Amigo et al. (2018)</a><a id="Reproducing-Amigo-et-al.-(2018)-1"></a><a class="docs-heading-anchor-permalink" href="#Reproducing-Amigo-et-al.-(2018)" title="Permalink"></a></h2><p>Here, we attempt reproduce figures 1a and 1b from Amigo et al., which computes p-values for a range of coupling strengths in both directions. We&#39;ll use a coarser coupling resolution and shorter time series to limit computation time.</p><pre><code class="language-julia hljs">using CausalityTools, Plots, DynamicalSystems
+
+cxys = 0.0:0.25:2.0
+cyxs = 0.0:0.25:2.0
+# We&#39;ll use time series 2000 points long, to limit computation time
+ΔT, npts, Ttr = 0.1, 200, 100
+T = npts * ΔT
+
+pvals_xy = zeros(length(cyxs), length(cxys))
+pvals_yx = zeros(length(cyxs), length(cxys))
+
+for (i, cxy) in enumerate(cxys)
+    for (j, cyx) in enumerate(cyxs)
+        sys = lorenz_lorenz_bidir(c_xy = cxy, c_yx = cyx)
+        orbit = trajectory(sys, T, ΔT = ΔT, Ttr = Ttr)
+        x1, x2, x3, y1, y2, y3 = columns(orbit)
+
+        # The original paper uses an embedding dimension of 10 and embedding lag of 10
+        pvals_xy[j, i] = pvalue(jdd(OneSampleTTest, x1, y1, D = 10, τ = 10), tail = :right)
+        pvals_yx[j, i] = pvalue(jdd(OneSampleTTest, y1, x1, D = 10, τ = 10), tail = :right)
+    end
+end</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181
+┌ Warning: Direct propagation of keyword arguments to DifferentialEquations.jl is deprecated.
+│ From now on pass any DiffEq-related keywords as a `NamedTuple` using the
+│ explicit keyword `diffeq` instead.
+└ @ DynamicalSystemsBase ~/.julia/packages/DynamicalSystemsBase/AHMTz/src/core/continuous.jl:181</code></pre><p>Plotting the p-values for the tests in the direction <code>x</code> to <code>y</code>, and in the direction <code>y</code> to <code>x</code>, as a function of coupling strengths in both directions, we get the following:</p><pre><code class="language-julia hljs">z = [0, 0.0001, 0.001, 0.01, 0.05, 1.0]
+c = cgrad(:magma, categorical = true)
+
+p_xy = plot(xlabel = &quot;Coupling from x to y&quot;, ylabel = &quot;Coupling from y to x&quot;)
+yticks!((1:length(cyxs), string.(cyxs)))
+xticks!((1:length(cxys), string.(cxys)))
+heatmap!(pvals_xy, c = c, logscale = true)
+
+p_yx = plot(xlabel = &quot;Coupling from x to y&quot;, ylabel = &quot;&quot;)
+yticks!((1:length(cyxs), string.(cyxs)))
+xticks!((1:length(cxys), string.(cxys)))
+heatmap!(pvals_yx, c = c, logscale = true)
+
+plot(p_xy, p_yx, layout = grid(1, 2), size = (900, 300))</code></pre><p><img src="../jdd_heatmap.svg" alt/></p><p>Values on the x-axis are the coupling strengths from <code>x</code> to <code>y</code>, and those on the y-axis are the coupling strengths from <code>y</code> to <code>x</code>. The colorbar indicates the p-value. </p><p>For sufficiently high coupling strengths, the test successfully identifies the couplings both from <code>x</code> to <code>y</code> and vice versa. For lower coupling strengths, we cannot reject the null hypothesis. </p><p>Note that using longer time series and more carefully tuned embeddings would likely lead to better performance.</p><section class="footnotes is-size-7"><ul><li class="footnote" id="footnote-Amigo"><a class="tag is-link" href="#citeref-Amigo">Amigo</a>Amigó, José M., and Yoshito Hirata. &quot;Detecting directional couplings from multivariate flows by the joint distance distribution.&quot; Chaos: An Interdisciplinary Journal of Nonlinear Science 28.7 (2018): 075302.</li><li class="footnote" id="footnote-Amigo2018"><a class="tag is-link" href="#citeref-Amigo2018">Amigo2018</a>Amigó, José M., and Yoshito Hirata. &quot;Detecting directional couplings from multivariate flows by the joint distance distribution.&quot; Chaos: An Interdisciplinary Journal of Nonlinear Science 28.7 (2018): 075302.</li></ul></section></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../surrogate/">« Surrogate data</a><a class="docs-footer-nextpage" href="../s_measure/">S-measure »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.17 on <span class="colophon-date" title="Monday 23 May 2022 15:03">Monday 23 May 2022</span>. Using Julia version 1.7.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>

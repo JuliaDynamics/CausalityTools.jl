@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Conditional mutual information · CausalityTools.jl</title><script data-outdated-warner src="../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script><link href="https://fonts.googleapis.com/css?family=Montserrat|Source+Code+Pro&amp;display=swap" rel="stylesheet" type="text/css"/></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../../"><img class="docs-light-only" src="../../assets/logo.png" alt="CausalityTools.jl logo"/><img class="docs-dark-only" src="../../assets/logo-dark.png" alt="CausalityTools.jl logo"/></a><form class="docs-search" action="../../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../../">Overview</a></li><li><a class="tocitem" href="../../measures/">Association measures</a></li><li><a class="tocitem" href="../../independence/">Independence testing</a></li><li><a class="tocitem" href="../../causal_graphs/">Causal graphs</a></li><li><a class="tocitem" href="../../api/">APIs and estimators</a></li><li><a class="tocitem" href="../">Examples</a></li><li><a class="tocitem" href="../../coupled_systems/">Predefined systems</a></li><li><a class="tocitem" href="../../experimental/">Experimental</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Conditional mutual information</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Conditional mutual information</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/JuliaDynamics/CausalityTools.jl/blob/master/docs/src/examples/examples_conditional_mutual_information.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="quickstart_mutualinfo"><a class="docs-heading-anchor" href="#quickstart_mutualinfo">Conditional mutual information</a><a id="quickstart_mutualinfo-1"></a><a class="docs-heading-anchor-permalink" href="#quickstart_mutualinfo" title="Permalink"></a></h1><h2 id="[CMIShannon](@ref)"><a class="docs-heading-anchor" href="#[CMIShannon](@ref)"><a href="../../measures/#CausalityTools.CMIShannon"><code>CMIShannon</code></a></a><a id="[CMIShannon](@ref)-1"></a><a class="docs-heading-anchor-permalink" href="#[CMIShannon](@ref)" title="Permalink"></a></h2><h3 id="Estimation-using-[ConditionalMutualInformationEstimator](@ref)s"><a class="docs-heading-anchor" href="#Estimation-using-[ConditionalMutualInformationEstimator](@ref)s">Estimation using <a href="../../api/api_condmutualinfo/#CausalityTools.ConditionalMutualInformationEstimator"><code>ConditionalMutualInformationEstimator</code></a>s</a><a id="Estimation-using-[ConditionalMutualInformationEstimator](@ref)s-1"></a><a class="docs-heading-anchor-permalink" href="#Estimation-using-[ConditionalMutualInformationEstimator](@ref)s" title="Permalink"></a></h3><p>When estimated using a <a href="../../api/api_condmutualinfo/#CausalityTools.ConditionalMutualInformationEstimator"><code>ConditionalMutualInformationEstimator</code></a>, some form of bias correction is usually applied. The <a href="../../api/api_condmutualinfo/#CausalityTools.FPVP"><code>FPVP</code></a> estimator is a popular choice.</p><h4 id="[CMIShannon](@ref)-with-[GaussianCMI](@ref)"><a class="docs-heading-anchor" href="#[CMIShannon](@ref)-with-[GaussianCMI](@ref)"><a href="../../measures/#CausalityTools.CMIShannon"><code>CMIShannon</code></a> with <a href="../../api/api_condmutualinfo/#CausalityTools.GaussianCMI"><code>GaussianCMI</code></a></a><a id="[CMIShannon](@ref)-with-[GaussianCMI](@ref)-1"></a><a class="docs-heading-anchor-permalink" href="#[CMIShannon](@ref)-with-[GaussianCMI](@ref)" title="Permalink"></a></h4><pre><code class="language-julia hljs">using CausalityTools
+using Distributions
+using Statistics
+
+n = 1000
+# A chain X → Y → Z
+x = randn(1000)
+y = randn(1000) .+ x
+z = randn(1000) .+ y
+condmutualinfo(GaussianCMI(), x, z, y) # defaults to `CMIShannon()`</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">0.00045399178845292084</code></pre><h4 id="[CMIShannon](@ref)-with-[FPVP](@ref)"><a class="docs-heading-anchor" href="#[CMIShannon](@ref)-with-[FPVP](@ref)"><a href="../../measures/#CausalityTools.CMIShannon"><code>CMIShannon</code></a> with <a href="../../api/api_condmutualinfo/#CausalityTools.FPVP"><code>FPVP</code></a></a><a id="[CMIShannon](@ref)-with-[FPVP](@ref)-1"></a><a class="docs-heading-anchor-permalink" href="#[CMIShannon](@ref)-with-[FPVP](@ref)" title="Permalink"></a></h4><pre><code class="language-julia hljs">using CausalityTools
+using Distributions
+using Statistics
+
+n = 1000
+# A chain X → Y → Z
+x = rand(Normal(-1, 0.5), n)
+y = rand(BetaPrime(0.5, 1.5), n) .+ x
+z = rand(Chisq(100), n)
+z = (z ./ std(z)) .+ y
+
+# We expect zero (in practice: very low) CMI when computing I(X; Z | Y), because
+# the link between X and Z is exclusively through Y, so when observing Y,
+# X and Z should appear independent.
+condmutualinfo(FPVP(k = 5), x, z, y) # defaults to `CMIShannon()`</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">-0.06917295808866425</code></pre><h4 id="[CMIShannon](@ref)-with-[MesnerShalisi](@ref)"><a class="docs-heading-anchor" href="#[CMIShannon](@ref)-with-[MesnerShalisi](@ref)"><a href="../../measures/#CausalityTools.CMIShannon"><code>CMIShannon</code></a> with <a href="../../api/api_condmutualinfo/#CausalityTools.MesnerShalisi"><code>MesnerShalisi</code></a></a><a id="[CMIShannon](@ref)-with-[MesnerShalisi](@ref)-1"></a><a class="docs-heading-anchor-permalink" href="#[CMIShannon](@ref)-with-[MesnerShalisi](@ref)" title="Permalink"></a></h4><pre><code class="language-julia hljs">using CausalityTools
+using Distributions
+using Statistics
+
+n = 1000
+# A chain X → Y → Z
+x = rand(Normal(-1, 0.5), n)
+y = rand(BetaPrime(0.5, 1.5), n) .+ x
+z = rand(Chisq(100), n)
+z = (z ./ std(z)) .+ y
+
+# We expect zero (in practice: very low) CMI when computing I(X; Z | Y), because
+# the link between X and Z is exclusively through Y, so when observing Y,
+# X and Z should appear independent.
+condmutualinfo(MesnerShalisi(k = 10), x, z, y) # defaults to `CMIShannon()`</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">-0.06314875409428909</code></pre><h4 id="[CMIShannon](@ref)-with-[Rahimzamani](@ref)"><a class="docs-heading-anchor" href="#[CMIShannon](@ref)-with-[Rahimzamani](@ref)"><a href="../../measures/#CausalityTools.CMIShannon"><code>CMIShannon</code></a> with <a href="../../api/api_condmutualinfo/#CausalityTools.Rahimzamani"><code>Rahimzamani</code></a></a><a id="[CMIShannon](@ref)-with-[Rahimzamani](@ref)-1"></a><a class="docs-heading-anchor-permalink" href="#[CMIShannon](@ref)-with-[Rahimzamani](@ref)" title="Permalink"></a></h4><pre><code class="language-julia hljs">using CausalityTools
+using Distributions
+using Statistics
+
+n = 1000
+# A chain X → Y → Z
+x = rand(Normal(-1, 0.5), n)
+y = rand(BetaPrime(0.5, 1.5), n) .+ x
+z = rand(Chisq(100), n)
+z = (z ./ std(z)) .+ y
+
+# We expect zero (in practice: very low) CMI when computing I(X; Z | Y), because
+# the link between X and Z is exclusively through Y, so when observing Y,
+# X and Z should appear independent.
+condmutualinfo(CMIShannon(base = 10), Rahimzamani(k = 10), x, z, y)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">-0.20431363443934686</code></pre><h4 id="[CMIRenyiPoczos](@ref)-with-[PoczosSchneiderCMI](@ref)"><a class="docs-heading-anchor" href="#[CMIRenyiPoczos](@ref)-with-[PoczosSchneiderCMI](@ref)"><a href="../../measures/#CausalityTools.CMIRenyiPoczos"><code>CMIRenyiPoczos</code></a> with <a href="../../api/api_condmutualinfo/#CausalityTools.PoczosSchneiderCMI"><code>PoczosSchneiderCMI</code></a></a><a id="[CMIRenyiPoczos](@ref)-with-[PoczosSchneiderCMI](@ref)-1"></a><a class="docs-heading-anchor-permalink" href="#[CMIRenyiPoczos](@ref)-with-[PoczosSchneiderCMI](@ref)" title="Permalink"></a></h4><pre><code class="language-julia hljs">using CausalityTools
+using Distributions
+using Statistics
+
+n = 1000
+# A chain X → Y → Z
+x = rand(Normal(-1, 0.5), n)
+y = rand(BetaPrime(0.5, 1.5), n) .+ x
+z = rand(Chisq(100), n)
+z = (z ./ std(z)) .+ y
+
+# We expect zero (in practice: very low) CMI when computing I(X; Z | Y), because
+# the link between X and Z is exclusively through Y, so when observing Y,
+# X and Z should appear independent.
+condmutualinfo(CMIRenyiPoczos(base = 2, q = 1.2), PoczosSchneiderCMI(k = 5), x, z, y)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">-0.19697200051919714</code></pre><h3 id="Estimation-using-[MutualInformationEstimator](@ref)s"><a class="docs-heading-anchor" href="#Estimation-using-[MutualInformationEstimator](@ref)s">Estimation using <a href="../../api/api_mutualinfo/#CausalityTools.MutualInformationEstimator"><code>MutualInformationEstimator</code></a>s</a><a id="Estimation-using-[MutualInformationEstimator](@ref)s-1"></a><a class="docs-heading-anchor-permalink" href="#Estimation-using-[MutualInformationEstimator](@ref)s" title="Permalink"></a></h3><p>Any <a href="../../api/api_mutualinfo/#CausalityTools.MutualInformationEstimator"><code>MutualInformationEstimator</code></a> can also be used to compute conditional mutual information using the chain rule of mutual information. However, the naive application of these estimators don&#39;t perform any bias correction when taking the difference of mutual information terms.</p><h4 id="[CMIShannon](@ref)-with-[KSG1](@ref)"><a class="docs-heading-anchor" href="#[CMIShannon](@ref)-with-[KSG1](@ref)"><a href="../../measures/#CausalityTools.CMIShannon"><code>CMIShannon</code></a> with <a href="examples/@ref"><code>KSG1</code></a></a><a id="[CMIShannon](@ref)-with-[KSG1](@ref)-1"></a><a class="docs-heading-anchor-permalink" href="#[CMIShannon](@ref)-with-[KSG1](@ref)" title="Permalink"></a></h4><pre><code class="language-julia hljs">using CausalityTools
+using Distributions
+using Statistics
+
+n = 1000
+# A chain X → Y → Z
+x = rand(Normal(-1, 0.5), n)
+y = rand(BetaPrime(0.5, 1.5), n) .+ x
+z = rand(Chisq(100), n)
+z = (z ./ std(z)) .+ y
+
+# We expect zero (in practice: very low) CMI when computing I(X; Z | Y), because
+# the link between X and Z is exclusively through Y, so when observing Y,
+# X and Z should appear independent.
+condmutualinfo(CMIShannon(base = 2), KSG1(k = 5), x, z, y)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">-0.19943290186831608</code></pre><h3 id="Estimation-using-[DifferentialEntropyEstimator](@ref)s"><a class="docs-heading-anchor" href="#Estimation-using-[DifferentialEntropyEstimator](@ref)s">Estimation using <a href="../../api/api_entropies/#ComplexityMeasures.DifferentialEntropyEstimator"><code>DifferentialEntropyEstimator</code></a>s</a><a id="Estimation-using-[DifferentialEntropyEstimator](@ref)s-1"></a><a class="docs-heading-anchor-permalink" href="#Estimation-using-[DifferentialEntropyEstimator](@ref)s" title="Permalink"></a></h3><p>Any <a href="../../api/api_entropies/#ComplexityMeasures.DifferentialEntropyEstimator"><code>DifferentialEntropyEstimator</code></a> can also be used to compute conditional mutual information using a sum of entropies. However, the naive application of these estimators don&#39;t perform any bias application when taking the sum of entropy terms.</p><h4 id="[CMIShannon](@ref)-with-[Kraskov](@ref)"><a class="docs-heading-anchor" href="#[CMIShannon](@ref)-with-[Kraskov](@ref)"><a href="../../measures/#CausalityTools.CMIShannon"><code>CMIShannon</code></a> with <a href="../../api/api_entropies/#ComplexityMeasures.Kraskov"><code>Kraskov</code></a></a><a id="[CMIShannon](@ref)-with-[Kraskov](@ref)-1"></a><a class="docs-heading-anchor-permalink" href="#[CMIShannon](@ref)-with-[Kraskov](@ref)" title="Permalink"></a></h4><pre><code class="language- hljs">n = 1000
+# A chain X → Y → Z
+x = rand(Epanechnikov(0.5, 1.0), n)
+y = rand(Erlang(1), n) .+ x
+z = rand(FDist(5, 2), n)
+condmutualinfo(CMIShannon(), Kraskov(k = 5), x, z, y)</code></pre><h3 id="Estimation-using-[ProbabilitiesEstimator](@ref)s"><a class="docs-heading-anchor" href="#Estimation-using-[ProbabilitiesEstimator](@ref)s">Estimation using <a href="../../api/api_probabilities/#ComplexityMeasures.ProbabilitiesEstimator"><code>ProbabilitiesEstimator</code></a>s</a><a id="Estimation-using-[ProbabilitiesEstimator](@ref)s-1"></a><a class="docs-heading-anchor-permalink" href="#Estimation-using-[ProbabilitiesEstimator](@ref)s" title="Permalink"></a></h3><p>Any <a href="../../api/api_probabilities/#ComplexityMeasures.ProbabilitiesEstimator"><code>ProbabilitiesEstimator</code></a> can also be used to compute conditional mutual information using a sum of entropies. However, the naive application of these estimators don&#39;t perform any bias application when taking the sum of entropy terms.</p><h4 id="[CMIShannon](@ref)-with-[ValueHistogram](@ref)"><a class="docs-heading-anchor" href="#[CMIShannon](@ref)-with-[ValueHistogram](@ref)"><a href="../../measures/#CausalityTools.CMIShannon"><code>CMIShannon</code></a> with <a href="../../api/api_probabilities/#ComplexityMeasures.ValueHistogram"><code>ValueHistogram</code></a></a><a id="[CMIShannon](@ref)-with-[ValueHistogram](@ref)-1"></a><a class="docs-heading-anchor-permalink" href="#[CMIShannon](@ref)-with-[ValueHistogram](@ref)" title="Permalink"></a></h4><pre><code class="language- hljs">n = 1000
+# A chain X → Y → Z
+x = rand(Epanechnikov(0.5, 1.0), n)
+y = rand(Erlang(1), n) .+ x
+z = rand(FDist(5, 2), n)
+est = ValueHistogram(RectangularBinning(5))
+condmutualinfo(CMIShannon(), est, x, z, y), condmutualinfo(CMIShannon(), est, x, y, z)</code></pre></article><nav class="docs-footer"><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.24 on <span class="colophon-date" title="Tuesday 28 February 2023 19:57">Tuesday 28 February 2023</span>. Using Julia version 1.8.5.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>

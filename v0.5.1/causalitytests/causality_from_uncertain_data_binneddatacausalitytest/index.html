@@ -1,0 +1,1694 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="Causality detection from time series in Julia.">
+      
+      
+      
+        <meta name="author" content="Kristian Agasøster Haaga">
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-0.17.5, mkdocs-material-2.9.4">
+    
+    
+      
+        <title>Binned resampling - CausalityTools.jl</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.451f80e5.css">
+      
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.1aa3b519.js"></script>
+    
+    
+      <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+      
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+      <link rel="stylesheet" href="../../assets/Documenter.css">
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448"
+    viewBox="0 0 416 448" id="__github">
+  <path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19-18.125
+        8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19 18.125-8.5
+        18.125 8.5 10.75 19 3.125 20.5zM320 304q0 10-3.125 20.5t-10.75
+        19-18.125 8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19
+        18.125-8.5 18.125 8.5 10.75 19 3.125 20.5zM360
+        304q0-30-17.25-51t-46.75-21q-10.25 0-48.75 5.25-17.75 2.75-39.25
+        2.75t-39.25-2.75q-38-5.25-48.75-5.25-29.5 0-46.75 21t-17.25 51q0 22 8
+        38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0
+        37.25-1.75t35-7.375 30.5-15 20.25-25.75 8-38.375zM416 260q0 51.75-15.25
+        82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5-41.75
+        1.125q-19.5 0-35.5-0.75t-36.875-3.125-38.125-7.5-34.25-12.875-30.25-20.25-21.5-28.75q-15.5-30.75-15.5-82.75
+        0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25
+        30.875q36.75-8.75 77.25-8.75 37 0 70 8 26.25-20.5
+        46.75-30.25t47.25-9.75q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34
+        99.5z" />
+</svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#binned-resampling" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="../.." title="CausalityTools.jl" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            
+              <span class="md-header-nav__topic">
+                CausalityTools.jl
+              </span>
+              <span class="md-header-nav__topic">
+                Binned resampling
+              </span>
+            
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          
+            <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+            
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+          
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+
+  <a href="https://github.com/kahaaga/CausalityTools.jl/" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#__github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="../.." title="CausalityTools.jl" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    CausalityTools.jl
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+
+  <a href="https://github.com/kahaaga/CausalityTools.jl/" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#__github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" checked>
+    
+    <label class="md-nav__link" for="nav-2">
+      Causality estimation
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        Causality estimation
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../causality_from_time_series/" title="Causality from time series" class="md-nav__link">
+      Causality from time series
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2-2" type="checkbox" id="nav-2-2" checked>
+    
+    <label class="md-nav__link" for="nav-2-2">
+      Causality from uncertain data
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-2-2">
+        Causality from uncertain data
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../causality_from_uncertain_data/" title="Methods" class="md-nav__link">
+      Methods
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../causality_from_uncertain_data_naive/" title="Naive resampling" class="md-nav__link">
+      Naive resampling
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../causality_from_uncertain_data_naive_constrained/" title="Constrained resampling" class="md-nav__link">
+      Constrained resampling
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Binned resampling
+      </label>
+    
+    <a href="./" title="Binned resampling" class="md-nav__link md-nav__link--active">
+      Binned resampling
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#binneddatacausalitytest" title="BinnedDataCausalityTest" class="md-nav__link">
+    BinnedDataCausalityTest
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../causality_from_uncertain_data_InterpolateBinTest/" title="Interpolate-and-bin resampling" class="md-nav__link">
+      Interpolate-and-bin resampling
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../causality_from_uncertain_data_RandomSequencesTest/" title="Random chunk resampling" class="md-nav__link">
+      Random chunk resampling
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../causality_from_uncertain_data_strictlyincreasing_interpolated/" title="Strictly increasing and interpolated resampling" class="md-nav__link">
+      Strictly increasing and interpolated resampling
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../causality_from_dynamical_systems/" title="Causality from dynamical systems" class="md-nav__link">
+      Causality from dynamical systems
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      Causality tests
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        Causality tests
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../causality_tests/" title="List of tests" class="md-nav__link">
+      List of tests
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-2" type="checkbox" id="nav-3-2">
+    
+    <label class="md-nav__link" for="nav-3-2">
+      Distance based tests
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-2">
+        Distance based tests
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../JointDistanceDistributionTest/" title="JointDistanceDistributionTest" class="md-nav__link">
+      JointDistanceDistributionTest
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../CrossMappingTest/" title="CrossMappingTest" class="md-nav__link">
+      CrossMappingTest
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../ConvergentCrossMappingTest/" title="ConvergentCrossMappingTest" class="md-nav__link">
+      ConvergentCrossMappingTest
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-3" type="checkbox" id="nav-3-3">
+    
+    <label class="md-nav__link" for="nav-3-3">
+      Entropy based tests
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-3">
+        Entropy based tests
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../TransferOperatorGridTest/" title="TransferOperatorGridTest" class="md-nav__link">
+      TransferOperatorGridTest
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../VisitationFrequencyTest/" title="VisitationFrequencyTest" class="md-nav__link">
+      VisitationFrequencyTest
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../ApproximateSimplexIntersectionTest/" title="ApproximateSimplexIntersectionTest" class="md-nav__link">
+      ApproximateSimplexIntersectionTest
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../ExactSimplexIntersectionTest/" title="ExactSimplexIntersectionTest" class="md-nav__link">
+      ExactSimplexIntersectionTest
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../PredictiveAsymmetryTest/" title="Predictive asymmetry test" class="md-nav__link">
+      Predictive asymmetry test
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-5" type="checkbox" id="nav-3-5">
+    
+    <label class="md-nav__link" for="nav-3-5">
+      Abstract test types
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-5">
+        Abstract test types
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../CausalityTest/" title="CausalityTest" class="md-nav__link">
+      CausalityTest
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../DistanceBasedCausalityTest/" title="Distance based tests" class="md-nav__link">
+      Distance based tests
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../EntropyBasedCausalityTest/" title="Entropy based tests" class="md-nav__link">
+      Entropy based tests
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../TransferEntropyTest/" title="TransferEntropyTest" class="md-nav__link">
+      TransferEntropyTest
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      Fundamentals
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        Fundamentals
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytoolsbase/discretization/" title="Discretization" class="md-nav__link">
+      Discretization
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytoolsbase/delay_reconstructions/" title="Delay reconstruction" class="md-nav__link">
+      Delay reconstruction
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4-3" type="checkbox" id="nav-4-3">
+    
+    <label class="md-nav__link" for="nav-4-3">
+      Invariant properties over partitions
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-4-3">
+        Invariant properties over partitions
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../perronfrobenius/invariantmeasure/" title="Invariant measure" class="md-nav__link">
+      Invariant measure
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../perronfrobenius/transferoperator/" title="Transfer operator" class="md-nav__link">
+      Transfer operator
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      Estimators and algorithms
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        Estimators and algorithms
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-1" type="checkbox" id="nav-5-1">
+    
+    <label class="md-nav__link" for="nav-5-1">
+      Transfer entropy
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-5-1">
+        Transfer entropy
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../transferentropy/convenience_functions_te/" title="Convenience functions" class="md-nav__link">
+      Convenience functions
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../transferentropy/transferentropy_estimators/" title="Low-level estimators" class="md-nav__link">
+      Low-level estimators
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../transferentropy/TEVars/" title="Mapping delay reconstruction to marginals (TEVars)" class="md-nav__link">
+      Mapping delay reconstruction to marginals (TEVars)
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../transferentropy/examples_TE_different_partitionings/" title="Effect of discretization scheme" class="md-nav__link">
+      Effect of discretization scheme
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-2" type="checkbox" id="nav-5-2">
+    
+    <label class="md-nav__link" for="nav-5-2">
+      CCM
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-5-2">
+        CCM
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../crossmappings/ccm/overview/" title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../crossmappings/ccm/crossmapping/" title="Cross mapping" class="md-nav__link">
+      Cross mapping
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../crossmappings/ccm/convergentcrossmapping/" title="Converent cross mapping" class="md-nav__link">
+      Converent cross mapping
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../algorithms/joint_distance_distribution/" title="Joint distance distribution" class="md-nav__link">
+      Joint distance distribution
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../syntax_overview/" title="Syntax overview" class="md-nav__link">
+      Syntax overview
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-6" type="checkbox" id="nav-6">
+    
+    <label class="md-nav__link" for="nav-6">
+      Example systems
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-6">
+        Example systems
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../example_systems/example_systems_overview/" title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../example_systems/example_systems_discrete/" title="Discrete systems" class="md-nav__link">
+      Discrete systems
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../example_systems/example_systems_continuous/" title="Continuous systems" class="md-nav__link">
+      Continuous systems
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../example_systems/noise/" title="Noise processes" class="md-nav__link">
+      Noise processes
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-7" type="checkbox" id="nav-7">
+    
+    <label class="md-nav__link" for="nav-7">
+      Surrogate data
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-7">
+        Surrogate data
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../surrogates/surrogates_overview/" title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-7-2" type="checkbox" id="nav-7-2">
+    
+    <label class="md-nav__link" for="nav-7-2">
+      Methods
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-7-2">
+        Methods
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../surrogates/iaaft_docs/" title="IAAFT" class="md-nav__link">
+      IAAFT
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../surrogates/aaft_docs/" title="AAFT" class="md-nav__link">
+      AAFT
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../surrogates/randomphases_docs/" title="Fourier surrogates, random phases" class="md-nav__link">
+      Fourier surrogates, random phases
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../surrogates/randomamplitudes_docs/" title="Fourier surrogates, random amplitudes" class="md-nav__link">
+      Fourier surrogates, random amplitudes
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../surrogates/randomshuffle_docs/" title="Random shuffle" class="md-nav__link">
+      Random shuffle
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-8" type="checkbox" id="nav-8">
+    
+    <label class="md-nav__link" for="nav-8">
+      Uncertain data handling
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-8">
+        Uncertain data handling
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../uncertaindata/BinnedDataCausalityTest/" title="BinnedDataCausalityTest" class="md-nav__link">
+      BinnedDataCausalityTest
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-9" type="checkbox" id="nav-9">
+    
+    <label class="md-nav__link" for="nav-9">
+      Tutorials/examples
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-9">
+        Tutorials/examples
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/list_of_tutorials/" title="List of tutorials" class="md-nav__link">
+      List of tutorials
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-9-2" type="checkbox" id="nav-9-2">
+    
+    <label class="md-nav__link" for="nav-9-2">
+      Causality test on uncertain data
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-9-2">
+        Causality test on uncertain data
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-9-2-1" type="checkbox" id="nav-9-2-1">
+    
+    <label class="md-nav__link" for="nav-9-2-1">
+      PredictiveAsymmetryTest
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="3">
+      <label class="md-nav__title" for="nav-9-2-1">
+        PredictiveAsymmetryTest
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/causality/binned_uncertain_data/tutorial_BinnedDataCausalityTest_PredictiveAsymmetryTest_BinnedResampling/" title="BinnedResampling" class="md-nav__link">
+      BinnedResampling
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/causality/binned_uncertain_data/tutorial_BinnedDataCausalityTest_PredictiveAsymmetryTest_BinnedMeanResampling/" title="BinnedMeanResampling" class="md-nav__link">
+      BinnedMeanResampling
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-9-3" type="checkbox" id="nav-9-3">
+    
+    <label class="md-nav__link" for="nav-9-3">
+      Worked examples
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-9-3">
+        Worked examples
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../worked_examples/worked_example_transferentropy/" title="Transfer entropy" class="md-nav__link">
+      Transfer entropy
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../CHANGELOG/" title="Changelog" class="md-nav__link">
+      Changelog
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#binneddatacausalitytest" title="BinnedDataCausalityTest" class="md-nav__link">
+    BinnedDataCausalityTest
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/kahaaga/CausalityTools.jl/edit/master/docs/causalitytests/causality_from_uncertain_data_binneddatacausalitytest.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                
+                
+                <p><a id='causality_uncertain_binneddatacausalitytest-1'></a></p>
+<h1 id="binned-resampling">Binned resampling</h1>
+<p><a id='CausalityToolsBase.causality-Tuple{AbstractUncertainIndexValueDataset,AbstractUncertainIndexValueDataset,BinnedDataCausalityTest}' href='#CausalityToolsBase.causality-Tuple{AbstractUncertainIndexValueDataset,AbstractUncertainIndexValueDataset,BinnedDataCausalityTest}'>#</a>
+<strong><code>CausalityToolsBase.causality</code></strong> &mdash; <em>Method</em>.</p>
+<div class="highlight"><pre><span></span><span class="n">causality</span><span class="p">(</span><span class="n">x</span><span class="o">::</span><span class="n">AbstractUncertainIndexValueDataset</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">::</span><span class="n">AbstractUncertainIndexValueDataset</span><span class="p">,</span>
+    <span class="n">test</span><span class="o">::</span><span class="n">BinnedDataCausalityTest</span><span class="p">)</span>
+</pre></div>
+
+<p>Apply a causality test to <code>x</code> and <code>y</code>, which are both data series  with uncertainties in both indices and values. To get the data  on an equally-spaced temporal grid, the data are first binned according to the instructions in <code>test.binning</code>. </p>
+<p><strong>Binning methods</strong></p>
+<ul>
+<li>If <code>test.binning</code> results in an uncertain value for each bin, then the causality</li>
+</ul>
+<p>test is applied <code>test.n_realizations</code> times. Examples are <a href="../@ref"><code>UncertainData.BinnedResampling</code></a>  and <a href="../@ref"><code>UncertainData.BinnedWeightedResampling</code></a>, which both return a KDE estimate to the  distribution of values in each bin.</p>
+<ul>
+<li>If <code>test.binning</code> returns a summary statistic for each bin, then the causality test is</li>
+</ul>
+<p>applied to the summarised time series. Examples are <a href="../@ref"><code>UncertainData.BinnedMeanResampling</code></a>  and <a href="../@ref"><code>UncertainData.BinnedMeanWeightedResampling</code></a>, which both return the mean of each bin.</p>
+<p><strong>Example</strong></p>
+<p><strong>Some example data</strong></p>
+<p>Let's say we have the following datasets <code>X</code> and <code>Y</code>: </p>
+<div class="highlight"><pre><span></span><span class="k">using</span> <span class="n">CausalityTools</span><span class="p">,</span> <span class="n">UncertainData</span> 
+
+<span class="n">sys</span> <span class="o">=</span> <span class="n">ar1_unidir</span><span class="p">(</span><span class="n">uᵢ</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span> <span class="n">c_xy</span> <span class="o">=</span> <span class="mf">0.41</span><span class="p">)</span>
+<span class="n">vars</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="c"># ar1_unidir has only two variables, X and Y</span>
+<span class="n">n_steps</span> <span class="o">=</span> <span class="mi">100</span> <span class="c"># the number of points in the time series</span>
+<span class="n">tstep</span> <span class="o">=</span> <span class="mi">10</span> <span class="c"># the mean of each time value is stepped by `tstep`</span>
+
+<span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">example_uncertain_indexvalue_datasets</span><span class="p">(</span><span class="n">sys</span><span class="p">,</span> <span class="n">n_steps</span><span class="p">,</span> <span class="n">vars</span><span class="p">,</span> <span class="n">tstep</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> 
+<span class="n">d_xind</span> <span class="o">=</span> <span class="n">Uniform</span><span class="p">(</span><span class="mf">7.5</span><span class="p">,</span> <span class="mf">15.5</span><span class="p">),</span> 
+<span class="n">d_yind</span> <span class="o">=</span> <span class="n">Uniform</span><span class="p">(</span><span class="mf">5.5</span><span class="p">,</span> <span class="mf">15.5</span><span class="p">),</span> 
+<span class="n">d_xval</span> <span class="o">=</span> <span class="n">Uniform</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">));</span>
+</pre></div>
+
+<p>Now we can perform the causality tests on our uncertain data, either over  the bin means, or over an ensemble of independent realisations of  the dataset given the distribution of points in each bin.</p>
+<p><strong>Summary statistic for each bin</strong></p>
+<p><strong>PredictiveAsymmetryTest</strong></p>
+<p>If the binning method returns a summary statistic (e.g. the mean) for each bin,  then the causality test is applied exactly once to the bin summaries.</p>
+<div class="highlight"><pre><span></span><span class="c"># Bin the data by drawing n_draws = 5000 realizations of each uncertain data </span>
+<span class="c"># point, then assign the draws to the correct bins and get a distribution </span>
+<span class="c"># of values in each bin.</span>
+<span class="n">binning</span> <span class="o">=</span> <span class="n">BinnedResampling</span><span class="p">(</span><span class="mi">0</span><span class="o">:</span><span class="mi">10</span><span class="o">:</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">5000</span><span class="p">)</span>
+
+<span class="c"># A predictive asymmetry test. For the predictions, we&#39;ll use a transfer entropy </span>
+<span class="c"># test, which uses the visitation frequency estimator. We&#39;ll predict 5 time steps </span>
+<span class="c"># forwards and backwards in time (ηs = -5:5). For the state space binning, we&#39;ll</span>
+<span class="c"># determine how many intervals to split each axis into from the number of points</span>
+<span class="c"># in the time series.</span>
+<span class="n">k</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span> <span class="c"># embedding parameters</span>
+<span class="n">n_subdivisions</span> <span class="o">=</span> <span class="n">floor</span><span class="p">(</span><span class="kt">Int</span><span class="p">,</span> <span class="n">length</span><span class="p">(</span><span class="mi">0</span><span class="o">:</span><span class="mi">10</span><span class="o">:</span><span class="mi">1000</span><span class="p">)</span><span class="o">^</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="n">l</span> <span class="o">+</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)))</span>
+<span class="n">state_space_binning</span> <span class="o">=</span> <span class="n">RectangularBinning</span><span class="p">(</span><span class="n">n_subdivisions</span><span class="p">)</span>
+<span class="n">ηs</span> <span class="o">=</span> <span class="o">-</span><span class="mi">5</span><span class="o">:</span><span class="mi">5</span>
+<span class="n">te_test</span> <span class="o">=</span> <span class="n">VisitationFrequencyTest</span><span class="p">(</span><span class="n">k</span> <span class="o">=</span> <span class="n">k</span><span class="p">,</span> <span class="n">l</span> <span class="o">=</span> <span class="n">l</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="n">m</span><span class="p">,</span>
+<span class="n">binning</span> <span class="o">=</span> <span class="n">state_space_binning</span><span class="p">,</span> 
+<span class="n">ηs</span> <span class="o">=</span> <span class="n">ηs</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span> <span class="c"># use base-2 logarithms</span>
+<span class="n">pa_test</span> <span class="o">=</span> <span class="n">PredictiveAsymmetryTest</span><span class="p">(</span><span class="n">predictive_test</span> <span class="o">=</span> <span class="n">te_test</span><span class="p">)</span>
+
+<span class="c"># Compute transfer entropy in both directions for the bin means.</span>
+<span class="c"># We still have to specify the number of realisations for the test, </span>
+<span class="c"># but it is ignored, so it doesn&#39;t matter what number we input here.</span>
+<span class="n">test</span> <span class="o">=</span> <span class="n">BinnedDataCausalityTest</span><span class="p">(</span><span class="n">pa_test</span><span class="p">,</span> <span class="n">binning</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="c"># Perform the tests</span>
+<span class="n">tes_xy</span> <span class="o">=</span> <span class="n">causality</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">test</span><span class="p">)</span>
+<span class="n">tes_yx</span> <span class="o">=</span> <span class="n">causality</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">test</span><span class="p">)</span>
+
+<span class="c"># Plot the results</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">xlabel</span> <span class="o">=</span> <span class="s">&quot;Prediction lag (eta)&quot;</span><span class="p">,</span> <span class="n">ylabel</span> <span class="o">=</span> <span class="s">&quot;Predictive asymmetry (bits)&quot;</span><span class="p">)</span>
+<span class="n">plot!</span><span class="p">(</span><span class="n">ηs</span><span class="p">[</span><span class="n">ηs</span> <span class="o">.&gt;</span> <span class="mi">0</span><span class="p">],</span> <span class="n">tes_xy</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;x -&gt; y (binned)&quot;</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="o">:</span><span class="n">black</span><span class="p">)</span>
+<span class="n">plot!</span><span class="p">(</span><span class="n">ηs</span><span class="p">[</span><span class="n">ηs</span> <span class="o">.&gt;</span> <span class="mi">0</span><span class="p">],</span> <span class="n">tes_yx</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;y -&gt; x (binned)&quot;</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="o">:</span><span class="n">red</span><span class="p">)</span>
+<span class="n">hline!</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="n">lw</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">ls</span> <span class="o">=</span> <span class="o">:</span><span class="n">dot</span><span class="p">,</span> <span class="n">α</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="o">:</span><span class="n">grey</span><span class="p">)</span>
+</pre></div>
+
+<p><strong>Uncertain values representing each bin</strong></p>
+<p>If the binning method returns an uncertain value for each bin, then the  causality test is applied to <code>test.n_realizations</code> independent draws  of the binned dataset.</p>
+<p><strong>Predictive asymmetry test</strong></p>
+<div class="highlight"><pre><span></span><span class="c"># Bin the data by drawing n_draws = 5000 realizations of each uncertain data </span>
+<span class="c"># point, then assign the draws to the correct bins and get a distribution </span>
+<span class="c"># of values in each bin.</span>
+<span class="n">grid</span> <span class="o">=</span> <span class="mi">0</span><span class="o">:</span><span class="mi">5</span><span class="o">:</span><span class="mi">1000</span>
+<span class="n">binning</span> <span class="o">=</span> <span class="n">BinnedResampling</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="mi">5000</span><span class="p">)</span>
+
+<span class="c"># A predictive asymmetry test. For the predictions, we&#39;ll use a transfer entropy </span>
+<span class="c"># test, which uses the visitation frequency estimator. We&#39;ll predict 5 time steps </span>
+<span class="c"># forwards and backwards in time (ηs = -5:5). For the state space binning, we&#39;ll</span>
+<span class="c"># determine how many intervals to split each axis into from the number of points</span>
+<span class="c"># in the time series.</span>
+<span class="n">k</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span> <span class="c"># embedding parameters</span>
+<span class="n">n_subdivisions</span> <span class="o">=</span> <span class="n">floor</span><span class="p">(</span><span class="kt">Int</span><span class="p">,</span> <span class="n">length</span><span class="p">(</span><span class="mi">0</span><span class="o">:</span><span class="mi">10</span><span class="o">:</span><span class="mi">1000</span><span class="p">)</span><span class="o">^</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="n">l</span> <span class="o">+</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)))</span>
+<span class="n">state_space_binning</span> <span class="o">=</span> <span class="n">RectangularBinning</span><span class="p">(</span><span class="n">n_subdivisions</span><span class="p">)</span>
+<span class="n">ηs</span> <span class="o">=</span> <span class="o">-</span><span class="mi">5</span><span class="o">:</span><span class="mi">5</span>
+<span class="n">te_test</span> <span class="o">=</span> <span class="n">VisitationFrequencyTest</span><span class="p">(</span><span class="n">k</span> <span class="o">=</span> <span class="n">k</span><span class="p">,</span> <span class="n">l</span> <span class="o">=</span> <span class="n">l</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="n">m</span><span class="p">,</span>
+<span class="n">binning</span> <span class="o">=</span> <span class="n">state_space_binning</span><span class="p">,</span> 
+<span class="n">ηs</span> <span class="o">=</span> <span class="n">ηs</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span> <span class="c"># use base-2 logarithms</span>
+<span class="n">pa_test</span> <span class="o">=</span> <span class="n">PredictiveAsymmetryTest</span><span class="p">(</span><span class="n">predictive_test</span> <span class="o">=</span> <span class="n">te_test</span><span class="p">)</span>
+
+<span class="c"># Compute transfer entropy in both directions over 50 independent realizations </span>
+<span class="c"># of the binned dataset.</span>
+<span class="n">n_realizations</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">test</span> <span class="o">=</span> <span class="n">BinnedDataCausalityTest</span><span class="p">(</span><span class="n">pa_test</span><span class="p">,</span> <span class="n">binning</span><span class="p">,</span> <span class="n">n_realizations</span><span class="p">)</span>
+
+<span class="c"># Perform the tests on the bin means. `tes_xy` now contains 50 independent </span>
+<span class="c"># computation of the predictive asymmetry at predictive lags 1 to 5, </span>
+<span class="c"># and `tes_yx` contains the same but for the other direction</span>
+<span class="n">tes_xy</span> <span class="o">=</span> <span class="n">causality</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">test</span><span class="p">)</span>
+<span class="n">tes_yx</span> <span class="o">=</span> <span class="n">causality</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">test</span><span class="p">)</span>
+
+<span class="c"># Gather results in a matrix and compute means and standard deviations </span>
+<span class="c"># for the predictive asymmetries at each prediction lag</span>
+<span class="n">M_xy</span> <span class="o">=</span> <span class="n">hcat</span><span class="p">(</span><span class="n">tes_xy</span><span class="o">...</span><span class="p">,)</span>
+<span class="n">M_yx</span> <span class="o">=</span> <span class="n">hcat</span><span class="p">(</span><span class="n">tes_yx</span><span class="o">...</span><span class="p">,)</span>
+
+<span class="n">means_xy</span> <span class="o">=</span> <span class="n">mean</span><span class="p">(</span><span class="n">M_xy</span><span class="p">,</span> <span class="n">dims</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)[</span><span class="o">:</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">means_yx</span> <span class="o">=</span> <span class="n">mean</span><span class="p">(</span><span class="n">M_yx</span><span class="p">,</span> <span class="n">dims</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)[</span><span class="o">:</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">stdevs_xy</span> <span class="o">=</span> <span class="n">std</span><span class="p">(</span><span class="n">M_yx</span><span class="p">,</span> <span class="n">dims</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)[</span><span class="o">:</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">stdevs_yx</span> <span class="o">=</span> <span class="n">std</span><span class="p">(</span><span class="n">M_yx</span><span class="p">,</span> <span class="n">dims</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)[</span><span class="o">:</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+
+<span class="c"># Plot the predictive asymmetry as a function of prediction lag</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">xlabel</span> <span class="o">=</span> <span class="s">&quot;Prediction lag (eta)&quot;</span><span class="p">,</span> <span class="n">ylabel</span> <span class="o">=</span> <span class="s">&quot;Predictive asymmetry (bits)&quot;</span><span class="p">)</span>
+<span class="n">plot!</span><span class="p">(</span><span class="n">ηs</span><span class="p">[</span><span class="n">ηs</span> <span class="o">.&gt;</span> <span class="mi">0</span><span class="p">],</span> <span class="n">means_xy</span><span class="p">,</span> <span class="n">ribbon</span> <span class="o">=</span> <span class="n">stdevs_xy</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;x -&gt; y (binned)&quot;</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="o">:</span><span class="n">black</span><span class="p">)</span>
+<span class="n">plot!</span><span class="p">(</span><span class="n">ηs</span><span class="p">[</span><span class="n">ηs</span> <span class="o">.&gt;</span> <span class="mi">0</span><span class="p">],</span> <span class="n">means_yx</span><span class="p">,</span> <span class="n">ribbon</span> <span class="o">=</span> <span class="n">stdevs_yx</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;y -&gt; x (binned)&quot;</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="o">:</span><span class="n">red</span><span class="p">)</span>
+<span class="n">hline!</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="n">lw</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">ls</span> <span class="o">=</span> <span class="o">:</span><span class="n">dot</span><span class="p">,</span> <span class="n">α</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="o">:</span><span class="n">grey</span><span class="p">)</span>
+</pre></div>
+
+<p><strong>Convergent cross mapping test</strong></p>
+<div class="highlight"><pre><span></span><span class="k">using</span> <span class="n">Plots</span> 
+
+<span class="c"># Bin the data by drawing n_draws = 5000 realizations of each uncertain data </span>
+<span class="c"># point, then assign the draws to the correct bins and get a distribution </span>
+<span class="c"># of values in each bin.</span>
+<span class="n">binning</span> <span class="o">=</span> <span class="n">BinnedResampling</span><span class="p">(</span><span class="mi">0</span><span class="o">:</span><span class="mi">10</span><span class="o">:</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">5000</span><span class="p">)</span>
+
+<span class="c"># A convergent cross mapping causality test</span>
+<span class="n">ts_lengths</span> <span class="o">=</span> <span class="mi">15</span><span class="o">:</span><span class="mi">5</span><span class="o">:</span><span class="mi">100</span> <span class="o">|&gt;</span> <span class="n">collect</span>
+<span class="n">causalitytest</span> <span class="o">=</span> <span class="n">ConvergentCrossMappingTest</span><span class="p">(</span>
+<span class="n">timeseries_lengths</span> <span class="o">=</span> <span class="n">ts_lengths</span><span class="p">,</span> 
+<span class="n">n_reps</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> 
+<span class="n">libsize</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> 
+<span class="n">τ</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> 
+<span class="n">replace</span> <span class="o">=</span> <span class="kc">true</span><span class="p">)</span>
+
+<span class="c"># Run ccm in both directions over 50 independent realizations of the binned datasets</span>
+<span class="n">n_realizations</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">test</span> <span class="o">=</span> <span class="n">BinnedDataCausalityTest</span><span class="p">(</span><span class="n">causalitytest</span><span class="p">,</span> <span class="n">binning</span><span class="p">,</span> <span class="n">n_realizations</span><span class="p">)</span>
+
+<span class="n">ccms_xy</span> <span class="o">=</span> <span class="n">causality</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">test</span><span class="p">);</span>
+<span class="n">ccms_yx</span> <span class="o">=</span> <span class="n">causality</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">test</span><span class="p">);</span>
+
+<span class="n">realization_means_xy</span> <span class="o">=</span> <span class="p">[</span><span class="n">mean</span><span class="o">.</span><span class="p">(</span><span class="n">realization</span><span class="p">)</span> <span class="k">for</span> <span class="n">realization</span> <span class="kp">in</span> <span class="n">ccms_xy</span><span class="p">]</span>
+<span class="n">realization_means_yx</span> <span class="o">=</span> <span class="p">[</span><span class="n">mean</span><span class="o">.</span><span class="p">(</span><span class="n">realization</span><span class="p">)</span> <span class="k">for</span> <span class="n">realization</span> <span class="kp">in</span> <span class="n">ccms_yx</span><span class="p">]</span>
+<span class="n">M_xy</span> <span class="o">=</span> <span class="n">hcat</span><span class="p">(</span><span class="n">realization_means_xy</span><span class="o">...</span><span class="p">,)</span>
+<span class="n">M_yx</span> <span class="o">=</span> <span class="n">hcat</span><span class="p">(</span><span class="n">realization_means_yx</span><span class="o">...</span><span class="p">,)</span>
+
+<span class="n">plot</span><span class="p">(</span><span class="n">xlabel</span> <span class="o">=</span> <span class="s">&quot;Time series length&quot;</span><span class="p">,</span> <span class="n">ylabel</span> <span class="o">=</span> <span class="s">&quot;Cross map skill&quot;</span><span class="p">)</span>
+<span class="n">plot!</span><span class="p">(</span><span class="n">ts_lengths</span><span class="p">,</span> <span class="n">mean</span><span class="p">(</span><span class="n">M_xy</span><span class="p">,</span> <span class="n">dims</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)[</span><span class="o">:</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> 
+<span class="n">ribbon</span> <span class="o">=</span> <span class="n">std</span><span class="p">(</span><span class="n">M_xy</span><span class="p">,</span> <span class="n">dims</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)[</span><span class="o">:</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> 
+<span class="n">label</span> <span class="o">=</span> <span class="s">&quot;x -&gt; y (binned)&quot;</span><span class="p">)</span>
+<span class="n">plot!</span><span class="p">(</span><span class="n">ts_lengths</span><span class="p">,</span> <span class="n">mean</span><span class="p">(</span><span class="n">M_yx</span><span class="p">,</span> <span class="n">dims</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)[</span><span class="o">:</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> 
+<span class="n">ribbon</span> <span class="o">=</span> <span class="n">std</span><span class="p">(</span><span class="n">M_yx</span><span class="p">,</span> <span class="n">dims</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)[</span><span class="o">:</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> 
+<span class="n">label</span> <span class="o">=</span> <span class="s">&quot;y -&gt; x (binned)&quot;</span><span class="p">)</span>
+</pre></div>
+
+<p><a target='_blank' href='https://github.com/kahaaga/CausalityTools.jl/blob/f3f7ede979ba093e7c4354cbda78fccd1b19da63/src/causalitytests/highlevel_tests/causality_BinnedDataCausalityTest.jl#L2-L187' class='documenter-source'>source</a><br></p>
+<p><a id='BinnedDataCausalityTest-1'></a></p>
+<h2 id="binneddatacausalitytest">BinnedDataCausalityTest</h2>
+<p><a id='CausalityTools.CausalityTests.BinnedDataCausalityTest' href='#CausalityTools.CausalityTests.BinnedDataCausalityTest'>#</a>
+<strong><code>CausalityTools.CausalityTests.BinnedDataCausalityTest</code></strong> &mdash; <em>Type</em>.</p>
+<div class="highlight"><pre><span></span><span class="n">BinnedDataCausalityTest</span><span class="p">(</span><span class="n">test</span><span class="o">::</span><span class="n">CT</span><span class="p">,</span> <span class="n">binning</span><span class="o">::</span><span class="n">AbstractBinnedUncertainValueResampling</span><span class="p">,</span> <span class="n">n_realizations</span><span class="o">::</span><span class="kt">Int</span><span class="p">)</span>
+<span class="n">BinnedDataCausalityTest</span><span class="p">(</span><span class="n">test</span><span class="o">::</span><span class="n">CT</span><span class="p">,</span> <span class="n">binning</span><span class="o">::</span><span class="n">AbstractBinnedSummarisedResampling</span><span class="p">)</span>
+</pre></div>
+
+<p>A causality test where the data are binned before applying the test. If <code>binning</code> is some  binning scheme that returns an uncertain value for each  bin (e.g. <code>BinnedResampling</code> or <code>BinnedWeightedResampling</code>), then the <code>test</code> is  applied <code>n_realizations</code> times. If <code>binning</code> returns a single value for each bin  (e.g. <code>BinnedMeanResampling</code> or <code>BinnedMeanWeightedResampling</code>, the <code>test</code> is applied only once.</p>
+<p><strong>Fields</strong></p>
+<ul>
+<li><strong><code>test::CausalityTest</code></strong>. An instance of a causality test, e.g. <code>VisitationFrequencyTest</code>,    <code>PredictiveAsymmetryTest</code>, <code>CrossMappingTest</code> or <code>JointDistanceDistributionTest</code>.</li>
+<li><strong><code>binning::AbstractBinnedResampling</code></strong>. An instance of a resampling scheme    indicating the type of binning, e.g <code>BinnedResampling</code>, <code>BinnedWeightedResampling</code>,    <code>BinnedMeanResampling</code> or <code>BinnedMeanWeightedResampling</code>.</li>
+<li><strong><code>n_realizations::Int</code></strong>: The number of independent draws of the binned data set over   which to compute the causality <code>test</code>. Only taken into consideration of <code>binning</code> is    a scheme resulting in each bin being represented by an uncertain value. If bins are    summarized, then the <code>test</code> is always applied only once.</li>
+</ul>
+<p><strong>Examples</strong></p>
+<p><strong>Binned convergent cross mapping test</strong></p>
+<p>Let's say we want to bin the data by drawing n_draws = 5000 realiastions of  each uncertain data point, then assign the draws to the correct bins, and finally get a kernel density estimate to the distribution of values in each bin.</p>
+<div class="highlight"><pre><span></span><span class="n">grid</span> <span class="o">=</span> <span class="mi">0</span><span class="o">:</span><span class="mi">10</span><span class="o">:</span><span class="mi">1000</span> <span class="c"># left bin edges</span>
+<span class="n">n_draw</span> <span class="o">=</span> <span class="mi">5000</span> <span class="c"># sample each point 5000 times and distribute among bins</span>
+<span class="n">binning</span> <span class="o">=</span> <span class="n">BinnedResampling</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="mi">5000</span><span class="p">)</span>
+
+<span class="n">ccm_test</span> <span class="o">=</span> <span class="n">ConvergentCrossMappingTest</span><span class="p">(</span><span class="n">timeseries_lengths</span> <span class="o">=</span> <span class="mi">15</span><span class="o">:</span><span class="mi">5</span><span class="o">:</span><span class="mi">100</span> <span class="o">|&gt;</span> <span class="n">collect</span><span class="p">,</span> 
+    <span class="n">n_reps</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">libsize</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">τ</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">replace</span> <span class="o">=</span> <span class="kc">true</span><span class="p">)</span>
+
+<span class="n">test</span> <span class="o">=</span> <span class="n">BinnedDataCausalityTest</span><span class="p">(</span><span class="n">ccm_test</span><span class="p">,</span> <span class="n">binning</span><span class="p">,</span> <span class="n">n_realizations</span><span class="p">)</span>
+</pre></div>
+
+<p><strong>Binned transfer entropy test</strong></p>
+<p>Let's say we want to bin the data by drawing n_draws = 7500 realiastions of  each uncertain data point, then assign the draws to the correct bins, and finally get a kernel density estimate to the distribution of values in each bin.</p>
+<div class="highlight"><pre><span></span><span class="n">grid</span> <span class="o">=</span> <span class="mi">0</span><span class="o">:</span><span class="mi">5</span><span class="o">:</span><span class="mi">1000</span> <span class="c"># left bin edges</span>
+<span class="n">n_draws</span> <span class="o">=</span> <span class="mi">7500</span>
+<span class="n">binning</span> <span class="o">=</span> <span class="n">BinnedResampling</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">n_draws</span><span class="p">)</span>
+
+<span class="c"># A transfer entropy causality test using the visitation frequency estimator</span>
+<span class="n">state_space_binning</span> <span class="o">=</span> <span class="n">RectangularBinning</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">te_test</span> <span class="o">=</span> <span class="n">VisitationFrequencyTest</span><span class="p">(</span><span class="n">binning</span> <span class="o">=</span> <span class="n">state_space_binning</span><span class="p">,</span> <span class="n">ηs</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">test</span> <span class="o">=</span> <span class="n">BinnedDataCausalityTest</span><span class="p">(</span><span class="n">te_test</span><span class="p">,</span> <span class="n">binning</span><span class="p">,</span> <span class="n">n_realizations</span><span class="p">)</span>
+</pre></div>
+
+<p><a target='_blank' href='https://github.com/kahaaga/CausalityTools.jl/blob/f3f7ede979ba093e7c4354cbda78fccd1b19da63/src/causalitytests/highlevel_tests/BinnedDataCausalityTest.jl#L10-L71' class='documenter-source'>source</a><br></p>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../causality_from_uncertain_data_naive_constrained/" title="Constrained resampling" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Constrained resampling
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../causality_from_uncertain_data_InterpolateBinTest/" title="Interpolate-and-bin resampling" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Interpolate-and-bin resampling
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+        
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.30f6b8b1.js"></script>
+      
+      <script>app.initialize({version:"0.17.5",url:{base:"../.."}})</script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+      
+        <script src="../../assets/mathjaxhelper.js"></script>
+      
+    
+    
+      
+    
+  </body>
+</html>
