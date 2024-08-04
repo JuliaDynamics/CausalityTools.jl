@@ -1,0 +1,2376 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="Causality detection from time series in Julia.">
+      
+      
+      
+        <meta name="author" content="Kristian Agasøster Haaga">
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-0.17.5, mkdocs-material-2.9.4">
+    
+    
+      
+        <title>NormalisedPredictiveAsymmetryTest - CausalityTools.jl</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.451f80e5.css">
+      
+        <link rel="stylesheet" href="../../assets/stylesheets/application-palette.22915126.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="">
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.1aa3b519.js"></script>
+    
+    
+      <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+      
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Segoe+UI:300,400,400i,700|Source+Code+Pro">
+        <style>body,input{font-family:"Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Source Code Pro","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+      <link rel="stylesheet" href="../../assets/Documenter.css">
+    
+    
+  </head>
+  
+    
+    
+    <body dir="ltr" data-md-color-primary="black" data-md-color-accent="light-blue">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448"
+    viewBox="0 0 416 448" id="__github">
+  <path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19-18.125
+        8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19 18.125-8.5
+        18.125 8.5 10.75 19 3.125 20.5zM320 304q0 10-3.125 20.5t-10.75
+        19-18.125 8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19
+        18.125-8.5 18.125 8.5 10.75 19 3.125 20.5zM360
+        304q0-30-17.25-51t-46.75-21q-10.25 0-48.75 5.25-17.75 2.75-39.25
+        2.75t-39.25-2.75q-38-5.25-48.75-5.25-29.5 0-46.75 21t-17.25 51q0 22 8
+        38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0
+        37.25-1.75t35-7.375 30.5-15 20.25-25.75 8-38.375zM416 260q0 51.75-15.25
+        82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5-41.75
+        1.125q-19.5 0-35.5-0.75t-36.875-3.125-38.125-7.5-34.25-12.875-30.25-20.25-21.5-28.75q-15.5-30.75-15.5-82.75
+        0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25
+        30.875q36.75-8.75 77.25-8.75 37 0 70 8 26.25-20.5
+        46.75-30.25t47.25-9.75q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34
+        99.5z" />
+</svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#normalisedpredictiveasymmetrytest" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="../.." title="CausalityTools.jl" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            
+              <span class="md-header-nav__topic">
+                CausalityTools.jl
+              </span>
+              <span class="md-header-nav__topic">
+                NormalisedPredictiveAsymmetryTest
+              </span>
+            
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          
+            <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+            
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+          
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+
+  <a href="https://github.com/kahaaga/CausalityTools.jl/" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#__github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+        
+
+  
+
+<nav class="md-tabs md-tabs--active" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  <li class="md-tabs__item">
+    
+      <a href="../.." title="Introduction and contents" class="md-tabs__link">
+        Introduction and contents
+      </a>
+    
+  </li>
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../causality_tests_overview/" title="Estimating causality" class="md-tabs__link md-tabs__link--active">
+          Estimating causality
+        </a>
+      
+    </li>
+  
+
+      
+        
+  
+  
+    
+    
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../../causalitytoolsbase/delay_reconstructions/" title="Package ecosystem" class="md-tabs__link">
+          Package ecosystem
+        </a>
+      
+    </li>
+  
+
+  
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../../surrogates/surrogates_overview/" title="Surrogate data" class="md-tabs__link">
+          Surrogate data
+        </a>
+      
+    </li>
+  
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../../example_systems/example_systems_overview/" title="Example systems" class="md-tabs__link">
+          Example systems
+        </a>
+      
+    </li>
+  
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../../tutorials/list_of_tutorials/" title="Tutorials/examples" class="md-tabs__link">
+          Tutorials/examples
+        </a>
+      
+    </li>
+  
+
+      
+        
+      
+    </ul>
+  </div>
+</nav>
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="../.." title="CausalityTools.jl" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    CausalityTools.jl
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+
+  <a href="https://github.com/kahaaga/CausalityTools.jl/" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#__github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." title="Introduction and contents" class="md-nav__link">
+      Introduction and contents
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" checked>
+    
+    <label class="md-nav__link" for="nav-2">
+      Estimating causality
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        Estimating causality
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../causality_tests_overview/" title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../causality_tests/" title="From scalar time series" class="md-nav__link">
+      From scalar time series
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../causality_from_uncertain_data_naive/" title="From uncertain time series" class="md-nav__link">
+      From uncertain time series
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../causality_from_dynamical_systems/" title="From dynamical systems" class="md-nav__link">
+      From dynamical systems
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2-5" type="checkbox" id="nav-2-5" checked>
+    
+    <label class="md-nav__link" for="nav-2-5">
+      Causality tests
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-2-5">
+        Causality tests
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2-5-1" type="checkbox" id="nav-2-5-1">
+    
+    <label class="md-nav__link" for="nav-2-5-1">
+      Cross mappings
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="3">
+      <label class="md-nav__title" for="nav-2-5-1">
+        Cross mappings
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../CrossMappingTest/" title="CrossMappingTest" class="md-nav__link">
+      CrossMappingTest
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../ConvergentCrossMappingTest/" title="ConvergentCrossMappingTest" class="md-nav__link">
+      ConvergentCrossMappingTest
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2-5-2" type="checkbox" id="nav-2-5-2">
+    
+    <label class="md-nav__link" for="nav-2-5-2">
+      Distance based
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="3">
+      <label class="md-nav__title" for="nav-2-5-2">
+        Distance based
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../JointDistanceDistributionTest/" title="JointDistanceDistributionTest" class="md-nav__link">
+      JointDistanceDistributionTest
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../SMeasureTest/" title="SMeasureTest" class="md-nav__link">
+      SMeasureTest
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2-5-3" type="checkbox" id="nav-2-5-3">
+    
+    <label class="md-nav__link" for="nav-2-5-3">
+      Transfer entropy
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="3">
+      <label class="md-nav__title" for="nav-2-5-3">
+        Transfer entropy
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../TransferOperatorGridTest/" title="TransferOperatorGridTest" class="md-nav__link">
+      TransferOperatorGridTest
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../VisitationFrequencyTest/" title="VisitationFrequencyTest" class="md-nav__link">
+      VisitationFrequencyTest
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../NearestNeighbourMITest/" title="NearestNeighbourMITest" class="md-nav__link">
+      NearestNeighbourMITest
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../ApproximateSimplexIntersectionTest/" title="ApproximateSimplexIntersectionTest" class="md-nav__link">
+      ApproximateSimplexIntersectionTest
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../ExactSimplexIntersectionTest/" title="ExactSimplexIntersectionTest" class="md-nav__link">
+      ExactSimplexIntersectionTest
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2-5-4" type="checkbox" id="nav-2-5-4" checked>
+    
+    <label class="md-nav__link" for="nav-2-5-4">
+      Predictive asymmetry
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="3">
+      <label class="md-nav__title" for="nav-2-5-4">
+        Predictive asymmetry
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../PredictiveAsymmetryTest/" title="PredictiveAsymmetryTest" class="md-nav__link">
+      PredictiveAsymmetryTest
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        NormalisedPredictiveAsymmetryTest
+      </label>
+    
+    <a href="./" title="NormalisedPredictiveAsymmetryTest" class="md-nav__link md-nav__link--active">
+      NormalisedPredictiveAsymmetryTest
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#example" title="Example" class="md-nav__link">
+    Example
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#preparations" title="Preparations" class="md-nav__link">
+    Preparations
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#generate-time-series" title="Generate time series" class="md-nav__link">
+    Generate time series
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test-setup" title="Test setup" class="md-nav__link">
+    Test setup
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#plot-time-series-and-results" title="Plot time series and results" class="md-nav__link">
+    Plot time series and results
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#discussion" title="Discussion" class="md-nav__link">
+    Discussion
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../abstract_test_types/" title="Abstract test types" class="md-nav__link">
+      Abstract test types
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2-6" type="checkbox" id="nav-2-6">
+    
+    <label class="md-nav__link" for="nav-2-6">
+      Meta-tests for uncertainty handling and subsampling
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-2-6">
+        Meta-tests for uncertainty handling and subsampling
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../causality_from_uncertain_data/" title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../causality_from_uncertain_data_binneddatacausalitytest/" title="BinnedDataCausalityTest" class="md-nav__link">
+      BinnedDataCausalityTest
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../causality_from_uncertain_data_naive_constrained/" title="ConstrainedTest" class="md-nav__link">
+      ConstrainedTest
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../causality_from_uncertain_data_InterpolateBinTest/" title="InterpolateBinTest" class="md-nav__link">
+      InterpolateBinTest
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../causality_from_uncertain_data_RandomSequencesTest/" title="RandomSequencesTest" class="md-nav__link">
+      RandomSequencesTest
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../causality_from_uncertain_data_strictlyincreasing_interpolated/" title="Strictly increasing and interpolated resampling" class="md-nav__link">
+      Strictly increasing and interpolated resampling
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      Package ecosystem
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        Package ecosystem
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1" type="checkbox" id="nav-3-1">
+    
+    <label class="md-nav__link" for="nav-3-1">
+      CausalityToolsBase
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-1">
+        CausalityToolsBase
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytoolsbase/delay_reconstructions/" title="Generalised delay reconstructions" class="md-nav__link">
+      Generalised delay reconstructions
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytoolsbase/discretization/" title="Discretization" class="md-nav__link">
+      Discretization
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../simplices/Simplices/" title="Simplices" class="md-nav__link">
+      Simplices
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-3" type="checkbox" id="nav-3-3">
+    
+    <label class="md-nav__link" for="nav-3-3">
+      PerronFrobenius
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-3">
+        PerronFrobenius
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../perronfrobenius/invariantmeasure/" title="Invariant measure" class="md-nav__link">
+      Invariant measure
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../perronfrobenius/transferoperator/" title="Transfer operator" class="md-nav__link">
+      Transfer operator
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-4" type="checkbox" id="nav-3-4">
+    
+    <label class="md-nav__link" for="nav-3-4">
+      Transfer entropy
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-4">
+        Transfer entropy
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../transferentropy/overview_te/" title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../transferentropy/TE_estimators/" title="Estimators" class="md-nav__link">
+      Estimators
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../transferentropy/generalised_delay_reconstructions/" title="Generalised delay embedding" class="md-nav__link">
+      Generalised delay embedding
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../transferentropy/assigning_marginals/" title="Assigning marginals" class="md-nav__link">
+      Assigning marginals
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../transferentropy/estimating_TE/" title="Methods" class="md-nav__link">
+      Methods
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../transferentropy/convenience_methods_te/" title="Convenience methods" class="md-nav__link">
+      Convenience methods
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-4-7" type="checkbox" id="nav-3-4-7">
+    
+    <label class="md-nav__link" for="nav-3-4-7">
+      Examples
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="3">
+      <label class="md-nav__title" for="nav-3-4-7">
+        Examples
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../transferentropy/examples_TE_different_partitionings/" title="Effect of discretization scheme" class="md-nav__link">
+      Effect of discretization scheme
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../PredictiveAsymmetry/predictive_asymmetry/" title="Predictive asymmetry" class="md-nav__link">
+      Predictive asymmetry
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-6" type="checkbox" id="nav-3-6">
+    
+    <label class="md-nav__link" for="nav-3-6">
+      CrossMappings
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-6">
+        CrossMappings
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../crossmappings/ccm/overview/" title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../crossmappings/ccm/crossmapping/" title="Cross mapping" class="md-nav__link">
+      Cross mapping
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../crossmappings/ccm/convergentcrossmapping/" title="Converent cross mapping" class="md-nav__link">
+      Converent cross mapping
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../SMeasure/s_measure/" title="S-measure" class="md-nav__link">
+      S-measure
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../JointDistanceDistribution/joint_distance_distribution/" title="Joint distance distribution" class="md-nav__link">
+      Joint distance distribution
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      Surrogate data
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        Surrogate data
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../surrogates/surrogates_overview/" title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../surrogates/iaaft_docs/" title="IAAFT" class="md-nav__link">
+      IAAFT
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../surrogates/aaft_docs/" title="AAFT" class="md-nav__link">
+      AAFT
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../surrogates/randomphases_docs/" title="Fourier surrogates, random phases" class="md-nav__link">
+      Fourier surrogates, random phases
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../surrogates/randomamplitudes_docs/" title="Fourier surrogates, random amplitudes" class="md-nav__link">
+      Fourier surrogates, random amplitudes
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../surrogates/randomshuffle_docs/" title="Random shuffle" class="md-nav__link">
+      Random shuffle
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      Example systems
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        Example systems
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../example_systems/example_systems_overview/" title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../example_systems/example_systems_discrete/" title="Discrete systems" class="md-nav__link">
+      Discrete systems
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../example_systems/example_systems_continuous/" title="Continuous systems" class="md-nav__link">
+      Continuous systems
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../example_systems/noise/" title="Noise processes" class="md-nav__link">
+      Noise processes
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-6" type="checkbox" id="nav-6">
+    
+    <label class="md-nav__link" for="nav-6">
+      Tutorials/examples
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-6">
+        Tutorials/examples
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/list_of_tutorials/" title="List of tutorials" class="md-nav__link">
+      List of tutorials
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-6-2" type="checkbox" id="nav-6-2">
+    
+    <label class="md-nav__link" for="nav-6-2">
+      Causality from scalar time series
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-6-2">
+        Causality from scalar time series
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/causality/tutorial_SMeasureTest/" title="SMeasureTest" class="md-nav__link">
+      SMeasureTest
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-6-3" type="checkbox" id="nav-6-3">
+    
+    <label class="md-nav__link" for="nav-6-3">
+      Causality from uncertain time series
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-6-3">
+        Causality from uncertain time series
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/causality/Tutorial_BinnedResampling_RandomSequencesTest_PredictiveAsymmetryTest_ar1_unidir/" title="BinnedResampling + RandomSequencesTest" class="md-nav__link">
+      BinnedResampling + RandomSequencesTest
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/causality/binned_uncertain_data/tutorial_BinnedDataCausalityTest_PredictiveAsymmetryTest_BinnedResampling/" title="BinnedResampling" class="md-nav__link">
+      BinnedResampling
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/causality/binned_uncertain_data/tutorial_BinnedDataCausalityTest_PredictiveAsymmetryTest_BinnedMeanResampling/" title="BinnedMeanResampling" class="md-nav__link">
+      BinnedMeanResampling
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-6-4" type="checkbox" id="nav-6-4">
+    
+    <label class="md-nav__link" for="nav-6-4">
+      Worked examples
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-6-4">
+        Worked examples
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../worked_examples/worked_example_transferentropy/" title="Transfer entropy" class="md-nav__link">
+      Transfer entropy
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../CHANGELOG/" title="Changelog" class="md-nav__link">
+      Changelog
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#example" title="Example" class="md-nav__link">
+    Example
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#preparations" title="Preparations" class="md-nav__link">
+    Preparations
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#generate-time-series" title="Generate time series" class="md-nav__link">
+    Generate time series
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test-setup" title="Test setup" class="md-nav__link">
+    Test setup
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#plot-time-series-and-results" title="Plot time series and results" class="md-nav__link">
+    Plot time series and results
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#discussion" title="Discussion" class="md-nav__link">
+    Discussion
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/kahaaga/CausalityTools.jl/edit/master/docs/causalitytests/NormalisedPredictiveAsymmetryTest.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                
+                
+                <p><a id='normalised_predictive_asymmetry-1'></a></p>
+<h1 id="normalisedpredictiveasymmetrytest"><code>NormalisedPredictiveAsymmetryTest</code></h1>
+<p><a id='CausalityTools.CausalityTests.NormalisedPredictiveAsymmetryTest' href='#CausalityTools.CausalityTests.NormalisedPredictiveAsymmetryTest'>#</a>
+<strong><code>CausalityTools.CausalityTests.NormalisedPredictiveAsymmetryTest</code></strong> &mdash; <em>Type</em>.</p>
+<div class="highlight"><pre><span></span><span class="n">NormalisedPredictiveAsymmetryTest</span><span class="p">(</span><span class="n">predictive_test</span><span class="o">::</span><span class="n">CausalityTest</span><span class="p">;</span> <span class="n">f</span><span class="o">::</span><span class="kt">Number</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">)</span>
+</pre></div>
+
+<p>The parameters for a normalised predictive asymmetry causality test [1]. For the  non-normalised version, see <a href="../PredictiveAsymmetryTest/#CausalityTools.CausalityTests.PredictiveAsymmetryTest"><code>PredictiveAsymmetryTest</code></a>.</p>
+<p><strong>Mandatory keywords</strong></p>
+<ul>
+<li><strong><code>predictive_test</code></strong>: An instance of a predictive causality test that explicitly    uses prediction lags (e.g. <a href="../VisitationFrequencyTest/#CausalityTools.CausalityTests.VisitationFrequencyTest"><code>VisitationFrequencyTest</code></a> or    <a href="../TransferOperatorGridTest/#CausalityTools.CausalityTests.TransferOperatorGridTest"><code>TransferOperatorGridTest</code></a>).</li>
+<li><strong><code>f::Number</code></strong>: The normalisation factor.</li>
+</ul>
+<p><strong>About the prediction lags</strong></p>
+<p>The prediction lags in the predictive causality test must consist of <code>n</code> negative  integers and <code>n</code> positive integers that are symmetric around zero. </p>
+<p>In other words, negative lags  must exactly match the positive lags but with opposite  sign. The zero lag can be included, but will be ignored, so it is possible to give  ranges too.</p>
+<p><strong>Examples</strong></p>
+<p>Let's define a a transfer entropy test with which to compute transfer entropies symmetrically around lag zero. We'll use that as input to the predictive asymmetry test.</p>
+<div class="highlight"><pre><span></span><span class="n">bin</span> <span class="o">=</span> <span class="n">RectangularBinning</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="c"># divide each axis into 4 equal-length intervals</span>
+<span class="n">ηs</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="o">:-</span><span class="mi">1</span><span class="p">;</span> <span class="mi">1</span><span class="o">:</span><span class="mi">5</span><span class="p">]</span> <span class="c"># exclude the zero lag (it is irrelevant for the asymmetry)</span>
+<span class="n">test_visitfreq</span> <span class="o">=</span> <span class="n">VisitationFrequencyTest</span><span class="p">(</span><span class="n">binning</span> <span class="o">=</span> <span class="n">bin</span><span class="p">,</span> <span class="n">ηs</span> <span class="o">=</span> <span class="n">ηs</span><span class="p">)</span>
+
+<span class="c"># Normalising predictive asymmetry values to f = 1.0 times the mean transfer entropy.</span>
+<span class="n">NormalisedPredictiveAsymmetryTest</span><span class="p">(</span><span class="n">predictive_test</span> <span class="o">=</span> <span class="n">test_visitfreq</span><span class="p">,</span> <span class="n">f</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">)</span>
+</pre></div>
+
+<p><strong>References</strong></p>
+<ol>
+<li>Diego, David, Kristian Agasøster Haaga, Jo Brendryen, and Bjarte Hannisdal.   A simple test for causal asymmetry in complex systems. In prep.</li>
+</ol>
+<p><a target='_blank' href='https://github.com/JuliaLang/julia/blob/46ce4d79337bdd257ee2e3d2f4bb1c55ff0a5030/base/#L0-L41' class='documenter-source'>source</a><br></p>
+<p><a id='example_NormalisedPredictiveAsymmetryTest-1'></a></p>
+<h2 id="example">Example</h2>
+<p><a id='Preparations-1'></a></p>
+<h3 id="preparations">Preparations</h3>
+<p>For this example, we'll use the built-in <code>logistic4</code> system, which consists of  four unidirectionally coupled logistic maps coupled <span><span class="MathJax_Preview">x \to y \to z \to w</span><script type="math/tex">x \to y \to z \to w</script></span>. With default values, the system blows up for some initial conditions, so we'll  start by just making a thin wrapper that finds us a good orbit.</p>
+<div class="highlight"><pre><span></span><span class="k">using</span> <span class="n">CausalityTools</span><span class="p">,</span> <span class="n">DynamicalSystems</span>
+<span class="k">using</span> <span class="n">Plots</span><span class="p">,</span> <span class="n">LaTeXStrings</span><span class="p">;</span> <span class="n">gr</span><span class="p">()</span>
+
+<span class="s">&quot;&quot;&quot;</span>
+<span class="s">    good_orbit(f::Function, npts::Int; Ttr::Int = 100, max_attempts = 1000)</span>
+
+<span class="s">Draw a good orbit from a dynamical system defined by `f` when called. Useful</span>
+<span class="s">when some initial conditions yield attractors while others do not. CAREFUL:</span>
+<span class="s">this function is defined recursively.</span>
+<span class="s">&quot;&quot;&quot;</span>
+<span class="k">function</span> <span class="n">good_orbit</span><span class="p">(</span><span class="n">f</span><span class="o">::</span><span class="kt">Function</span><span class="p">,</span> <span class="n">npts</span><span class="o">::</span><span class="kt">Int</span><span class="p">;</span> <span class="n">Ttr</span><span class="o">::</span><span class="kt">Int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">max_attempts</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">)</span>
+    <span class="n">sys</span> <span class="o">=</span> <span class="n">f</span><span class="p">()</span>
+    <span class="n">ts</span> <span class="o">=</span> <span class="n">columns</span><span class="p">(</span><span class="n">trajectory</span><span class="p">(</span><span class="n">sys</span><span class="p">,</span> <span class="n">npts</span><span class="p">,</span> <span class="n">Ttr</span> <span class="o">=</span> <span class="n">Ttr</span><span class="p">))</span>
+
+    <span class="n">tries</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">tries</span> <span class="o">&lt;</span> <span class="n">max_attempts</span>
+        <span class="n">tries</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">all</span><span class="p">(</span><span class="n">isfinite</span><span class="o">.</span><span class="p">(</span><span class="n">hcat</span><span class="p">(</span><span class="n">ts</span><span class="o">...</span><span class="p">)))</span>
+            <span class="k">return</span> <span class="n">ts</span>
+        <span class="k">end</span>
+    <span class="k">end</span>
+    <span class="n">println</span><span class="p">(</span><span class="s">&quot;Did not manage to find good orbits within </span><span class="si">$</span><span class="p">(</span><span class="n">max_attempts</span><span class="p">)</span><span class="s"> attempts. Re-initializing.&quot;</span><span class="p">)</span>
+
+    <span class="n">good_orbit</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">npts</span><span class="p">,</span> <span class="n">Ttr</span> <span class="o">=</span> <span class="n">Ttr</span><span class="p">,</span> <span class="n">max_attempts</span> <span class="o">=</span> <span class="n">max_attempts</span><span class="p">)</span>
+<span class="k">end</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span>Main.ex-NormalisedPredictiveAsymmetryTest_logistic4.good_orbit
+</pre></div>
+
+<p><a id='Generate-time-series-1'></a></p>
+<h3 id="generate-time-series">Generate time series</h3>
+<p>Okay, now we're ready to generate some time series.</p>
+<div class="highlight"><pre><span></span><span class="c"># Example data</span>
+<span class="n">sys</span> <span class="o">=</span> <span class="n">logistic4</span>
+<span class="n">npts</span> <span class="o">=</span> <span class="mi">400</span>
+
+<span class="c"># Some initial conditons blow up, so iterate until we find a good one.</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">good_orbit</span><span class="p">(</span><span class="n">sys</span><span class="p">,</span> <span class="n">npts</span><span class="p">,</span> <span class="n">Ttr</span> <span class="o">=</span> <span class="mi">300</span><span class="p">)</span>
+
+<span class="n">p_ts</span> <span class="o">=</span> <span class="n">plot</span><span class="p">(</span><span class="n">xlabel</span> <span class="o">=</span> <span class="s">&quot;Time step&quot;</span><span class="p">,</span> <span class="n">ylabel</span> <span class="o">=</span> <span class="s">&quot;Value&quot;</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">382</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span> <span class="mi">300</span><span class="p">),</span>
+    <span class="n">guidefont</span> <span class="o">=</span> <span class="n">font</span><span class="p">(</span><span class="mi">13</span><span class="p">),</span> <span class="n">tickfont</span> <span class="o">=</span> <span class="n">font</span><span class="p">(</span><span class="mi">13</span><span class="p">),</span> <span class="n">legendfont</span> <span class="o">=</span> <span class="n">font</span><span class="p">(</span><span class="mi">13</span><span class="p">))</span>
+<span class="n">plot!</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;x&quot;</span><span class="p">)</span>
+<span class="n">plot!</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;y&quot;</span><span class="p">)</span>
+<span class="n">plot!</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;z&quot;</span><span class="p">)</span>
+<span class="n">plot!</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;w&quot;</span><span class="p">)</span>
+</pre></div>
+
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="764" height="300" viewBox="0 0 3056 1200">
+<defs>
+  <clipPath id="clip2600">
+    <rect x="0" y="0" width="3056" height="1200"/>
+  </clipPath>
+</defs>
+<path clip-path="url(#clip2600)" d="
+M0 1200 L3056 1200 L3056 0 L0 0  Z
+  " fill="#ffffff" fill-rule="evenodd" fill-opacity="1"/>
+<defs>
+  <clipPath id="clip2601">
+    <rect x="611" y="0" width="2140" height="1200"/>
+  </clipPath>
+</defs>
+<path clip-path="url(#clip2600)" d="
+M265.954 996.277 L3008.76 996.277 L3008.76 47.2441 L265.954 47.2441  Z
+  " fill="#ffffff" fill-rule="evenodd" fill-opacity="1"/>
+<defs>
+  <clipPath id="clip2602">
+    <rect x="265" y="47" width="2744" height="950"/>
+  </clipPath>
+</defs>
+<polyline clip-path="url(#clip2602)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  337.111,996.277 337.111,47.2441 
+  "/>
+<polyline clip-path="url(#clip2602)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  983.998,996.277 983.998,47.2441 
+  "/>
+<polyline clip-path="url(#clip2602)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  1630.89,996.277 1630.89,47.2441 
+  "/>
+<polyline clip-path="url(#clip2602)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  2277.77,996.277 2277.77,47.2441 
+  "/>
+<polyline clip-path="url(#clip2602)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  2924.66,996.277 2924.66,47.2441 
+  "/>
+<polyline clip-path="url(#clip2602)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  265.954,862.647 3008.76,862.647 
+  "/>
+<polyline clip-path="url(#clip2602)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  265.954,659.152 3008.76,659.152 
+  "/>
+<polyline clip-path="url(#clip2602)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  265.954,455.657 3008.76,455.657 
+  "/>
+<polyline clip-path="url(#clip2602)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  265.954,252.162 3008.76,252.162 
+  "/>
+<polyline clip-path="url(#clip2602)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  265.954,48.6666 3008.76,48.6666 
+  "/>
+<polyline clip-path="url(#clip2600)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  265.954,996.277 3008.76,996.277 
+  "/>
+<polyline clip-path="url(#clip2600)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  265.954,996.277 265.954,47.2441 
+  "/>
+<polyline clip-path="url(#clip2600)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  337.111,996.277 337.111,984.889 
+  "/>
+<polyline clip-path="url(#clip2600)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  983.998,996.277 983.998,984.889 
+  "/>
+<polyline clip-path="url(#clip2600)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  1630.89,996.277 1630.89,984.889 
+  "/>
+<polyline clip-path="url(#clip2600)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  2277.77,996.277 2277.77,984.889 
+  "/>
+<polyline clip-path="url(#clip2600)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  2924.66,996.277 2924.66,984.889 
+  "/>
+<polyline clip-path="url(#clip2600)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  265.954,862.647 298.867,862.647 
+  "/>
+<polyline clip-path="url(#clip2600)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  265.954,659.152 298.867,659.152 
+  "/>
+<polyline clip-path="url(#clip2600)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  265.954,455.657 298.867,455.657 
+  "/>
+<polyline clip-path="url(#clip2600)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  265.954,252.162 298.867,252.162 
+  "/>
+<polyline clip-path="url(#clip2600)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  265.954,48.6666 298.867,48.6666 
+  "/>
+<g clip-path="url(#clip2600)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:77px; text-anchor:middle;" transform="rotate(0, 337.111, 1078.76)" x="337.111" y="1078.76">0</text>
+</g>
+<g clip-path="url(#clip2600)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:77px; text-anchor:middle;" transform="rotate(0, 983.998, 1078.76)" x="983.998" y="1078.76">100</text>
+</g>
+<g clip-path="url(#clip2600)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:77px; text-anchor:middle;" transform="rotate(0, 1630.89, 1078.76)" x="1630.89" y="1078.76">200</text>
+</g>
+<g clip-path="url(#clip2600)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:77px; text-anchor:middle;" transform="rotate(0, 2277.77, 1078.76)" x="2277.77" y="1078.76">300</text>
+</g>
+<g clip-path="url(#clip2600)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:77px; text-anchor:middle;" transform="rotate(0, 2924.66, 1078.76)" x="2924.66" y="1078.76">400</text>
+</g>
+<g clip-path="url(#clip2600)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:77px; text-anchor:end;" transform="rotate(0, 235.394, 890.647)" x="235.394" y="890.647">0.2</text>
+</g>
+<g clip-path="url(#clip2600)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:77px; text-anchor:end;" transform="rotate(0, 235.394, 687.152)" x="235.394" y="687.152">0.4</text>
+</g>
+<g clip-path="url(#clip2600)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:77px; text-anchor:end;" transform="rotate(0, 235.394, 483.657)" x="235.394" y="483.657">0.6</text>
+</g>
+<g clip-path="url(#clip2600)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:77px; text-anchor:end;" transform="rotate(0, 235.394, 280.162)" x="235.394" y="280.162">0.8</text>
+</g>
+<g clip-path="url(#clip2600)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:77px; text-anchor:end;" transform="rotate(0, 235.394, 76.6666)" x="235.394" y="76.6666">1.0</text>
+</g>
+<g clip-path="url(#clip2600)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:77px; text-anchor:middle;" transform="rotate(0, 1637.35, 1179.11)" x="1637.35" y="1179.11">Time step</text>
+</g>
+<g clip-path="url(#clip2600)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:77px; text-anchor:middle;" transform="rotate(-90, 81.5745, 521.761)" x="81.5745" y="521.761">Value</text>
+</g>
+<polyline clip-path="url(#clip2602)" style="stroke:#009af9; stroke-width:4; stroke-opacity:1; fill:none" points="
+  343.58,712.641 350.049,166.473 356.518,659.893 362.987,114.365 369.456,826.462 375.924,351.584 382.393,236.478 388.862,468.88 395.331,104.141 401.8,861.588 
+  408.269,428.765 414.738,137.532 421.206,749.836 427.675,216.041 434.144,520.761 440.613,79.25 447.082,950.451 453.551,666.252 460.02,119.517 466.489,809.067 
+  472.957,316.865 479.426,295.877 485.895,336.267 492.364,261.543 498.833,409.621 505.302,157.816 511.771,686.124 518.24,137.612 524.708,749.579 531.177,215.661 
+  537.646,521.755 544.115,78.9746 550.584,951.461 557.053,669.299 563.522,122.094 569.991,800.44 576.459,300.506 582.928,327.07 589.397,277.459 595.866,374.493 
+  602.335,202.342 608.804,557.328 615.273,74.1035 621.742,969.418 628.21,724.778 634.679,181.482 641.148,615.774 647.617,87.163 654.086,921.686 660.555,582.751 
+  667.024,76.566 673.493,960.317 679.961,696.352 686.43,148.106 692.899,716.23 699.368,170.794 705.837,647.015 712.306,104.883 718.775,859.01 725.244,422.777 
+  731.712,143.574 738.181,730.527 744.65,188.985 751.119,594.37 757.588,79.3412 764.057,950.117 770.526,665.245 776.995,118.68 783.463,811.877 789.932,322.316 
+  796.401,285.941 802.87,356.568 809.339,228.709 815.808,488.225 822.277,92.4476 828.746,902.743 835.214,531.225 841.683,76.7304 848.152,959.711 854.621,694.482 
+  861.09,146.128 867.559,722.452 874.028,178.519 880.497,624.35 886.965,91.282 893.434,906.903 899.903,542.304 906.372,74.9775 912.841,966.183 919.31,714.6 
+  925.779,168.82 932.248,652.88 938.716,109.044 945.185,844.643 951.654,390.352 958.123,181.069 964.592,616.965 971.061,87.7012 977.53,919.747 983.998,577.349 
+  990.467,75.6283 996.936,963.777 1003.41,707.085 1009.87,159.98 1016.34,679.514 1022.81,131.257 1029.28,770.185 1035.75,247.646 1042.22,441.883 1048.69,125.256 
+  1055.16,789.928 1061.62,281.344 1068.09,366.214 1074.56,214.215 1081.03,525.552 1087.5,77.9922 1093.97,955.068 1100.44,680.244 1106.91,131.943 1113.38,767.946 
+  1119.84,244.014 1126.31,450.558 1132.78,117.861 1139.25,814.634 1145.72,327.724 1152.19,276.307 1158.66,376.972 1165.13,198.891 1171.6,566.768 1178.06,74.4396 
+  1184.53,968.173 1191,720.853 1197.47,176.505 1203.94,630.214 1210.41,94.4235 1216.88,895.715 1223.35,512.809 1229.82,81.7263 1236.28,941.398 1242.75,639.287 
+  1249.22,99.8032 1255.69,876.732 1262.16,464.957 1268.63,106.862 1275.1,852.161 1281.57,407.123 1288.04,160.67 1294.5,677.412 1300.97,129.306 1307.44,776.573 
+  1313.91,258.223 1320.38,417.195 1326.85,149.455 1333.32,712.004 1339.79,165.717 1346.26,662.16 1352.72,116.166 1359.19,820.358 1365.66,339.136 1372.13,256.711 
+  1378.6,420.67 1385.07,145.766 1391.54,723.591 1398.01,179.965 1404.48,620.157 1410.94,89.1975 1417.41,914.368 1423.88,562.518 1430.35,74.2037 1436.82,969.046 
+  1443.29,723.606 1449.76,179.984 1456.23,620.102 1462.7,89.1715 1469.16,914.461 1475.63,562.774 1482.1,74.214 1488.57,969.008 1495.04,723.486 1501.51,179.83 
+  1507.98,620.546 1514.45,89.3854 1520.91,913.693 1527.38,560.675 1533.85,74.1445 1540.32,969.266 1546.79,724.299 1553.26,180.868 1559.73,617.546 1566.2,87.9679 
+  1572.67,918.787 1579.13,574.687 1585.6,75.2484 1592.07,965.181 1598.54,711.466 1605.01,165.08 1611.48,664.074 1617.95,117.718 1624.42,815.118 1630.89,328.679 
+  1637.35,274.628 1643.82,380.601 1650.29,193.921 1656.76,580.522 1663.23,76.152 1669.7,961.844 1676.17,701.077 1682.64,153.224 1689.11,700.27 1695.57,152.338 
+  1702.04,703.019 1708.51,155.377 1714.98,693.617 1721.45,145.221 1727.92,725.312 1734.39,182.168 1740.86,613.8 1747.33,86.2943 1753.79,924.82 1760.26,591.541 
+  1766.73,78.5703 1773.2,952.945 1779.67,673.789 1786.14,126.023 1792.61,787.387 1799.08,276.84 1805.55,375.824 1812.01,200.483 1818.48,562.402 1824.95,74.1992 
+  1831.42,969.063 1837.89,723.659 1844.36,180.051 1850.83,619.908 1857.3,89.0783 1863.77,914.796 1870.23,563.691 1876.7,74.255 1883.17,968.857 1889.64,723.008 
+  1896.11,179.222 1902.58,622.308 1909.05,90.25 1915.52,910.594 1921.99,552.248 1928.45,74.2054 1934.92,969.04 1941.39,723.587 1947.86,179.959 1954.33,620.174 
+  1960.8,89.206 1967.27,914.337 1973.74,562.435 1980.21,74.2005 1986.67,969.058 1993.14,723.644 1999.61,180.032 2006.08,619.963 2012.55,89.1045 2019.02,914.701 
+  2025.49,563.432 2031.96,74.2428 2038.42,968.902 2044.89,723.15 2051.36,179.403 2057.83,621.783 2064.3,89.9901 2070.77,911.525 2077.24,554.771 2083.71,74.1301 
+  2090.18,969.319 2096.64,724.468 2103.11,181.084 2109.58,616.923 2116.05,87.6818 2122.52,919.817 2128.99,577.544 2135.46,75.6583 2141.93,963.667 2148.4,706.74 
+  2154.86,159.585 2161.33,680.717 2167.8,132.389 2174.27,766.492 2180.74,241.675 2187.21,456.197 2193.68,113.365 2200.15,829.862 2206.62,358.642 2213.08,225.532 
+  2219.55,496.269 2226.02,88.4292 2232.49,917.128 2238.96,570.101 2245.43,74.7214 2251.9,967.13 2258.37,717.573 2264.84,172.436 2271.3,642.159 2277.77,101.637 
+  2284.24,870.31 2290.71,449.395 2297.18,118.819 2303.65,811.411 2310.12,321.408 2316.59,287.581 2323.06,353.165 2329.52,233.992 2335.99,475.019 2342.46,100.12 
+  2348.93,875.623 2355.4,462.246 2361.87,108.811 2368.34,845.442 2374.81,392.114 2381.28,178.825 2387.74,623.461 2394.21,90.829 2400.68,908.522 2407.15,546.653 
+  2413.62,74.5466 2420.09,967.777 2426.56,719.606 2433.03,174.949 2439.5,634.767 2445.96,97.0442 2452.43,886.44 2458.9,489.083 2465.37,91.9949 2471.84,904.357 
+  2478.31,535.508 2484.78,75.9412 2491.25,962.622 2497.71,703.492 2504.18,155.906 2510.65,691.988 2517.12,143.531 2523.59,730.666 2530.06,189.169 2536.53,593.849 
+  2543,79.1947 2549.47,950.654 2555.93,666.863 2562.4,120.028 2568.87,807.352 2575.34,313.567 2581.81,302 2588.28,324.135 2594.75,282.675 2601.22,363.405 
+  2607.69,218.362 2614.15,514.707 2620.62,81.0913 2627.09,943.715 2633.56,646.129 2640.03,104.277 2646.5,861.113 2652.97,427.658 2659.44,138.629 2665.91,746.311 
+  2672.37,210.888 2678.84,534.348 2685.31,76.1411 2691.78,961.884 2698.25,701.202 2704.72,153.362 2711.19,699.843 2717.66,151.871 2724.13,704.471 2730.59,157.006 
+  2737.06,688.607 2743.53,140.085 2750,741.642 2756.47,204.21 2762.94,552.257 2769.41,74.205 2775.88,969.042 2782.35,723.591 2788.81,179.964 2795.28,620.158 
+  2801.75,89.1982 2808.22,914.365 2814.69,562.512 2821.16,74.2035 2827.63,969.047 2834.1,723.609 2840.57,179.987 2847.03,620.092 2853.5,89.1664 2859.97,914.479 
+  2866.44,562.824 2872.91,74.2161 2879.38,969.001 2885.85,723.462 2892.32,179.8 2898.79,620.634 2905.25,89.4282 2911.72,913.54 2918.19,560.256 2924.66,74.1347 
+  2931.13,969.302 
+  "/>
+<polyline clip-path="url(#clip2602)" style="stroke:#e26f46; stroke-width:4; stroke-opacity:1; fill:none" points="
+  343.58,298.482 350.049,494.298 356.518,366.758 362.987,390.71 369.456,501.456 375.924,214.697 382.393,805.149 388.862,452.705 395.331,333.235 401.8,605.393 
+  408.269,195.614 414.738,831.663 421.206,502.147 427.675,231.349 434.144,805.55 440.613,424.155 447.082,462.312 453.551,209.871 460.02,712.364 466.489,367.032 
+  472.957,349.297 479.426,514.802 485.895,323.789 492.364,556.521 498.833,311.616 505.302,558.903 511.771,331.552 518.24,440.638 524.708,426.983 531.177,290.14 
+  537.646,662.601 544.115,275.932 550.584,737.398 557.053,279.865 563.522,545.62 569.991,344.088 576.459,386.836 582.928,457.819 589.397,362.252 595.866,503.407 
+  602.335,313.742 608.804,615.984 615.273,252.601 621.742,796.41 628.21,362.784 634.679,378.82 641.148,502.295 647.617,260.99 654.086,771.157 660.555,328.827 
+  667.024,475.391 673.493,404.033 679.961,261.187 686.43,577.891 692.899,328.112 699.368,437.956 705.837,422.01 712.306,321.409 718.775,628.902 725.244,204.106 
+  731.712,810.079 738.181,469.178 744.65,256.718 751.119,749.427 757.588,339.617 764.057,600.083 770.526,178.117 776.995,799.367 783.463,456.927 789.932,247.03 
+  796.401,730.777 802.87,359.628 809.339,485.896 815.808,359.535 822.277,449.48 828.746,427.676 835.214,250.972 841.683,654.074 848.152,343.759 854.621,342.136 
+  861.09,420.159 867.559,450.702 874.028,273.852 880.497,711.359 886.965,295.896 893.434,687.572 899.903,234.063 906.372,691.683 912.841,360.121 919.31,315.867 
+  925.779,460.521 932.248,397.266 938.716,349.817 945.185,572.41 951.654,194.204 958.123,848.8 964.592,526.47 971.061,249.097 977.53,801.007 983.998,375.637 
+  990.467,399.999 996.936,497.473 1003.41,186.007 1009.87,762.691 1016.34,407.623 1022.81,329.882 1029.28,604.171 1035.75,211.903 1042.22,847.643 1048.69,502.088 
+  1055.16,369.879 1061.62,350.443 1068.09,522.778 1074.56,304.17 1081.03,632.506 1087.5,262.528 1093.97,770.246 1100.44,323.62 1106.91,456.438 1113.38,410.403 
+  1119.84,303.743 1126.31,624.483 1132.78,273.218 1139.25,731.763 1145.72,291.04 1152.19,626.453 1158.66,303.81 1165.13,584.495 1171.6,317.225 1178.06,501.544 
+  1184.53,381.573 1191,286.168 1197.47,516.589 1203.94,348.51 1210.41,427.793 1216.88,453.708 1223.35,229.492 1229.82,712.858 1236.28,372.639 1242.75,305.21 
+  1249.22,503.139 1255.69,374.715 1262.16,319.986 1268.63,526.2 1275.1,357.483 1281.57,351.443 1288.04,485.667 1294.5,375.252 1300.97,373.391 1307.44,525.359 
+  1313.91,215.609 1320.38,833.9 1326.85,480.157 1333.32,382.702 1339.79,353.552 1346.26,549.691 1352.72,232.646 1359.19,834.858 1365.66,445.133 1372.13,372.501 
+  1378.6,492.105 1385.07,311.165 1391.54,638.117 1398.01,231.105 1404.48,818.04 1410.94,434.266 1417.41,446.745 1423.88,230.698 1430.35,693.476 1436.82,361.25 
+  1443.29,313.456 1449.76,462.329 1456.23,392.749 1462.7,364.418 1469.16,551.704 1475.63,181.205 1482.1,826.275 1488.57,499.732 1495.04,183.811 1501.51,763.099 
+  1507.98,405.707 1514.45,347.528 1520.91,582.206 1527.38,181.594 1533.85,825.894 1540.32,499.163 1546.79,184.009 1553.26,762.268 1559.73,404.665 1566.2,349.613 
+  1572.67,578.724 1579.13,180.258 1585.6,824.838 1592.07,497.467 1598.54,185.696 1605.01,762.036 1611.48,406.297 1617.95,335.5 1624.42,597.06 1630.89,202.27 
+  1637.35,847.103 1643.82,515.514 1650.29,305.021 1656.76,636.772 1663.23,254.674 1669.7,790.491 1676.17,353.944 1682.64,399.093 1689.11,478.489 1695.57,256.973 
+  1702.04,760.453 1708.51,339.928 1714.98,577.775 1721.45,223.404 1727.92,850.225 1734.39,482.721 1740.86,372.896 1747.33,394.144 1753.79,503.579 1760.26,191.919 
+  1766.73,786.152 1773.2,444.255 1779.67,223.387 1786.14,675.151 1792.61,343.974 1799.08,390.726 1805.55,458.29 1812.01,350.133 1818.48,546.088 1824.95,253.856 
+  1831.42,793.187 1837.89,357.531 1844.36,387.169 1850.83,489.469 1857.3,267.908 1863.77,753.554 1870.23,305.143 1876.7,525.887 1883.17,364.596 1889.64,308.777 
+  1896.11,471.293 1902.58,384.058 1909.05,375.745 1915.52,532.047 1921.99,185.349 1928.45,818.129 1934.92,487.645 1941.39,189.715 1947.86,746.784 1954.33,388.57 
+  1960.8,370.064 1967.27,541.928 1973.74,182.546 1980.21,822.564 1986.67,494.169 1993.14,186.392 1999.61,755.897 2006.08,397.892 2012.55,357.655 2019.02,563.718 
+  2025.49,180.467 2031.96,828.158 2038.42,502.59 2044.89,182.588 2051.36,766.619 2057.83,409.698 2064.3,342.281 2070.77,591.938 2077.24,183.458 2083.71,822.627 
+  2090.18,494.269 2096.64,186.285 2103.11,755.908 2109.58,397.776 2116.05,358.606 2122.52,562.408 2128.99,179.48 2135.46,826.072 2141.93,499.288 2148.4,185.2 
+  2154.86,765.046 2161.33,410.272 2167.8,326.387 2174.27,610.796 2180.74,214.141 2187.21,843.469 2193.68,493.348 2200.15,379.481 2206.62,326.204 2213.08,545.347 
+  2219.55,323.035 2226.02,511.243 2232.49,371.239 2238.96,313.747 2245.43,507.194 2251.9,377.188 2258.37,292.144 2264.84,505.434 2271.3,356.971 2277.77,410.759 
+  2284.24,475.006 2290.71,219.946 2297.18,758.504 2303.65,408.072 2310.12,295.216 2316.59,619.347 2323.06,300.743 2329.52,598.027 2335.99,309.393 2342.46,543.904 
+  2348.93,349.39 2355.4,357.194 2361.87,460.55 2368.34,411.523 2374.81,282.508 2381.28,625.433 2387.74,320.521 2394.21,478.714 2400.68,397.557 2407.15,282.247 
+  2413.62,578.386 2420.09,342.111 2426.56,342.41 2433.03,412.553 2439.5,453.639 2445.96,292.383 2452.43,693.71 2458.9,242.462 2465.37,688.22 2471.84,355.693 
+  2478.31,339.559 2484.78,469.894 2491.25,409.615 2497.71,254.412 2504.18,590.96 2510.65,324.437 2517.12,451.541 2523.59,412.986 2530.06,310.35 2536.53,626.938 
+  2543,249.069 2549.47,803.812 2555.93,377.152 2562.4,373.522 2568.87,527.665 2575.34,208.327 2581.81,835.351 2588.28,493.084 2594.75,332.215 2601.22,555.887 
+  2607.69,291.389 2614.15,659.005 2620.62,275.199 2627.09,738.487 2633.56,282.204 2640.03,547.82 2646.5,346.736 2652.97,365.428 2659.44,456.697 2665.91,408.522 
+  2672.37,311.527 2678.84,618.038 2685.31,257.104 2691.78,784.362 2698.25,344.214 2704.72,414.797 2711.19,456.098 2717.66,274.574 2724.13,717.953 2730.59,291.121 
+  2737.06,678.293 2743.53,259.686 2750,757.621 2756.47,331.607 2762.94,579.704 2769.41,250.445 2775.88,801.882 2782.35,371.977 2788.81,365.549 2795.28,524.723 
+  2801.75,249.12 2808.22,800.469 2814.69,375.304 2821.16,404.522 2827.63,491.118 2834.1,187.909 2840.57,751.73 2847.03,393.557 2853.5,363.341 2859.97,553.595 
+  2866.44,181.025 2872.91,826.773 2879.38,500.485 2885.85,183.479 2892.32,764.032 2898.79,406.746 2905.25,346.211 2911.72,584.662 2918.19,181.928 2924.66,825.085 
+  2931.13,497.944 
+  "/>
+<polyline clip-path="url(#clip2602)" style="stroke:#3da44d; stroke-width:4; stroke-opacity:1; fill:none" points="
+  343.58,618.526 350.049,298.718 356.518,559.706 362.987,289.677 369.456,610.2 375.924,261.493 382.393,729.567 388.862,289.82 395.331,590.97 401.8,291.311 
+  408.269,541.285 414.738,330.955 421.206,399.618 427.675,386.285 434.144,477.134 440.613,233.553 447.082,731.628 453.551,337.219 460.02,567.323 466.489,220.138 
+  472.957,785.391 479.426,413.441 485.895,365.215 492.364,485.661 498.833,284.923 505.302,644.839 511.771,261.475 518.24,692.645 524.708,306.972 531.177,563.073 
+  537.646,303.999 544.115,498.525 550.584,339.013 557.053,413.139 563.522,425.901 569.991,342.614 576.459,519.028 582.928,301.735 589.397,564.501 595.866,289.406 
+  602.335,576.371 608.804,296.557 615.273,527.35 621.742,325.93 628.21,418.482 634.679,397.784 641.148,421.156 647.617,359.065 654.086,513.41 660.555,221.361 
+  667.024,794.831 673.493,412.875 679.961,394.363 686.43,457.053 692.899,302.957 699.368,600.918 705.837,272.004 712.306,639.706 718.775,299.231 725.244,518.071 
+  731.712,341.625 738.181,388.088 744.65,410.975 751.119,434.758 757.588,282.249 764.057,642.185 770.526,253.524 776.995,760.833 783.463,328.855 789.932,511.81 
+  796.401,336.274 802.87,419.653 809.339,397.115 815.808,393.931 822.277,431.698 828.746,360.131 835.214,465.316 841.683,372.964 848.152,383.068 854.621,451.936 
+  861.09,364.592 867.559,460.113 874.028,330.532 880.497,561.65 886.965,220.842 893.434,807.159 899.903,409.66 906.372,442.391 912.841,289.039 919.31,620.923 
+  925.779,296.009 932.248,575.527 938.716,280.586 945.185,642.758 951.654,258.37 958.123,743.695 964.592,300.754 971.061,545.855 977.53,318.004 983.998,431.175 
+  990.467,379.158 996.936,442.736 1003.41,336.306 1009.87,575.904 1016.34,210.108 1022.81,798.781 1029.28,433.945 1035.75,319.16 1042.22,602.098 1048.69,197.342 
+  1055.16,801.771 1061.62,434.061 1068.09,382.086 1074.56,405.288 1081.03,430.246 1087.5,316.027 1093.97,593.538 1100.44,210.009 1106.91,827.323 1113.38,465.434 
+  1119.84,335.198 1126.31,544.192 1132.78,241.657 1139.25,760.166 1145.72,336.098 1152.19,546.156 1158.66,240.744 1165.13,752.568 1171.6,344.555 1178.06,523.162 
+  1184.53,275.083 1191,645.319 1197.47,306.798 1203.94,536.676 1210.41,301.308 1216.88,574.403 1223.35,269.83 1229.82,704.932 1236.28,277.588 1242.75,642.431 
+  1249.22,302.744 1255.69,548.835 1262.16,291.288 1268.63,628.271 1275.1,261.129 1281.57,685.264 1288.04,315.271 1294.5,529.201 1300.97,299.067 1307.44,595.451 
+  1313.91,255.604 1320.38,743.702 1326.85,302.652 1333.32,555.919 1339.79,287.509 1346.26,626.273 1352.72,256.503 1359.19,736.061 1365.66,293.359 1372.13,585.759 
+  1378.6,284.255 1385.07,590.848 1391.54,295.441 1398.01,522.906 1404.48,332.957 1410.94,400.166 1417.41,403.325 1423.88,395.809 1430.35,462.969 1436.82,270.336 
+  1443.29,662.516 1449.76,308.94 1456.23,548.583 1462.7,287.703 1469.16,622.523 1475.63,255.135 1482.1,755.829 1488.57,318.983 1495.04,517.913 1501.51,346.097 
+  1507.98,394.179 1514.45,419.146 1520.91,400.83 1527.38,363.73 1533.85,527.388 1540.32,204.486 1546.79,783.157 1553.26,428.871 1559.73,284.996 1566.2,616.101 
+  1572.67,289.376 1579.13,553.436 1585.6,329.028 1592.07,404.874 1598.54,380.566 1605.01,498.357 1611.48,230.631 1617.95,744.959 1624.42,367.131 1630.89,407.414 
+  1637.35,453.726 1643.82,241.182 1650.29,682.796 1656.76,320.75 1663.23,474.391 1669.7,363.572 1676.17,359.481 1682.64,486.872 1689.11,319.921 1695.57,522.355 
+  1702.04,327.744 1708.51,425.768 1714.98,394.548 1721.45,373.194 1727.92,500.054 1734.39,210.103 1740.86,773.522 1747.33,395.421 1753.79,420.443 1760.26,359.587 
+  1766.73,531.699 1773.2,211.579 1779.67,782.486 1786.14,423.643 1792.61,312.478 1799.08,576.635 1805.55,281.699 1812.01,606.815 1818.48,288.346 1824.95,565.57 
+  1831.42,310.499 1837.89,447.193 1844.36,365.815 1850.83,467.222 1857.3,314.968 1863.77,594.096 1870.23,213.186 1876.7,824.818 1883.17,454.684 1889.64,356.386 
+  1896.11,504.71 1902.58,291.531 1909.05,608.232 1915.52,283.839 1921.99,579.463 1928.45,320.656 1934.92,421.413 1941.39,362.475 1947.86,527.304 1954.33,221.27 
+  1960.8,775.229 1967.27,397.901 1973.74,378.144 1980.21,503.099 1986.67,214.764 1993.14,757.244 1999.61,398.549 2006.08,321.123 2012.55,543.668 2019.02,296.605 
+  2025.49,543.064 2031.96,333.269 2038.42,396.725 2044.89,390.07 2051.36,484.319 2057.83,237.823 2064.3,725.537 2070.77,347.36 2077.24,440.511 2083.71,415.859 
+  2090.18,283.554 2096.64,591.696 2103.11,318.685 2109.58,443.205 2116.05,360.236 2122.52,484.311 2128.99,284.539 2135.46,686.296 2141.93,245.044 2148.4,678.609 
+  2154.86,336.604 2161.33,409.264 2167.8,397.431 2174.27,435.435 2180.74,315.953 2187.21,607.959 2193.68,199.566 2200.15,798.608 2206.62,428.482 2213.08,394.711 
+  2219.55,381.534 2226.02,459.85 2232.49,316.347 2238.96,560.846 2245.43,299.917 2251.9,553.363 2258.37,289.357 2264.84,640.99 2271.3,268.851 2277.77,667.295 
+  2284.24,295.904 2290.71,571.36 2297.18,315.7 2303.65,447.877 2310.12,352.808 2316.59,514.714 2323.06,253.72 2329.52,721.178 2335.99,308.798 2342.46,594.401 
+  2348.93,252.109 2355.4,709.565 2361.87,331.715 2368.34,505.483 2374.81,304.238 2381.28,611.906 2387.74,239.623 2394.21,749.989 2400.68,354.652 2407.15,482.871 
+  2413.62,349.818 2420.09,440.237 2426.56,377.142 2433.03,461.419 2439.5,338.392 2445.96,495.364 2452.43,337.656 2458.9,427.93 2465.37,416.388 2471.84,317.308 
+  2478.31,563.524 2484.78,294.115 2491.25,576.649 2497.71,278.063 2504.18,677.991 2510.65,274.373 2517.12,664.713 2523.59,288.149 2530.06,606.694 2536.53,295.523 
+  2543,526.126 2549.47,327.337 2555.93,413.885 2562.4,399.965 2568.87,419.508 2575.34,354.58 2581.81,535.928 2588.28,200.153 2594.75,797.081 2601.22,431.296 
+  2607.69,334.03 2614.15,549.939 2620.62,233.233 2627.09,781.216 2633.56,364.349 2640.03,498.568 2646.5,278.315 2652.97,648.817 2659.44,294.941 2665.91,578.92 
+  2672.37,278.013 2678.84,660.408 2685.31,259.429 2691.78,721.146 2698.25,283.495 2704.72,637.993 2711.19,283.026 2717.66,604.591 2724.13,301.922 2730.59,485.964 
+  2737.06,345.243 2743.53,419.595 2750,422.591 2756.47,292.774 2762.94,621.513 2769.41,249.984 2775.88,746.519 2782.35,310.159 2788.81,573.008 2795.28,287.096 
+  2801.75,574.753 2808.22,309.311 2814.69,447.235 2821.16,361.446 2827.63,469.572 2834.1,312.569 2840.57,622.685 2847.03,220.306 2853.5,776.126 2859.97,399.806 
+  2866.44,372.557 2872.91,512.652 2879.38,209.585 2885.85,768.933 2892.32,411.859 2898.79,303.072 2905.25,577.089 2911.72,290.2 2918.19,549.906 2924.66,330.062 
+  2931.13,403.038 
+  "/>
+<polyline clip-path="url(#clip2602)" style="stroke:#c271d2; stroke-width:4; stroke-opacity:1; fill:none" points="
+  343.58,237.686 350.049,608.864 356.518,230.145 362.987,645.163 369.456,240.745 375.924,603.487 382.393,235.53 388.862,582.637 395.331,231.036 401.8,633.85 
+  408.269,236.586 414.738,633.706 421.206,230.645 427.675,689.863 434.144,253.065 440.613,610.199 447.082,240.533 453.551,569.538 460.02,224.609 466.489,657.568 
+  472.957,255.912 479.426,517.267 485.895,228.791 492.364,704.735 498.833,252.773 505.302,664.7 511.771,200.715 518.24,814.248 524.708,378.28 531.177,399.004 
+  537.646,308.696 544.115,529.135 550.584,207.378 557.053,771.912 563.522,337.481 569.991,440.653 576.459,306.123 582.928,478.396 589.397,277.4 595.866,528.457 
+  602.335,246.333 608.804,599.051 615.273,229.67 621.742,655.716 628.21,240.142 634.679,659.484 641.148,231.951 647.617,680.202 654.086,249.728 660.555,608.314 
+  667.024,242.263 673.493,547.343 679.961,216.501 686.43,729.912 692.899,281.129 699.368,590.693 705.837,179.766 712.306,874.289 718.775,502.71 725.244,259.351 
+  731.712,583.422 738.181,222.375 744.65,715.547 751.119,271.957 757.588,576.335 764.057,232.955 770.526,614.194 776.995,237.919 783.463,567.73 789.932,226.345 
+  796.401,669.004 802.87,245.763 809.339,644.699 815.808,224.99 822.277,706.726 828.746,261.253 835.214,622.571 841.683,207.077 848.152,762.742 854.621,328.3 
+  861.09,451.463 867.559,289.795 874.028,528.846 880.497,238.545 886.965,622.877 893.434,244.44 899.903,538.549 906.372,220.01 912.841,706.23 919.31,278.472 
+  925.779,510.747 932.248,254.804 938.716,578.445 945.185,232.98 951.654,613.965 958.123,237.132 964.592,574.58 971.061,230.063 977.53,649.361 983.998,238.381 
+  990.467,660.448 996.936,235.067 1003.41,665.803 1009.87,243.932 1016.34,605.188 1022.81,243.803 1029.28,542.465 1035.75,214.257 1042.22,758.199 1048.69,299.276 
+  1055.16,577.57 1061.62,145.49 1068.09,933.401 1074.56,658.768 1081.03,230.52 1087.5,681.393 1093.97,256.232 1100.44,569.965 1106.91,246.254 1113.38,528.472 
+  1119.84,213.769 1126.31,754.875 1132.78,301.062 1139.25,561.942 1145.72,152.685 1152.19,940.673 1158.66,670.597 1165.13,259.698 1171.6,517.533 1178.06,241.652 
+  1184.53,625.889 1191,236.857 1197.47,603.333 1203.94,228.307 1210.41,656.626 1216.88,244.05 1223.35,605.316 1229.82,234.344 1236.28,592.679 1242.75,232.616 
+  1249.22,614.995 1255.69,230.399 1262.16,647.624 1268.63,241.492 1275.1,596.48 1281.57,235.3 1288.04,595.879 1294.5,226.534 1300.97,663.479 1307.44,247.812 
+  1313.91,590.003 1320.38,236.264 1326.85,576.753 1333.32,229.468 1339.79,648.028 1346.26,242.201 1352.72,595.269 1359.19,236.036 1365.66,579.507 1372.13,230.726 
+  1378.6,636.155 1385.07,238.351 1391.54,615.057 1398.01,231.542 1404.48,652.076 1410.94,237.444 1417.41,671.726 1423.88,238.279 1430.35,670.784 1436.82,229.581 
+  1443.29,729.912 1449.76,257.365 1456.23,646.414 1462.7,203.856 1469.16,797.267 1475.63,355.445 1482.1,450.138 1488.57,208.267 1495.04,775.278 1501.51,331.677 
+  1507.98,471.752 1514.45,264.331 1520.91,598.774 1527.38,212.894 1533.85,748.969 1540.32,295.375 1546.79,584.421 1553.26,149.159 1559.73,923.002 1566.2,637.196 
+  1572.67,189.723 1579.13,838.615 1585.6,435.01 1592.07,315.517 1598.54,488.802 1605.01,253.271 1611.48,603.754 1617.95,240.457 1624.42,565.939 1630.89,220.087 
+  1637.35,716.201 1643.82,267.437 1650.29,640.214 1656.76,181.317 1663.23,854.662 1669.7,472.599 1676.17,269.845 1682.64,601.932 1689.11,199.445 1695.57,800.564 
+  1702.04,370.041 1708.51,407.458 1714.98,328.607 1721.45,465.433 1727.92,274.32 1734.39,553.019 1740.86,250.71 1747.33,532.913 1753.79,224.807 1760.26,699.551 
+  1766.73,264.102 1773.2,568.273 1779.67,246.335 1786.14,540.92 1792.61,216.635 1799.08,753.466 1805.55,295.755 1812.01,563.103 1818.48,179.143 1824.95,871.23 
+  1831.42,500.924 1837.89,258.373 1844.36,605.483 1850.83,219.148 1857.3,701.356 1863.77,271.191 1870.23,534.564 1876.7,257.457 1883.17,502.679 1889.64,229.241 
+  1896.11,706.065 1902.58,251.618 1909.05,665.792 1915.52,206.477 1921.99,790.811 1928.45,349.098 1934.92,445.474 1941.39,283.982 1947.86,568.073 1954.33,192.284 
+  1960.8,851.392 1967.27,443.821 1973.74,290.774 1980.21,548.549 1986.67,200.081 1993.14,830.03 1999.61,402.213 2006.08,341.956 2012.55,458.492 2019.02,245.289 
+  2025.49,680.652 2031.96,225.633 2038.42,722.521 2044.89,280.489 2051.36,568.639 2057.83,199.582 2064.3,824.634 2070.77,394.54 2077.24,364.658 2083.71,389.256 
+  2090.18,356.548 2096.64,441.235 2103.11,251.929 2109.58,657.395 2116.05,224.469 2122.52,717.899 2128.99,265.44 2135.46,633.179 2141.93,177.557 2148.4,889.383 
+  2154.86,534.708 2161.33,234.829 2167.8,676 2174.27,241.813 2180.74,650.355 2187.21,239.104 2193.68,608.273 2200.15,245.692 2206.62,537.929 2213.08,216.819 
+  2219.55,728.927 2226.02,288.829 2232.49,531.05 2238.96,240.146 2245.43,619.024 2251.9,231.569 2258.37,643.261 2264.84,240.067 2271.3,596.451 2277.77,234.052 
+  2284.24,604.194 2290.71,230.111 2297.18,641.899 2303.65,235.72 2310.12,662.625 2316.59,239.904 2323.06,632.751 2329.52,241.86 2335.99,569.213 2342.46,229.52 
+  2348.93,636.816 2355.4,243.312 2361.87,568.914 2368.34,225.652 2374.81,672.68 2381.28,252.291 2387.74,574.388 2394.21,240.43 2400.68,564.578 2407.15,222.487 
+  2413.62,687.732 2420.09,256.219 2426.56,612.706 2433.03,218.43 2439.5,705.013 2445.96,271.318 2452.43,561.267 2458.9,226.113 2465.37,693.859 2471.84,252.289 
+  2478.31,656.866 2484.78,207.249 2491.25,785.547 2497.71,341.177 2504.18,470.686 2510.65,207.131 2517.12,791.72 2523.59,342.486 2530.06,465.712 2536.53,225.835 
+  2543,732.883 2549.47,276.449 2555.93,595.037 2562.4,210.531 2568.87,744.977 2575.34,302.38 2581.81,529.383 2588.28,200.371 2594.75,833.522 2601.22,405.811 
+  2607.69,329.569 2614.15,478.902 2620.62,226.831 2627.09,748.14 2633.56,266.578 2640.03,608.445 2646.5,198.63 2652.97,815.369 2659.44,384.072 2665.91,392.689 
+  2672.37,313.737 2678.84,525.266 2685.31,178.886 2691.78,880.85 2698.25,512.249 2704.72,256.276 2711.19,557.476 2717.66,236.566 2724.13,615.693 2730.59,230.645 
+  2737.06,665.048 2743.53,242.279 2750,653.644 2756.47,225.448 2762.94,734.738 2769.41,267.675 2775.88,637.214 2782.35,170.489 2788.81,891.558 2795.28,546.171 
+  2801.75,239.355 2808.22,617.082 2814.69,229.75 2821.16,678.556 2827.63,248.311 2834.1,624.18 2840.57,230.759 2847.03,625.458 2853.5,245.058 2859.97,545.815 
+  2866.44,219.307 2872.91,728.499 2879.38,273.155 2885.85,634.949 2892.32,166.082 2898.79,874.026 2905.25,524.373 2911.72,194.756 2918.19,823.294 2924.66,406.701 
+  2931.13,351.334 
+  "/>
+<path clip-path="url(#clip2600)" d="
+M2555 623.724 L2917.08 623.724 L2917.08 132.324 L2555 132.324  Z
+  " fill="#ffffff" fill-rule="evenodd" fill-opacity="1"/>
+<polyline clip-path="url(#clip2600)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  2555,623.724 2917.08,623.724 2917.08,132.324 2555,132.324 2555,623.724 
+  "/>
+<polyline clip-path="url(#clip2600)" style="stroke:#009af9; stroke-width:4; stroke-opacity:1; fill:none" points="
+  2585.56,230.604 2768.92,230.604 
+  "/>
+<g clip-path="url(#clip2600)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:77px; text-anchor:start;" transform="rotate(0, 2799.48, 258.604)" x="2799.48" y="258.604">x</text>
+</g>
+<polyline clip-path="url(#clip2600)" style="stroke:#e26f46; stroke-width:4; stroke-opacity:1; fill:none" points="
+  2585.56,328.884 2768.92,328.884 
+  "/>
+<g clip-path="url(#clip2600)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:77px; text-anchor:start;" transform="rotate(0, 2799.48, 356.884)" x="2799.48" y="356.884">y</text>
+</g>
+<polyline clip-path="url(#clip2600)" style="stroke:#3da44d; stroke-width:4; stroke-opacity:1; fill:none" points="
+  2585.56,427.164 2768.92,427.164 
+  "/>
+<g clip-path="url(#clip2600)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:77px; text-anchor:start;" transform="rotate(0, 2799.48, 455.164)" x="2799.48" y="455.164">z</text>
+</g>
+<polyline clip-path="url(#clip2600)" style="stroke:#c271d2; stroke-width:4; stroke-opacity:1; fill:none" points="
+  2585.56,525.444 2768.92,525.444 
+  "/>
+<g clip-path="url(#clip2600)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:77px; text-anchor:start;" transform="rotate(0, 2799.48, 553.444)" x="2799.48" y="553.444">w</text>
+</g>
+</svg>
+
+<p><a id='Test-setup-1'></a></p>
+<h3 id="test-setup">Test setup</h3>
+<p>Now, define a normalised predictive asymmetry test using a visitation frequency test  to get our predictions for lags <code>[-10:1; 1:10]</code>, symmetrically around the zero lag.  To construct the  <a href="../../causalitytoolsbase/discretization/#partition_rectangular-1">partition</a> of our  <a href="../../causalitytoolsbase/delay_reconstructions/#custom_delay_reconstruction-1">state space reconstructions</a>, we'll use the  heuristic from <sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup> that the number of intervals along each coordinate axis  should not exceed <span><span class="MathJax_Preview">N^{\left(\frac{1}{D+1}\right)}</span><script type="math/tex">N^{\left(\frac{1}{D+1}\right)}</script></span>, where <span><span class="MathJax_Preview">N</span><script type="math/tex">N</script></span> is the number of points in  the time series and <span><span class="MathJax_Preview">D</span><script type="math/tex">D</script></span> is the total dimension of the generalised reconstruction used for the transfer entropy analyses.</p>
+<div class="highlight"><pre><span></span><span class="c"># Test setup</span>
+<span class="n">η_max</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">k</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">l</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">m</span> <span class="o">=</span> <span class="mi">1</span> <span class="c"># embedding parameters, total dim = k + l + m</span>
+<span class="n">ηs</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="n">η_max</span><span class="o">:-</span><span class="mi">1</span><span class="p">;</span> <span class="mi">1</span><span class="o">:</span><span class="n">η_max</span><span class="p">]</span>
+<span class="n">bin</span> <span class="o">=</span> <span class="n">RectangularBinning</span><span class="p">(</span><span class="n">floor</span><span class="p">(</span><span class="kt">Int</span><span class="p">,</span> <span class="n">npts</span><span class="o">^</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="n">l</span> <span class="o">+</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))))</span>
+<span class="n">test</span> <span class="o">=</span> <span class="n">VisitationFrequencyTest</span><span class="p">(</span><span class="n">ηs</span> <span class="o">=</span> <span class="n">ηs</span><span class="p">,</span> <span class="n">binning</span> <span class="o">=</span> <span class="n">bin</span><span class="p">)</span>
+<span class="n">pa_test</span> <span class="o">=</span> <span class="n">NormalisedPredictiveAsymmetryTest</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">f</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span>NormalisedPredictiveAsymmetryTest{VisitationFrequencyTest{20},10}(predictive_test = VisitationFrequencyTest{20}(k = 1, l = 1, m = 1, n = 1, τ = 1, estimator = VisitationFrequency(2), binning_summary_statistic = mean, binning = RectangularBinning(4), ηs = [-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]), f = 1.0)
+</pre></div>
+
+<p>That's all we need. Now, let's compute the predictive asymmetry statistic and  see whether we find the expected causalities.</p>
+<div class="highlight"><pre><span></span><span class="n">pas_xy</span> <span class="o">=</span> <span class="n">causality</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">pa_test</span><span class="p">)</span>
+<span class="n">pas_yx</span> <span class="o">=</span> <span class="n">causality</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">pa_test</span><span class="p">)</span>
+<span class="n">pas_yz</span> <span class="o">=</span> <span class="n">causality</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">pa_test</span><span class="p">)</span>
+<span class="n">pas_zy</span> <span class="o">=</span> <span class="n">causality</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">pa_test</span><span class="p">)</span>
+<span class="n">pas_zw</span> <span class="o">=</span> <span class="n">causality</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">pa_test</span><span class="p">)</span>
+<span class="n">pas_wz</span> <span class="o">=</span> <span class="n">causality</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">pa_test</span><span class="p">)</span>
+<span class="n">asymmetries</span> <span class="o">=</span> <span class="p">[</span><span class="n">pas_xy</span> <span class="n">pas_yx</span> <span class="n">pas_yz</span> <span class="n">pas_zy</span> <span class="n">pas_zw</span> <span class="n">pas_wz</span><span class="p">]</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span>10×6 Array{Float64,2}:
+ 0.779078   -1.58207  0.927924  -0.83337   0.787924   -0.684536
+ 1.796      -3.11099  2.08553   -2.17846   1.70601    -1.9368  
+ 3.12526    -4.62321  3.12197   -3.56895   2.97368    -3.521   
+ 4.41816    -6.0186   4.18044   -4.7218    4.13664    -5.09264 
+ 5.43685    -6.93315  5.35935   -5.47126   5.66275    -6.5979  
+ 6.20858    -7.69117  6.41572   -5.99881   7.16742    -8.06115 
+ 6.79653    -8.4467   7.42054   -6.63235   8.7053     -9.65986 
+ 7.45274    -9.52066  8.24179   -7.27577  10.0173    -11.0954  
+ 8.16869   -10.7792   9.14271   -8.12064  11.0354    -12.1881  
+ 8.94821   -11.9171   9.95687   -8.87346  11.9869    -13.3852  
+</pre></div>
+
+<p><a id='Plot-time-series-and-results-1'></a></p>
+<h3 id="plot-time-series-and-results">Plot time series and results</h3>
+<p>Let's plot the results.</p>
+<div class="highlight"><pre><span></span><span class="n">ymax</span> <span class="o">=</span> <span class="n">maximum</span><span class="p">(</span><span class="n">abs</span><span class="o">.</span><span class="p">(</span><span class="n">asymmetries</span><span class="p">))</span> <span class="o">*</span> <span class="mf">1.05</span>
+<span class="n">p_pa</span> <span class="o">=</span> <span class="n">plot</span><span class="p">(</span><span class="n">xlabel</span> <span class="o">=</span> <span class="s">&quot;</span><span class="se">\$</span><span class="s"> </span><span class="se">\\</span><span class="s">eta </span><span class="se">\$</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">ylabel</span> <span class="o">=</span> <span class="s">&quot;</span><span class="se">\$</span><span class="s"> </span><span class="se">\\</span><span class="s">mathcal{A}(</span><span class="se">\\</span><span class="s">eta) </span><span class="se">\$</span><span class="s">&quot;</span><span class="p">,</span>
+    <span class="n">ylims</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">ymax</span><span class="p">,</span> <span class="n">ymax</span><span class="p">),</span>  <span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">382</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span> <span class="mi">550</span><span class="p">),</span> <span class="n">legend</span> <span class="o">=</span> <span class="o">:</span><span class="n">topleft</span><span class="p">,</span>
+    <span class="n">fg_legend</span> <span class="o">=</span> <span class="o">:</span><span class="n">transparent</span><span class="p">,</span> <span class="n">bg_legend</span> <span class="o">=</span> <span class="o">:</span><span class="n">transparent</span><span class="p">,</span>
+    <span class="n">guidefont</span> <span class="o">=</span> <span class="n">font</span><span class="p">(</span><span class="mi">13</span><span class="p">),</span> <span class="n">tickfont</span> <span class="o">=</span> <span class="n">font</span><span class="p">(</span><span class="mi">13</span><span class="p">),</span> <span class="n">legendfont</span> <span class="o">=</span> <span class="n">font</span><span class="p">(</span><span class="mi">12</span><span class="p">),</span>
+    <span class="n">xlims</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">η_max</span><span class="o">+</span><span class="mf">0.1</span><span class="p">))</span>
+<span class="n">hline!</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="n">ls</span> <span class="o">=</span> <span class="o">:</span><span class="n">dash</span><span class="p">,</span> <span class="n">lc</span> <span class="o">=</span> <span class="o">:</span><span class="n">grey</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+<span class="n">plot!</span><span class="p">(</span><span class="n">ηs</span><span class="p">[</span><span class="n">ηs</span> <span class="o">.&gt;</span> <span class="mi">0</span><span class="p">],</span> <span class="n">pas_xy</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="o">:</span><span class="n">black</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;</span><span class="se">\$</span><span class="s"> x </span><span class="se">\\</span><span class="s">to y </span><span class="se">\$</span><span class="s">&quot;</span><span class="p">)</span>
+<span class="n">plot!</span><span class="p">(</span><span class="n">ηs</span><span class="p">[</span><span class="n">ηs</span> <span class="o">.&gt;</span> <span class="mi">0</span><span class="p">],</span> <span class="n">pas_yz</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="o">:</span><span class="n">red</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;</span><span class="se">\$</span><span class="s"> y </span><span class="se">\\</span><span class="s">to z </span><span class="se">\$</span><span class="s">&quot;</span><span class="p">)</span>
+<span class="n">plot!</span><span class="p">(</span><span class="n">ηs</span><span class="p">[</span><span class="n">ηs</span> <span class="o">.&gt;</span> <span class="mi">0</span><span class="p">],</span> <span class="n">pas_zw</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="o">:</span><span class="n">blue</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;</span><span class="se">\$</span><span class="s"> z </span><span class="se">\\</span><span class="s">to w </span><span class="se">\$</span><span class="s">&quot;</span><span class="p">)</span>
+<span class="n">plot!</span><span class="p">(</span><span class="n">ηs</span><span class="p">[</span><span class="n">ηs</span> <span class="o">.&gt;</span> <span class="mi">0</span><span class="p">],</span> <span class="n">pas_yx</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="o">:</span><span class="n">black</span><span class="p">,</span> <span class="n">ls</span> <span class="o">=</span> <span class="o">:</span><span class="n">dash</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;</span><span class="se">\$</span><span class="s"> y </span><span class="se">\\</span><span class="s">to x </span><span class="se">\$</span><span class="s">&quot;</span><span class="p">)</span>
+<span class="n">plot!</span><span class="p">(</span><span class="n">ηs</span><span class="p">[</span><span class="n">ηs</span> <span class="o">.&gt;</span> <span class="mi">0</span><span class="p">],</span> <span class="n">pas_zy</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="o">:</span><span class="n">red</span><span class="p">,</span> <span class="n">ls</span> <span class="o">=</span> <span class="o">:</span><span class="n">dash</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;</span><span class="se">\$</span><span class="s"> z </span><span class="se">\\</span><span class="s">to y </span><span class="se">\$</span><span class="s">&quot;</span><span class="p">)</span>
+<span class="n">plot!</span><span class="p">(</span><span class="n">ηs</span><span class="p">[</span><span class="n">ηs</span> <span class="o">.&gt;</span> <span class="mi">0</span><span class="p">],</span> <span class="n">pas_wz</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="o">:</span><span class="n">blue</span><span class="p">,</span> <span class="n">ls</span> <span class="o">=</span> <span class="o">:</span><span class="n">dash</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;</span><span class="se">\$</span><span class="s"> w </span><span class="se">\\</span><span class="s">to z </span><span class="se">\$</span><span class="s">&quot;</span><span class="p">)</span>
+</pre></div>
+
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="764" height="550" viewBox="0 0 3056 2200">
+<defs>
+  <clipPath id="clip3200">
+    <rect x="0" y="0" width="3056" height="2200"/>
+  </clipPath>
+</defs>
+<path clip-path="url(#clip3200)" d="
+M0 2200 L3056 2200 L3056 0 L0 0  Z
+  " fill="#ffffff" fill-rule="evenodd" fill-opacity="1"/>
+<defs>
+  <clipPath id="clip3201">
+    <rect x="611" y="0" width="2140" height="2140"/>
+  </clipPath>
+</defs>
+<path clip-path="url(#clip3200)" d="
+M241.957 2077.16 L3008.76 2077.16 L3008.76 47.2441 L241.957 47.2441  Z
+  " fill="#ffffff" fill-rule="evenodd" fill-opacity="1"/>
+<defs>
+  <clipPath id="clip3202">
+    <rect x="241" y="47" width="2768" height="2031"/>
+  </clipPath>
+</defs>
+<polyline clip-path="url(#clip3202)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  572.77,2077.16 572.77,47.2441 
+  "/>
+<polyline clip-path="url(#clip3202)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  1174.25,2077.16 1174.25,47.2441 
+  "/>
+<polyline clip-path="url(#clip3202)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  1775.73,2077.16 1775.73,47.2441 
+  "/>
+<polyline clip-path="url(#clip3202)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  2377.2,2077.16 2377.2,47.2441 
+  "/>
+<polyline clip-path="url(#clip3202)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  2978.68,2077.16 2978.68,47.2441 
+  "/>
+<polyline clip-path="url(#clip3202)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  241.957,1784.37 3008.76,1784.37 
+  "/>
+<polyline clip-path="url(#clip3202)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  241.957,1423.29 3008.76,1423.29 
+  "/>
+<polyline clip-path="url(#clip3202)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  241.957,1062.2 3008.76,1062.2 
+  "/>
+<polyline clip-path="url(#clip3202)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  241.957,701.122 3008.76,701.122 
+  "/>
+<polyline clip-path="url(#clip3202)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  241.957,340.041 3008.76,340.041 
+  "/>
+<polyline clip-path="url(#clip3200)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  241.957,2077.16 3008.76,2077.16 
+  "/>
+<polyline clip-path="url(#clip3200)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  241.957,2077.16 241.957,47.2441 
+  "/>
+<polyline clip-path="url(#clip3200)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  572.77,2077.16 572.77,2052.81 
+  "/>
+<polyline clip-path="url(#clip3200)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  1174.25,2077.16 1174.25,2052.81 
+  "/>
+<polyline clip-path="url(#clip3200)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  1775.73,2077.16 1775.73,2052.81 
+  "/>
+<polyline clip-path="url(#clip3200)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  2377.2,2077.16 2377.2,2052.81 
+  "/>
+<polyline clip-path="url(#clip3200)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  2978.68,2077.16 2978.68,2052.81 
+  "/>
+<polyline clip-path="url(#clip3200)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  241.957,1784.37 275.158,1784.37 
+  "/>
+<polyline clip-path="url(#clip3200)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  241.957,1423.29 275.158,1423.29 
+  "/>
+<polyline clip-path="url(#clip3200)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  241.957,1062.2 275.158,1062.2 
+  "/>
+<polyline clip-path="url(#clip3200)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  241.957,701.122 275.158,701.122 
+  "/>
+<polyline clip-path="url(#clip3200)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  241.957,340.041 275.158,340.041 
+  "/>
+<g clip-path="url(#clip3200)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:77px; text-anchor:middle;" transform="rotate(0, 572.77, 2159.64)" x="572.77" y="2159.64">2</text>
+</g>
+<g clip-path="url(#clip3200)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:77px; text-anchor:middle;" transform="rotate(0, 1174.25, 2159.64)" x="1174.25" y="2159.64">4</text>
+</g>
+<g clip-path="url(#clip3200)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:77px; text-anchor:middle;" transform="rotate(0, 1775.73, 2159.64)" x="1775.73" y="2159.64">6</text>
+</g>
+<g clip-path="url(#clip3200)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:77px; text-anchor:middle;" transform="rotate(0, 2377.2, 2159.64)" x="2377.2" y="2159.64">8</text>
+</g>
+<g clip-path="url(#clip3200)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:77px; text-anchor:middle;" transform="rotate(0, 2978.68, 2159.64)" x="2978.68" y="2159.64">10</text>
+</g>
+<g clip-path="url(#clip3200)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:77px; text-anchor:end;" transform="rotate(0, 211.397, 1812.37)" x="211.397" y="1812.37">-10</text>
+</g>
+<g clip-path="url(#clip3200)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:77px; text-anchor:end;" transform="rotate(0, 211.397, 1451.29)" x="211.397" y="1451.29">-5</text>
+</g>
+<g clip-path="url(#clip3200)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:77px; text-anchor:end;" transform="rotate(0, 211.397, 1090.2)" x="211.397" y="1090.2">0</text>
+</g>
+<g clip-path="url(#clip3200)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:77px; text-anchor:end;" transform="rotate(0, 211.397, 729.122)" x="211.397" y="729.122">5</text>
+</g>
+<g clip-path="url(#clip3200)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:77px; text-anchor:end;" transform="rotate(0, 211.397, 368.041)" x="211.397" y="368.041">10</text>
+</g>
+<polyline clip-path="url(#clip3202)" style="stroke:#808080; stroke-width:4; stroke-opacity:1; fill:none" stroke-dasharray="16, 10" points="
+  -2524.84,989.988 5775.56,989.988 
+  "/>
+<polyline clip-path="url(#clip3202)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  272.031,1005.94 572.77,932.504 873.509,836.509 1174.25,743.141 1474.99,669.575 1775.73,613.843 2076.46,571.384 2377.2,523.995 2677.94,472.291 2978.68,415.997
+
+<p>"/&gt;
+&lt;polyline clip-path="url(#clip3202)" style="stroke:#ff0000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  272.031,995.193 572.77,911.595 873.509,836.747 1174.25,760.308 1474.99,675.172 1775.73,598.884 2076.46,526.32 2377.2,467.012 2677.94,401.951 2978.68,343.155 </p>
+<p>"/&gt;
+&lt;polyline clip-path="url(#clip3202)" style="stroke:#0000ff; stroke-width:4; stroke-opacity:1; fill:none" points="
+  272.031,1005.3 572.77,939.002 873.509,847.456 1174.25,763.471 1474.99,653.261 1775.73,544.599 2076.46,433.539 2377.2,338.79 2677.94,265.268 2978.68,196.552 </p>
+<p>"/&gt;
+&lt;polyline clip-path="url(#clip3202)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" stroke-dasharray="16, 10" points="
+  272.031,1176.46 572.77,1286.87 873.509,1396.08 1174.25,1496.85 1474.99,1562.89 1775.73,1617.63 2076.46,1672.19 2377.2,1749.75 2677.94,1840.64 2978.68,1922.81 </p>
+<p>"/&gt;
+&lt;polyline clip-path="url(#clip3202)" style="stroke:#ff0000; stroke-width:4; stroke-opacity:1; fill:none" stroke-dasharray="16, 10" points="
+  272.031,1122.39 572.77,1219.52 873.509,1319.94 1174.25,1403.19 1474.99,1457.32 1775.73,1495.42 2076.46,1541.17 2377.2,1587.63 2677.94,1648.65 2978.68,1703.01 </p>
+<p>"/&gt;
+&lt;polyline clip-path="url(#clip3202)" style="stroke:#0000ff; stroke-width:4; stroke-opacity:1; fill:none" stroke-dasharray="16, 10" points="
+  272.031,1111.64 572.77,1202.07 873.509,1316.48 1174.25,1429.98 1474.99,1538.68 1775.73,1644.35 2076.46,1759.8 2377.2,1863.47 2677.94,1942.39 2978.68,2028.83 </p>
+<p>"/&gt;
+</svg></p>
+<p><a id='Discussion-1'></a></p>
+<h3 id="discussion">Discussion</h3>
+<p>If the predictive asymmetry picks up on the causal interactions, it should be positive  for the directions we know to be causal and negative in the directions that are known to  be non-causal. Running this example for multiple initial conditions of the system, we  find that this is very consistently the case!</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>Krakovská, A., Jakubík, J., Chvosteková, M., Coufal, D., Jajcay, N., &amp; Paluš, M. (2018). Comparison of six methods for the detection of causality in a bivariate time series. Physical Review E, 97(4), 042207. <a href="https://journals.aps.org/pre/abstract/10.1103/PhysRevE.97.042207">https://journals.aps.org/pre/abstract/10.1103/PhysRevE.97.042207</a>&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../PredictiveAsymmetryTest/" title="PredictiveAsymmetryTest" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                PredictiveAsymmetryTest
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../abstract_test_types/" title="Abstract test types" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Abstract test types
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+        
+  <div class="md-footer-social">
+    <link rel="stylesheet" href="../../assets/fonts/font-awesome.css">
+    
+      <a href="https://github.com/kahaaga/CausalityTools.jl" class="md-footer-social__link fa fa-github"></a>
+    
+  </div>
+
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.30f6b8b1.js"></script>
+      
+      <script>app.initialize({version:"0.17.5",url:{base:"../.."}})</script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+      
+        <script src="../../assets/mathjaxhelper.js"></script>
+      
+    
+    
+      
+    
+  </body>
+</html>

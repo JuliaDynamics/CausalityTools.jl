@@ -1,0 +1,1821 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="Causality detection from time series in Julia.">
+      
+      
+      
+        <meta name="author" content="Kristian Agasøster Haaga">
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-0.17.5, mkdocs-material-2.9.4">
+    
+    
+      
+        <title>Transfer entropy - CausalityTools.jl</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.451f80e5.css">
+      
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.1aa3b519.js"></script>
+    
+    
+      <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+      
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+      <link rel="stylesheet" href="../../assets/Documenter.css">
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448"
+    viewBox="0 0 416 448" id="__github">
+  <path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19-18.125
+        8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19 18.125-8.5
+        18.125 8.5 10.75 19 3.125 20.5zM320 304q0 10-3.125 20.5t-10.75
+        19-18.125 8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19
+        18.125-8.5 18.125 8.5 10.75 19 3.125 20.5zM360
+        304q0-30-17.25-51t-46.75-21q-10.25 0-48.75 5.25-17.75 2.75-39.25
+        2.75t-39.25-2.75q-38-5.25-48.75-5.25-29.5 0-46.75 21t-17.25 51q0 22 8
+        38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0
+        37.25-1.75t35-7.375 30.5-15 20.25-25.75 8-38.375zM416 260q0 51.75-15.25
+        82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5-41.75
+        1.125q-19.5 0-35.5-0.75t-36.875-3.125-38.125-7.5-34.25-12.875-30.25-20.25-21.5-28.75q-15.5-30.75-15.5-82.75
+        0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25
+        30.875q36.75-8.75 77.25-8.75 37 0 70 8 26.25-20.5
+        46.75-30.25t47.25-9.75q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34
+        99.5z" />
+</svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#example-measuring-transfer-entropy-between-two-unidirectionally-coupled-logistic-maps" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="../.." title="CausalityTools.jl" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            
+              <span class="md-header-nav__topic">
+                CausalityTools.jl
+              </span>
+              <span class="md-header-nav__topic">
+                Transfer entropy
+              </span>
+            
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          
+            <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+            
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+          
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+
+  <a href="https://github.com/kahaaga/CausalityTools.jl/" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#__github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="../.." title="CausalityTools.jl" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    CausalityTools.jl
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+
+  <a href="https://github.com/kahaaga/CausalityTools.jl/" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#__github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      Causality estimation
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        Causality estimation
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/causality_from_time_series/" title="Causality from time series" class="md-nav__link">
+      Causality from time series
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/causality_from_uncertain_data/" title="Causality from uncertain data" class="md-nav__link">
+      Causality from uncertain data
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/causality_from_dynamical_systems/" title="Causality from dynamical systems" class="md-nav__link">
+      Causality from dynamical systems
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      Causality tests
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        Causality tests
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/causality_tests/" title="List of tests" class="md-nav__link">
+      List of tests
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/BinnedDataCausalityTest/" title="BinnedDataCausalityTest" class="md-nav__link">
+      BinnedDataCausalityTest
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-3" type="checkbox" id="nav-3-3">
+    
+    <label class="md-nav__link" for="nav-3-3">
+      Distance based tests
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-3">
+        Distance based tests
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/JointDistanceDistributionTest/" title="JointDistanceDistributionTest" class="md-nav__link">
+      JointDistanceDistributionTest
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/CrossMappingTest/" title="CrossMappingTest" class="md-nav__link">
+      CrossMappingTest
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/ConvergentCrossMappingTest/" title="ConvergentCrossMappingTest" class="md-nav__link">
+      ConvergentCrossMappingTest
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-4" type="checkbox" id="nav-3-4">
+    
+    <label class="md-nav__link" for="nav-3-4">
+      Entropy based tests
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-4">
+        Entropy based tests
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/TransferOperatorGridTest/" title="TransferOperatorGridTest" class="md-nav__link">
+      TransferOperatorGridTest
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/VisitationFrequencyTest/" title="VisitationFrequencyTest" class="md-nav__link">
+      VisitationFrequencyTest
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/ApproximateSimplexIntersectionTest/" title="ApproximateSimplexIntersectionTest" class="md-nav__link">
+      ApproximateSimplexIntersectionTest
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/ExactSimplexIntersectionTest/" title="ExactSimplexIntersectionTest" class="md-nav__link">
+      ExactSimplexIntersectionTest
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/PredictiveAsymmetryTest/" title="Predictive asymmetry test" class="md-nav__link">
+      Predictive asymmetry test
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-6" type="checkbox" id="nav-3-6">
+    
+    <label class="md-nav__link" for="nav-3-6">
+      Abstract test types
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-6">
+        Abstract test types
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/CausalityTest/" title="CausalityTest" class="md-nav__link">
+      CausalityTest
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/DistanceBasedCausalityTest/" title="Distance based tests" class="md-nav__link">
+      Distance based tests
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/EntropyBasedCausalityTest/" title="Entropy based tests" class="md-nav__link">
+      Entropy based tests
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/TransferEntropyTest/" title="TransferEntropyTest" class="md-nav__link">
+      TransferEntropyTest
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      Fundamentals
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        Fundamentals
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytoolsbase/discretization/" title="Discretization" class="md-nav__link">
+      Discretization
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytoolsbase/delay_reconstructions/" title="Delay reconstruction" class="md-nav__link">
+      Delay reconstruction
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4-3" type="checkbox" id="nav-4-3">
+    
+    <label class="md-nav__link" for="nav-4-3">
+      Invariant properties over partitions
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-4-3">
+        Invariant properties over partitions
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../perronfrobenius/invariantmeasure/" title="Invariant measure" class="md-nav__link">
+      Invariant measure
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../perronfrobenius/transferoperator/" title="Transfer operator" class="md-nav__link">
+      Transfer operator
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      Estimators and algorithms
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        Estimators and algorithms
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-1" type="checkbox" id="nav-5-1">
+    
+    <label class="md-nav__link" for="nav-5-1">
+      Transfer entropy
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-5-1">
+        Transfer entropy
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../transferentropy/convenience_functions_te/" title="Convenience functions" class="md-nav__link">
+      Convenience functions
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../transferentropy/transferentropy_estimators/" title="Low-level estimators" class="md-nav__link">
+      Low-level estimators
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../transferentropy/TEVars/" title="Mapping delay reconstruction to marginals (TEVars)" class="md-nav__link">
+      Mapping delay reconstruction to marginals (TEVars)
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../transferentropy/examples_TE_different_partitionings/" title="Effect of discretization scheme" class="md-nav__link">
+      Effect of discretization scheme
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-2" type="checkbox" id="nav-5-2">
+    
+    <label class="md-nav__link" for="nav-5-2">
+      CCM
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-5-2">
+        CCM
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../crossmappings/ccm/overview/" title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../crossmappings/ccm/crossmapping/" title="Cross mapping" class="md-nav__link">
+      Cross mapping
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../crossmappings/ccm/convergentcrossmapping/" title="Converent cross mapping" class="md-nav__link">
+      Converent cross mapping
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../algorithms/joint_distance_distribution/" title="Joint distance distribution" class="md-nav__link">
+      Joint distance distribution
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../syntax_overview/" title="Syntax overview" class="md-nav__link">
+      Syntax overview
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-6" type="checkbox" id="nav-6">
+    
+    <label class="md-nav__link" for="nav-6">
+      Example systems
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-6">
+        Example systems
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../example_systems/example_systems_overview/" title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../example_systems/example_systems_discrete/" title="Discrete systems" class="md-nav__link">
+      Discrete systems
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../example_systems/example_systems_continuous/" title="Continuous systems" class="md-nav__link">
+      Continuous systems
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../example_systems/noise/" title="Noise processes" class="md-nav__link">
+      Noise processes
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-7" type="checkbox" id="nav-7">
+    
+    <label class="md-nav__link" for="nav-7">
+      Surrogate data
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-7">
+        Surrogate data
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../surrogates/surrogates_overview/" title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-7-2" type="checkbox" id="nav-7-2">
+    
+    <label class="md-nav__link" for="nav-7-2">
+      Methods
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-7-2">
+        Methods
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../surrogates/iaaft_docs/" title="IAAFT" class="md-nav__link">
+      IAAFT
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../surrogates/aaft_docs/" title="AAFT" class="md-nav__link">
+      AAFT
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../surrogates/randomphases_docs/" title="Fourier surrogates, random phases" class="md-nav__link">
+      Fourier surrogates, random phases
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../surrogates/randomamplitudes_docs/" title="Fourier surrogates, random amplitudes" class="md-nav__link">
+      Fourier surrogates, random amplitudes
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../surrogates/randomshuffle_docs/" title="Random shuffle" class="md-nav__link">
+      Random shuffle
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-8" type="checkbox" id="nav-8" checked>
+    
+    <label class="md-nav__link" for="nav-8">
+      Worked examples
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-8">
+        Worked examples
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Transfer entropy
+      </label>
+    
+    <a href="./" title="Transfer entropy" class="md-nav__link md-nav__link--active">
+      Transfer entropy
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#defining-a-system" title="Defining a system" class="md-nav__link">
+    Defining a system
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#represent-the-system-as-a-discretedynamicalsystem" title="Represent the system as a DiscreteDynamicalSystem" class="md-nav__link">
+    Represent the system as a DiscreteDynamicalSystem
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#delay-embedding-for-transfer-entropy" title="Delay embedding for transfer entropy" class="md-nav__link">
+    Delay embedding for transfer entropy
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#construct-the-embedding" title="Construct the embedding" class="md-nav__link">
+    Construct the embedding
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#keeping-track-of-embedding-information-using-tevars" title="Keeping track of embedding information using TEVars" class="md-nav__link">
+    Keeping track of embedding information using TEVars
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#te-estimator" title="TE estimator" class="md-nav__link">
+    TE estimator
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#embedding" title="Embedding" class="md-nav__link">
+    Embedding
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#different-ways-of-partitioning" title="Different ways of partitioning" class="md-nav__link">
+    Different ways of partitioning
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hyper-rectangles-by-subdivision-of-axes" title="Hyper-rectangles by subdivision of axes" class="md-nav__link">
+    Hyper-rectangles by subdivision of axes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hyper-cubes-of-fixed-size" title="Hyper-cubes of fixed size" class="md-nav__link">
+    Hyper-cubes of fixed size
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hyper-rectangles-of-fixed-size" title="Hyper-rectangles of fixed size" class="md-nav__link">
+    Hyper-rectangles of fixed size
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hyper-rectangles-by-variable-width-subdivision-of-axes" title="Hyper-rectangles by variable-width subdivision of axes" class="md-nav__link">
+    Hyper-rectangles by variable-width subdivision of axes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#conclusion" title="Conclusion" class="md-nav__link">
+    Conclusion
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-9" type="checkbox" id="nav-9">
+    
+    <label class="md-nav__link" for="nav-9">
+      Tutorials
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-9">
+        Tutorials
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/list_of_tutorials/" title="List of tutorials" class="md-nav__link">
+      List of tutorials
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-9-2" type="checkbox" id="nav-9-2">
+    
+    <label class="md-nav__link" for="nav-9-2">
+      Causality on uncertain data
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-9-2">
+        Causality on uncertain data
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-9-2-1" type="checkbox" id="nav-9-2-1">
+    
+    <label class="md-nav__link" for="nav-9-2-1">
+      PredictiveAsymmetryTest
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="3">
+      <label class="md-nav__title" for="nav-9-2-1">
+        PredictiveAsymmetryTest
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/causality/binned_uncertain_data/tutorial_BinnedDataCausalityTest_PredictiveAsymmetryTest_BinnedResampling/" title="BinnedResampling" class="md-nav__link">
+      BinnedResampling
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/causality/binned_uncertain_data/tutorial_BinnedDataCausalityTest_PredictiveAsymmetryTest_BinnedMeanResampling/" title="BinnedMeanResampling" class="md-nav__link">
+      BinnedMeanResampling
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../CHANGELOG/" title="Changelog" class="md-nav__link">
+      Changelog
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#defining-a-system" title="Defining a system" class="md-nav__link">
+    Defining a system
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#represent-the-system-as-a-discretedynamicalsystem" title="Represent the system as a DiscreteDynamicalSystem" class="md-nav__link">
+    Represent the system as a DiscreteDynamicalSystem
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#delay-embedding-for-transfer-entropy" title="Delay embedding for transfer entropy" class="md-nav__link">
+    Delay embedding for transfer entropy
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#construct-the-embedding" title="Construct the embedding" class="md-nav__link">
+    Construct the embedding
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#keeping-track-of-embedding-information-using-tevars" title="Keeping track of embedding information using TEVars" class="md-nav__link">
+    Keeping track of embedding information using TEVars
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#te-estimator" title="TE estimator" class="md-nav__link">
+    TE estimator
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#embedding" title="Embedding" class="md-nav__link">
+    Embedding
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#different-ways-of-partitioning" title="Different ways of partitioning" class="md-nav__link">
+    Different ways of partitioning
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hyper-rectangles-by-subdivision-of-axes" title="Hyper-rectangles by subdivision of axes" class="md-nav__link">
+    Hyper-rectangles by subdivision of axes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hyper-cubes-of-fixed-size" title="Hyper-cubes of fixed size" class="md-nav__link">
+    Hyper-cubes of fixed size
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hyper-rectangles-of-fixed-size" title="Hyper-rectangles of fixed size" class="md-nav__link">
+    Hyper-rectangles of fixed size
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hyper-rectangles-by-variable-width-subdivision-of-axes" title="Hyper-rectangles by variable-width subdivision of axes" class="md-nav__link">
+    Hyper-rectangles by variable-width subdivision of axes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#conclusion" title="Conclusion" class="md-nav__link">
+    Conclusion
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/kahaaga/CausalityTools.jl/edit/master/docs/worked_examples/worked_example_transferentropy.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                
+                
+                <p><a id='Example:-measuring-transfer-entropy-between-two-unidirectionally-coupled-logistic-maps-1'></a></p>
+<h1 id="example-measuring-transfer-entropy-between-two-unidirectionally-coupled-logistic-maps">Example: measuring transfer entropy between two unidirectionally coupled logistic maps</h1>
+<p>Here, we present an example of how one can measure the influence between variables of a dynamical system using transfer entropy (TE).</p>
+<p><a id='Defining-a-system-1'></a></p>
+<h2 id="defining-a-system">Defining a system</h2>
+<p>For this example, we'll consider a unidirectionally coupled system consisting of two logistic maps, given by the vector field</p>
+<div>
+<div class="MathJax_Preview">
+\begin{aligned}
+dx &amp;= r_1 x(1 - x) \\
+dy &amp;= r_2 f(x,y)(1 - f(x,y)),
+\end{aligned}
+</div>
+<script type="math/tex; mode=display">
+\begin{aligned}
+dx &= r_1 x(1 - x) \\
+dy &= r_2 f(x,y)(1 - f(x,y)),
+\end{aligned}
+</script>
+</div>
+<p>with</p>
+<div>
+<div class="MathJax_Preview">
+\begin{aligned}
+f(x,y) = \dfrac{y + \frac{c(x \xi )}{2}}{1 + \frac{c}{2}(1+ \sigma )}
+\end{aligned}
+</div>
+<script type="math/tex; mode=display">
+\begin{aligned}
+f(x,y) = \dfrac{y + \frac{c(x \xi )}{2}}{1 + \frac{c}{2}(1+ \sigma )}
+\end{aligned}
+</script>
+</div>
+<p>The parameter <code>c</code> controls how strong the dynamical forcing is. If <code>σ &gt; 0</code>, dynamical noise masking the influence of  <span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span> on <span><span class="MathJax_Preview">y</span><script type="math/tex">y</script></span>, equivalent to <span><span class="MathJax_Preview">\sigma \cdot \xi</span><script type="math/tex">\sigma \cdot \xi</script></span>, is added at each iteration. Here, <span><span class="MathJax_Preview">\xi</span><script type="math/tex">\xi</script></span> is a draw from a flat distribution on <code>[0, 1]</code>. Thus, setting <span><span class="MathJax_Preview">σ = 0.05</span><script type="math/tex">σ = 0.05</script></span> is equivalent to add dynamical noise corresponding to a maximum of <span><span class="MathJax_Preview">5 \%</span><script type="math/tex">5 \%</script></span> of the possible range of values of the logistic map.</p>
+<p><a id='Represent-the-system-as-a-DiscreteDynamicalSystem-1'></a></p>
+<h3 id="represent-the-system-as-a-discretedynamicalsystem">Represent the system as a DiscreteDynamicalSystem</h3>
+<p>We first define the equations of motion.</p>
+<div class="highlight"><pre><span></span><span class="k">function</span> <span class="n">eom_logistic2</span><span class="p">(</span><span class="n">dx</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">c</span><span class="p">,</span> <span class="n">r₁</span><span class="p">,</span> <span class="n">r₂</span><span class="p">,</span> <span class="n">σ</span> <span class="o">=</span> <span class="p">(</span><span class="n">p</span><span class="o">...</span><span class="p">,)</span>
+    <span class="n">ξ</span> <span class="o">=</span> <span class="n">rand</span><span class="p">()</span> <span class="c"># random number from flat distribution on [0, 1]</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">f_xy</span> <span class="o">=</span> <span class="p">(</span><span class="n">y</span> <span class="o">+</span>  <span class="p">(</span><span class="n">c</span><span class="o">*</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">σ</span><span class="o">*</span><span class="n">ξ</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">c</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">σ</span><span class="p">))</span>
+
+    <span class="n">dx</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">r₁</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span>
+    <span class="n">dx</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">r₂</span> <span class="o">*</span> <span class="p">(</span><span class="n">f_xy</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">f_xy</span><span class="p">)</span>
+    <span class="k">return</span>
+<span class="k">end</span>
+</pre></div>
+
+<p>To make things easier to use, we create function that generates a DiscreteDynamicalSystem instance for any set of parameters <code>r₁</code> and <code>r₂</code>, coupling strength <code>c</code>, initial condition <code>u₀</code> and dynamical noise level <code>σ</code>. Selecting parameter values on <code>[3.6, 4.0]</code> yield mostly chaotic realizations of the maps, so we set the default to some random values on this interval.</p>
+<div class="highlight"><pre><span></span><span class="k">function</span> <span class="n">logistic2</span><span class="p">(;</span><span class="n">u₀</span> <span class="o">=</span> <span class="n">rand</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">c</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">r₁</span> <span class="o">=</span> <span class="mf">3.66</span><span class="p">,</span> <span class="n">r₂</span> <span class="o">=</span> <span class="mf">3.77</span><span class="p">,</span> <span class="n">σ</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">)</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="p">,</span> <span class="n">r₁</span><span class="p">,</span> <span class="n">r₂</span><span class="p">,</span> <span class="n">σ</span><span class="p">]</span>
+    <span class="n">DiscreteDynamicalSystem</span><span class="p">(</span><span class="n">eom_logistic2</span><span class="p">,</span> <span class="n">u₀</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+<span class="k">end</span>
+</pre></div>
+
+<p>By tuning the coupling strength <code>c</code>, we may control the strength of the influence <span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span> has on <span><span class="MathJax_Preview">y</span><script type="math/tex">y</script></span>. Depending on the particular values of <code>r₁</code> and <code>r₂</code>, the subsystems become synchronized at different values of <code>c</code>. Choosing <code>c ∈ [0, 2]</code> usually still gives some independence between the subsystems.</p>
+<p>An example realization of the system when there is no coupling is:</p>
+<div class="highlight"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">logistic2</span><span class="p">(</span><span class="n">c</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">)</span>
+<span class="n">orbit</span> <span class="o">=</span> <span class="n">trajectory</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">orbit</span><span class="p">[</span><span class="o">:</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">orbit</span><span class="p">[</span><span class="o">:</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;x&quot;</span><span class="p">,</span> <span class="n">lc</span> <span class="o">=</span> <span class="o">:</span><span class="n">black</span><span class="p">)</span>
+<span class="n">plot!</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;y&quot;</span><span class="p">,</span> <span class="n">lc</span> <span class="o">=</span> <span class="o">:</span><span class="n">red</span><span class="p">)</span>
+<span class="n">xlabel!</span><span class="p">(</span><span class="s">&quot;Time step&quot;</span><span class="p">);</span> <span class="n">ylabel!</span><span class="p">(</span><span class="s">&quot;Value&quot;</span><span class="p">)</span>
+</pre></div>
+
+<p><img alt="" src="../logistic2_c0.svg" /></p>
+<p><a id='Delay-embedding-for-transfer-entropy-1'></a></p>
+<h2 id="delay-embedding-for-transfer-entropy">Delay embedding for transfer entropy</h2>
+<p>The minimum embedding dimension for this system is 4 (try to figure this out yourself using the machinery in DynamicalSystems.jl!).</p>
+<p>We want to measure the information flow <span><span class="MathJax_Preview">x \rightarrow y</span><script type="math/tex">x \rightarrow y</script></span>. To do this, we express the transfer entropy as a conditional mutual information. For that, we need an embedding consisting of the following set of vectors</p>
+<div>
+<div class="MathJax_Preview">
+\begin{aligned}
+E = \{ (y(t + \nu), y(t), x(t), y(t - \tau) ) \},
+\end{aligned}
+</div>
+<script type="math/tex; mode=display">
+\begin{aligned}
+E = \{ (y(t + \nu), y(t), x(t), y(t - \tau) ) \},
+\end{aligned}
+</script>
+</div>
+<p>where <span><span class="MathJax_Preview">\nu</span><script type="math/tex">\nu</script></span> is the forward prediction lag and <span><span class="MathJax_Preview">\tau</span><script type="math/tex">\tau</script></span> is the embedding lag. If a higher dimension was needed, we would add more lagged instances of the target variable <span><span class="MathJax_Preview">y</span><script type="math/tex">y</script></span>.</p>
+<p><a id='Construct-the-embedding-1'></a></p>
+<h3 id="construct-the-embedding">Construct the embedding</h3>
+<p>To construct the embedding, we use the <a href="../../causalitytoolsbase/delay_reconstructions/#CausalityToolsBase.customembed"><code>customembed</code></a> function as follows.</p>
+<div class="highlight"><pre><span></span><span class="n">τ</span> <span class="o">=</span> <span class="mi">1</span> <span class="c"># embedding lag</span>
+<span class="n">ν</span> <span class="o">=</span> <span class="mi">1</span> <span class="c"># forward prediction lag</span>
+<span class="n">E</span> <span class="o">=</span> <span class="n">customembed</span><span class="p">(</span><span class="n">Dataset</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">Positions</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span> <span class="n">Lags</span><span class="p">([</span><span class="n">ν</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">τ</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span>
+</pre></div>
+
+<p>This means that <code>y</code> appears in the 1<sup>st</sup>, 2<sup>nd</sup> and 3<sup>rd</sup> columns of the embedding, with lags 1, 0 and -1, respectively. The 4<sup>th</sup> column is occupied by <code>x</code>, which is not lagged.</p>
+<p><a id='Keeping-track-of-embedding-information-using-TEVars-1'></a></p>
+<h3 id="keeping-track-of-embedding-information-using-tevars">Keeping track of embedding information using TEVars</h3>
+<p>Keeping track of how the embedding is organized is done using a <a href="../../transferentropy/TEVars/#TransferEntropy.TEVars"><code>TEVars</code></a> instance.</p>
+<p>It takes requires as inputs the column indices corresponding to 1) the future of the target variable, 2) the present and past of the target, and 3) the present and past of the source variable, in that order. Let's define this for our system:</p>
+<div class="highlight"><pre><span></span><span class="n">Tf</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>     <span class="c"># target, future</span>
+<span class="n">Tpp</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="c"># target, present and past</span>
+<span class="n">Spp</span> <span class="o">=</span> <span class="p">[</span><span class="mi">4</span><span class="p">]</span>    <span class="c"># source, present (and past, if we wanted)</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">TEVars</span><span class="p">(</span><span class="n">Tf</span><span class="p">,</span> <span class="n">Tpp</span><span class="p">,</span> <span class="n">Spp</span><span class="p">)</span>
+</pre></div>
+
+<p>The last field is an empty array because we are not doing any conditioning on other variables.</p>
+<p><a id='TE-estimator-1'></a></p>
+<h3 id="te-estimator">TE estimator</h3>
+<p>We will use the transfer operator grid TE estimator, found in the <code>TransferOperatorGrid</code> transfer entropy estimator. This estimator takes as input an embedding, given as a set of points,  a <a href="../../causalitytoolsbase/discretization/#CausalityToolsBase.RectangularBinning"><code>RectangularBinning</code></a> instance, and a <a href="../../transferentropy/TEVars/#TransferEntropy.TEVars"><code>TEVars</code></a> instance. </p>
+<p>We will compute TE over a range of bin sizes, for a slightly longer time series  than we plotted before, with <code>c = 0.7</code>.</p>
+<p><a id='Embedding-1'></a></p>
+<h3 id="embedding">Embedding</h3>
+<p>Let's create a realization of the system, embed it and create a <a href="../../transferentropy/TEVars/#TransferEntropy.TEVars"><code>TEVars</code></a> instance. We'll use these throughout the examples below.</p>
+<div class="highlight"><pre><span></span><span class="c"># Orbit of the system</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">logistic2</span><span class="p">(</span><span class="n">c</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">)</span>
+<span class="n">orbit</span> <span class="o">=</span> <span class="n">trajectory</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">orbit</span><span class="p">[</span><span class="o">:</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">orbit</span><span class="p">[</span><span class="o">:</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+
+<span class="c"># Embedding</span>
+<span class="n">τ</span> <span class="o">=</span> <span class="mi">1</span> <span class="c"># embedding lag</span>
+<span class="n">ν</span> <span class="o">=</span> <span class="mi">1</span> <span class="c"># forward prediction lag</span>
+<span class="n">E_xtoy</span> <span class="o">=</span> <span class="n">customembed</span><span class="p">(</span><span class="n">Dataset</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">Positions</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span> <span class="n">Lags</span><span class="p">([</span><span class="n">ν</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">τ</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span>
+<span class="n">E_ytox</span> <span class="o">=</span> <span class="n">customembed</span><span class="p">(</span><span class="n">Dataset</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">Positions</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span> <span class="n">Lags</span><span class="p">([</span><span class="n">ν</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">τ</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span>
+
+<span class="c"># Which variables go where?</span>
+<span class="n">Tf</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>     <span class="c"># target, future</span>
+<span class="n">Tpp</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="c"># target, present and past</span>
+<span class="n">Spp</span> <span class="o">=</span> <span class="p">[</span><span class="mi">4</span><span class="p">]</span>    <span class="c"># source, present (and past, if we wanted)</span>
+<span class="n">vars</span> <span class="o">=</span> <span class="n">TEVars</span><span class="p">(</span><span class="n">Tf</span><span class="p">,</span> <span class="n">Tpp</span><span class="p">,</span> <span class="n">Spp</span><span class="p">)</span>
+</pre></div>
+
+<p><a id='Different-ways-of-partitioning-1'></a></p>
+<h3 id="different-ways-of-partitioning">Different ways of partitioning</h3>
+<p>The <a href="../@ref"><code>TransferOperatorGrid</code></a> and <a href="../@ref"><code>VisitationFrequency</code></a> transfer entropy estimators both operate on partitions on the state space.</p>
+<p>There are four different ways of partitioning the state space using a  <a href="../../causalitytoolsbase/discretization/#CausalityToolsBase.RectangularBinning"><code>RectangularBinning</code></a>. The partition scheme is controlled by <code>ϵ</code>,  and the following <code>ϵ</code> will work (check <a href="../../causalitytoolsbase/discretization/#CausalityToolsBase.RectangularBinning"><code>RectangularBinning</code></a> documentation  for more binning alternatives):</p>
+<ul>
+<li><code>ϵ::Int</code> divide each axis into <code>ϵ</code> intervals of the same size.</li>
+<li><code>ϵ::Float</code> divide each axis into intervals of size <code>ϵ</code>.</li>
+<li><code>ϵ::Vector{Int}</code> divide the i-th axis into <code>ϵᵢ</code> intervals of the same size.</li>
+<li><code>ϵ::Vector{Float64}</code> divide the i-th axis into intervals of size <code>ϵᵢ</code>.</li>
+</ul>
+<p>Below, we demonstrate how TE may be computed using the four different ways of discretizing the state space.</p>
+<p><a id='Hyper-rectangles-by-subdivision-of-axes-1'></a></p>
+<h4 id="hyper-rectangles-by-subdivision-of-axes">Hyper-rectangles by subdivision of axes</h4>
+<p>First, we use an integer number of subdivisions along each axis of the delay embedding when partitioning (<code>ϵ::Int</code>).</p>
+<div class="highlight"><pre><span></span><span class="n">ϵs</span> <span class="o">=</span> <span class="mi">1</span><span class="o">:</span><span class="mi">2</span><span class="o">:</span><span class="mi">50</span> <span class="c"># integer number of subdivisions along each axis of the embedding</span>
+<span class="n">te_estimates_xtoy</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">ϵs</span><span class="p">))</span>
+<span class="n">te_estimates_ytox</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">ϵs</span><span class="p">))</span>
+
+<span class="n">estimator</span> <span class="o">=</span> <span class="n">VisitationFrequency</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">ϵ</span><span class="p">)</span> <span class="kp">in</span> <span class="n">enumerate</span><span class="p">(</span><span class="n">ϵs</span><span class="p">)</span>
+    <span class="n">binning</span> <span class="o">=</span> <span class="n">RectangularBinning</span><span class="p">(</span><span class="n">ϵ</span><span class="p">)</span>
+    <span class="n">te_estimates_xtoy</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">transferentropy</span><span class="p">(</span><span class="n">E_xtoy</span><span class="p">,</span> <span class="n">vars</span><span class="p">,</span> <span class="n">binning</span><span class="p">,</span> <span class="n">estimator</span><span class="p">)</span>
+    <span class="n">te_estimates_ytox</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">transferentropy</span><span class="p">(</span><span class="n">E_ytox</span><span class="p">,</span> <span class="n">vars</span><span class="p">,</span> <span class="n">binning</span><span class="p">,</span> <span class="n">estimator</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="n">plot</span><span class="p">(</span><span class="n">ϵs</span><span class="p">,</span> <span class="n">te_estimates_xtoy</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;TE(x -&gt; y)&quot;</span><span class="p">,</span> <span class="n">lc</span> <span class="o">=</span> <span class="o">:</span><span class="n">black</span><span class="p">)</span>
+<span class="n">plot!</span><span class="p">(</span><span class="n">ϵs</span><span class="p">,</span> <span class="n">te_estimates_ytox</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;TE(y -&gt; x)&quot;</span><span class="p">,</span> <span class="n">lc</span> <span class="o">=</span> <span class="o">:</span><span class="n">red</span><span class="p">)</span>
+<span class="n">xlabel!</span><span class="p">(</span><span class="s">&quot;# subdivisions along each axis&quot;</span><span class="p">)</span>
+<span class="n">ylabel!</span><span class="p">(</span><span class="s">&quot;Transfer entropy (bits)&quot;</span><span class="p">)</span>
+</pre></div>
+
+<p><img alt="" src="../logistic2_transferentrpopy_epsilonint.svg" /></p>
+<p>As expected, there is much higher information flow from <code>x</code> to <code>y</code> (where there is an underlying coupling) than from <code>y</code> to <code>x</code>, where there is no underlying coupling.</p>
+<p><a id='Hyper-cubes-of-fixed-size-1'></a></p>
+<h4 id="hyper-cubes-of-fixed-size">Hyper-cubes of fixed size</h4>
+<p>We do precisely the same, but use fixed-width hyper-cube bins (<code>ϵ::Float</code>). The values of the logistic map take values on <code>[0, 1]</code>, so using bins width edge lengths <code>0.1</code> should give a covering corresponding to using <code>10</code> subdivisions along each axis of the delay embedding. We let <code>ϵ</code> take values on <code>[0.05, 0.5]</code></p>
+<div class="highlight"><pre><span></span><span class="n">ϵs</span> <span class="o">=</span> <span class="mf">0.05</span><span class="o">:</span><span class="mf">0.05</span><span class="o">:</span><span class="mf">0.5</span>
+<span class="n">te_estimates_xtoy</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">ϵs</span><span class="p">))</span>
+<span class="n">te_estimates_ytox</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">ϵs</span><span class="p">))</span>
+
+<span class="n">estimator</span> <span class="o">=</span> <span class="n">VisitationFrequency</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">ϵ</span><span class="p">)</span> <span class="kp">in</span> <span class="n">enumerate</span><span class="p">(</span><span class="n">ϵs</span><span class="p">)</span>
+    <span class="n">binning</span> <span class="o">=</span> <span class="n">RectangularBinning</span><span class="p">(</span><span class="n">ϵ</span><span class="p">)</span>
+    <span class="n">te_estimates_xtoy</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">transferentropy</span><span class="p">(</span><span class="n">E_xtoy</span><span class="p">,</span> <span class="n">vars</span><span class="p">,</span> <span class="n">binning</span><span class="p">,</span> <span class="n">estimator</span><span class="p">)</span>
+    <span class="n">te_estimates_ytox</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">transferentropy</span><span class="p">(</span><span class="n">E_ytox</span><span class="p">,</span> <span class="n">vars</span><span class="p">,</span> <span class="n">binning</span><span class="p">,</span> <span class="n">estimator</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="n">plot</span><span class="p">(</span><span class="n">ϵs</span><span class="p">,</span> <span class="n">te_estimates_xtoy</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;TE(x -&gt; y)&quot;</span><span class="p">,</span> <span class="n">lc</span> <span class="o">=</span> <span class="o">:</span><span class="n">black</span><span class="p">)</span>
+<span class="n">plot!</span><span class="p">(</span><span class="n">ϵs</span><span class="p">,</span> <span class="n">te_estimates_ytox</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;TE(y -&gt; x)&quot;</span><span class="p">,</span> <span class="n">lc</span> <span class="o">=</span> <span class="o">:</span><span class="n">red</span><span class="p">)</span>
+<span class="n">xlabel!</span><span class="p">(</span><span class="s">&quot;Hypercube edge length&quot;</span><span class="p">)</span>
+<span class="n">ylabel!</span><span class="p">(</span><span class="s">&quot;Transfer entropy (bits)&quot;</span><span class="p">)</span>
+<span class="n">xflip!</span><span class="p">()</span>
+</pre></div>
+
+<p><img alt="" src="../logistic2_transferentropy_epsilonfloat.svg" /></p>
+<p><a id='Hyper-rectangles-of-fixed-size-1'></a></p>
+<h4 id="hyper-rectangles-of-fixed-size">Hyper-rectangles of fixed size</h4>
+<p>It is also possible to use hyper-rectangles  (<code>ϵ::Vector{Float}</code>), by specifying the edge lengths along each coordinate axis of the delay embedding. In our case, we use a four-dimensional, embedding, so we must provide a 4-element vector of edge lengths.</p>
+<div class="highlight"><pre><span></span><span class="c"># Define slightly different edge lengths along each axis</span>
+<span class="n">ϵs_x1</span> <span class="o">=</span> <span class="n">LinRange</span><span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">ϵs_x2</span> <span class="o">=</span> <span class="n">LinRange</span><span class="p">(</span><span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">ϵs_x3</span> <span class="o">=</span> <span class="n">LinRange</span><span class="p">(</span><span class="mf">0.08</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">ϵs_x4</span> <span class="o">=</span> <span class="n">LinRange</span><span class="p">(</span><span class="mf">0.10</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+
+<span class="n">te_estimates_xtoy</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">ϵs</span><span class="p">))</span>
+<span class="n">te_estimates_ytox</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">ϵs</span><span class="p">))</span>
+<span class="n">mean_ϵs</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="n">estimator</span> <span class="o">=</span> <span class="n">VisitationFrequency</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="o">∈</span> <span class="mi">1</span><span class="o">:</span><span class="mi">10</span>
+    <span class="n">ϵ</span> <span class="o">=</span> <span class="p">[</span><span class="n">ϵs_x1</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">ϵs_x2</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">ϵs_x3</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">ϵs_x4</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+    <span class="n">binning</span> <span class="o">=</span> <span class="n">RectangularBinning</span><span class="p">(</span><span class="n">ϵ</span><span class="p">)</span>
+    <span class="n">te_estimates_xtoy</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">transferentropy</span><span class="p">(</span><span class="n">E_xtoy</span><span class="p">,</span> <span class="n">vars</span><span class="p">,</span> <span class="n">binning</span><span class="p">,</span> <span class="n">estimator</span><span class="p">)</span>
+    <span class="n">te_estimates_ytox</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">transferentropy</span><span class="p">(</span><span class="n">E_ytox</span><span class="p">,</span> <span class="n">vars</span><span class="p">,</span> <span class="n">binning</span><span class="p">,</span> <span class="n">estimator</span><span class="p">)</span>
+
+    <span class="c"># Store average edge length (for plotting)</span>
+    <span class="n">mean_ϵs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">mean</span><span class="p">(</span><span class="n">ϵ</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="n">plot</span><span class="p">(</span><span class="n">mean_ϵs</span><span class="p">,</span> <span class="n">te_estimates_xtoy</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;TE(x -&gt; y)&quot;</span><span class="p">,</span> <span class="n">lc</span> <span class="o">=</span> <span class="o">:</span><span class="n">black</span><span class="p">)</span>
+<span class="n">plot!</span><span class="p">(</span><span class="n">mean_ϵs</span><span class="p">,</span> <span class="n">te_estimates_ytox</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;TE(y -&gt; x)&quot;</span><span class="p">,</span> <span class="n">lc</span> <span class="o">=</span> <span class="o">:</span><span class="n">red</span><span class="p">)</span>
+<span class="n">xlabel!</span><span class="p">(</span><span class="s">&quot;Average hypercube edge length&quot;</span><span class="p">)</span>
+<span class="n">ylabel!</span><span class="p">(</span><span class="s">&quot;Transfer entropy (bits)&quot;</span><span class="p">)</span>
+<span class="n">xflip!</span><span class="p">()</span>
+</pre></div>
+
+<p><img alt="" src="../logistic2_transferentropy_epsilonvecfloat.svg" /></p>
+<p><a id='Hyper-rectangles-by-variable-width-subdivision-of-axes-1'></a></p>
+<h4 id="hyper-rectangles-by-variable-width-subdivision-of-axes">Hyper-rectangles by variable-width subdivision of axes</h4>
+<p>Another way to construct hyper-rectangles is to subdivide each coordinate axis into segments of equal length (<code>ϵ::Vector{Int}</code>). In our case, we use a four-dimensional, embedding, so we must provide a 4-element vector providing the number of subdivisions we want along each axis.</p>
+<div class="highlight"><pre><span></span><span class="c"># Define different number of subdivisions along each axis.</span>
+<span class="n">ϵs</span> <span class="o">=</span> <span class="mi">3</span><span class="o">:</span><span class="mi">50</span>
+<span class="n">mean_ϵs</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">ϵs</span><span class="p">))</span>
+
+<span class="n">te_estimates_xtoy</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">ϵs</span><span class="p">))</span>
+<span class="n">te_estimates_ytox</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">ϵs</span><span class="p">))</span>
+<span class="n">estimator</span> <span class="o">=</span> <span class="n">VisitationFrequency</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">ϵᵢ</span><span class="p">)</span> <span class="o">∈</span> <span class="n">enumerate</span><span class="p">(</span><span class="n">ϵs</span><span class="p">)</span>
+    <span class="n">ϵ</span> <span class="o">=</span> <span class="p">[</span><span class="n">ϵᵢ</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ϵᵢ</span><span class="p">,</span> <span class="n">ϵᵢ</span><span class="p">,</span> <span class="n">ϵᵢ</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">binning</span> <span class="o">=</span> <span class="n">RectangularBinning</span><span class="p">(</span><span class="n">ϵ</span><span class="p">)</span>
+    <span class="n">te_estimates_xtoy</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">transferentropy</span><span class="p">(</span><span class="n">E_xtoy</span><span class="p">,</span> <span class="n">vars</span><span class="p">,</span> <span class="n">binning</span><span class="p">,</span> <span class="n">estimator</span><span class="p">)</span>
+    <span class="n">te_estimates_ytox</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">transferentropy</span><span class="p">(</span><span class="n">E_ytox</span><span class="p">,</span> <span class="n">vars</span><span class="p">,</span> <span class="n">binning</span><span class="p">,</span> <span class="n">estimator</span><span class="p">)</span>
+
+    <span class="c"># Store average number of subdivisions for plotting</span>
+    <span class="n">mean_ϵs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">mean</span><span class="p">(</span><span class="n">ϵ</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="n">plot</span><span class="p">(</span><span class="n">mean_ϵs</span><span class="p">,</span> <span class="n">te_estimates_xtoy</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;TE(x -&gt; y)&quot;</span><span class="p">,</span> <span class="n">lc</span> <span class="o">=</span> <span class="o">:</span><span class="n">black</span><span class="p">)</span>
+<span class="n">plot!</span><span class="p">(</span><span class="n">mean_ϵs</span><span class="p">,</span> <span class="n">te_estimates_ytox</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;TE(y -&gt; x)&quot;</span><span class="p">,</span> <span class="n">lc</span> <span class="o">=</span> <span class="o">:</span><span class="n">red</span><span class="p">)</span>
+<span class="n">xlabel!</span><span class="p">(</span><span class="s">&quot;Average number of subdivisions along the embedding axes&quot;</span><span class="p">)</span>
+<span class="n">ylabel!</span><span class="p">(</span><span class="s">&quot;Transfer entropy (bits)&quot;</span><span class="p">)</span>
+</pre></div>
+
+<p><img alt="" src="../logistic2_transferentropy_epsilonvecint.svg" /></p>
+<p><a id='Conclusion-1'></a></p>
+<h3 id="conclusion">Conclusion</h3>
+<p>The value of the TE depends on the system under consideration, and on the way one chooses to discretize the state space reconstruction.</p>
+<p>For this example, TE is consistently larger for the expected direction <code>TE(x -&gt; y)</code> than in the opposite direction <code>TE(y -&gt; x)</code>, where we expect no information flow.</p>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../../surrogates/randomshuffle_docs/" title="Random shuffle" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Random shuffle
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../../tutorials/list_of_tutorials/" title="List of tutorials" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                List of tutorials
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+        
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.30f6b8b1.js"></script>
+      
+      <script>app.initialize({version:"0.17.5",url:{base:"../.."}})</script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+      
+        <script src="../../assets/mathjaxhelper.js"></script>
+      
+    
+    
+      
+    
+  </body>
+</html>

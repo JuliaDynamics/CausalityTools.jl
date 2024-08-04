@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>PairwiseAsymmetricInference · CausalityTools.jl</title><meta name="title" content="PairwiseAsymmetricInference · CausalityTools.jl"/><meta property="og:title" content="PairwiseAsymmetricInference · CausalityTools.jl"/><meta property="twitter:title" content="PairwiseAsymmetricInference · CausalityTools.jl"/><meta name="description" content="Documentation for CausalityTools.jl."/><meta property="og:description" content="Documentation for CausalityTools.jl."/><meta property="twitter:description" content="Documentation for CausalityTools.jl."/><script data-outdated-warner src="../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../search_index.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script><link href="https://fonts.googleapis.com/css?family=Montserrat|Source+Code+Pro&amp;display=swap" rel="stylesheet" type="text/css"/></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../../"><img class="docs-light-only" src="../../assets/logo.png" alt="CausalityTools.jl logo"/><img class="docs-dark-only" src="../../assets/logo-dark.png" alt="CausalityTools.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit"><a href="../../">CausalityTools.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../../">CausalityTools.jl</a></li><li><a class="tocitem" href="../../associations/">Association measures</a></li><li><a class="tocitem" href="../../independence/">Independence</a></li><li><a class="tocitem" href="../../causal_graphs/">Network/graph inference</a></li><li><span class="tocitem">Examples</span><ul><li><a class="tocitem" href="../../examples/examples_associations/">Association measures</a></li><li><a class="tocitem" href="../../examples/examples_infer_graphs/">Graph inference</a></li><li><span class="tocitem">Extended examples</span><ul><li><a class="tocitem" href="../cross_mapping/"><code>ConvergentCrossMapping</code></a></li><li class="is-active"><a class="tocitem" href><code>PairwiseAsymmetricInference</code></a><ul class="internal"><li><a class="tocitem" href="#example_PairwiseAsymmetricInference_reproduce_mccracken"><span>Reproducing McCracken &amp; Weigel (2014)</span></a></li></ul></li><li><a class="tocitem" href="../mutual_information/"><code>MIShannon</code></a></li></ul></li></ul></li><li><span class="tocitem">Basics and tutorials</span><ul><li><a class="tocitem" href="../../encoding_tutorial/">Encoding elements</a></li><li><a class="tocitem" href="../../discretization_tutorial/">Encoding input datasets</a></li><li><a class="tocitem" href="../../probabilities_tutorial/">Counts and probabilities</a></li><li><a class="tocitem" href="../../info_tutorial/">Information measures</a></li></ul></li><li><a class="tocitem" href="../../references/">References</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Examples</a></li><li><a class="is-disabled">Extended examples</a></li><li class="is-active"><a href><code>PairwiseAsymmetricInference</code></a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href><code>PairwiseAsymmetricInference</code></a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/JuliaDynamics/CausalityTools.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/JuliaDynamics/CausalityTools.jl/blob/main/docs/src/extended_examples/pairwise_asymmetric_inference.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="[PairwiseAsymmetricInference](@ref)"><a class="docs-heading-anchor" href="#[PairwiseAsymmetricInference](@ref)"><a href="../../associations/#CausalityTools.PairwiseAsymmetricInference"><code>PairwiseAsymmetricInference</code></a></a><a id="[PairwiseAsymmetricInference](@ref)-1"></a><a class="docs-heading-anchor-permalink" href="#[PairwiseAsymmetricInference](@ref)" title="Permalink"></a></h1><h2 id="example_PairwiseAsymmetricInference_reproduce_mccracken"><a class="docs-heading-anchor" href="#example_PairwiseAsymmetricInference_reproduce_mccracken">Reproducing McCracken &amp; Weigel (2014)</a><a id="example_PairwiseAsymmetricInference_reproduce_mccracken-1"></a><a class="docs-heading-anchor-permalink" href="#example_PairwiseAsymmetricInference_reproduce_mccracken" title="Permalink"></a></h2><p>Let&#39;s try to reproduce figure 8 from <a href="../../references/#McCracken2014">McCracken and Weigel (2014)</a>&#39;s paper on <a href="../../associations/#CausalityTools.PairwiseAsymmetricInference"><code>PairwiseAsymmetricInference</code></a> (PAI). We&#39;ll start by defining the their example B (equations 6-7). This system consists of two variables <span>$X$</span> and <span>$Y$</span>, where <span>$X$</span> drives <span>$Y$</span>.</p><p>After we have computed the PAI in both directions, we define a measure of directionality as the difference between PAI in the <span>$X \to Y$</span> direction and in the <span>$Y \to X$</span> direction, so that if <span>$X$</span> drives <span>$Y$</span>, then <span>$\Delta &lt; 0$</span>.</p><pre><code class="language-julia hljs">using CausalityTools
+using LabelledArrays
+using StaticArrays
+using DynamicalSystemsBase
+using StateSpaceSets
+using CairoMakie, Printf
+using Distributions: Normal
+using Statistics: mean, std
+
+function eom_nonlinear_sindriver(dx, x, p, n)
+    a, b, c, t, Δt = (p...,)
+    x, y = x[1], x[2]
+    𝒩 = Normal(0, 1)
+
+    dx[1] = sin(t)
+    dx[2] = a*x * (1 - b*x) + c* rand(𝒩)
+    p[end-1] += 1 # update t
+
+    return
+end
+
+function nonlinear_sindriver(;u₀ = rand(2), a = 1.0, b = 1.0, c = 2.0, Δt = 1)
+    DiscreteDynamicalSystem(eom_nonlinear_sindriver, u₀, [a, b, c, 0, Δt])
+end
+
+function reproduce_figure_8_mccraken(;
+        c = 2.0, Δt = 0.2,
+        as = 0.5:0.5:5.0,
+        bs = 0.5:0.5:5.0)
+    # -----------------------------------------------------------------------------------------
+    # Generate many time series for many different values of the parameters `a` and `b`,
+    # and compute PAI. This will replicate the upper right panel of
+    # figure 8 in McCracken &amp; Weigel (2014).
+    # -----------------------------------------------------------------------------------------
+
+    measure = PairwiseAsymmetricInference(d = 3)
+
+    # Manually resample `nreps` length-`L` time series and use mean ρ(x̂|X̄y) - ρ(ŷ|Ȳx)
+    # for each parameter combination.
+    nreps = 50
+    L = 200 # length of timeseries
+    Δ = zeros(length(as), length(bs))
+    for (i, a) in enumerate(as)
+        for (j, b) in enumerate(bs)
+            s = nonlinear_sindriver(; a, b, c,  Δt)
+            x, y = columns(first(trajectory(s, 1000, Ttr = 10000)))
+            Δreps = zeros(nreps)
+            for i = 1:nreps
+                # Ensure we&#39;re subsampling at the same time indices.
+                ind_start = rand(1:(1000-L))
+                r = ind_start:(ind_start + L)
+                Δreps[i] = @views crossmap(measure, y[r], x[r]) -
+                    crossmap(measure, x[r], y[r])
+            end
+            Δ[i, j] = mean(Δreps)
+        end
+    end
+
+    # -----------------------------------------------------------------------------------------
+    # An example time series for plotting.
+    # -----------------------------------------------------------------------------------------
+    sys = nonlinear_sindriver(; a = 1.0, b = 1.0, c, Δt)
+    npts = 500
+    orbit = first(trajectory(sys, npts, Ttr = 10000))
+    x, y = columns(orbit)
+    with_theme(theme_minimal(),
+        markersize = 5) do
+
+        X = x[1:300]
+        Y = y[1:300]
+        fig = Figure();
+        ax_ts = Axis(fig[1, 1:2], xlabel = &quot;Time (t)&quot;, ylabel = &quot;Value&quot;)
+        scatterlines!(ax_ts, (X .- mean(X)) ./ std(X), label = &quot;x&quot;)
+        scatterlines!(ax_ts, (Y .- mean(Y)) ./ std(Y), label = &quot;y&quot;)
+        axislegend()
+
+        ax_hm = Axis(fig[2, 1:2], xlabel = &quot;a&quot;, ylabel = &quot;b&quot;)
+        ax_hm.yticks = (1:length(as), string.([i % 2 == 0 ? as[i] : &quot;&quot; for i = 1:length(as)]))
+        ax_hm.xticks = (1:length(bs), string.([i % 2 == 0 ? bs[i] : &quot;&quot; for i = 1:length(bs)]))
+        hm = heatmap!(ax_hm, Δ,  colormap = :viridis)
+        Colorbar(fig[2, 3], hm; label = &quot;Δ&#39; = ρ(ŷ | yx) - ρ(x̂ | xy)&quot;)
+        fig
+    end
+end
+
+reproduce_figure_8_mccraken()</code></pre><img src="0ecff091.png" alt="Example block output"/><p>We haven&#39;t used as many parameter combinations as <a href="../../references/#McCracken2014">McCracken and Weigel (2014)</a> did,  but we get a figure that looks roughly similar to theirs.</p><p>As expected, <span>$\Delta &lt; 0$</span> for all parameter combinations, implying that <span>$X$</span> &quot;PAI drives&quot; <span>$Y$</span>.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../cross_mapping/">« <code>ConvergentCrossMapping</code></a><a class="docs-footer-nextpage" href="../mutual_information/"><code>MIShannon</code> »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.5.0 on <span class="colophon-date" title="Wednesday 24 July 2024 01:54">Wednesday 24 July 2024</span>. Using Julia version 1.10.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Predictive asymmetry · CausalityTools.jl</title><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.039/juliamono-regular.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.11/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><script src="../../copy.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script><link href="https://fonts.googleapis.com/css?family=Montserrat|Source+Code+Pro&amp;display=swap" rel="stylesheet" type="text/css"/></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../">CausalityTools.jl</a></span></div><form class="docs-search" action="../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../">Overview</a></li><li><a class="tocitem" href="../surrogate/">Surrogate data</a></li><li><span class="tocitem">Distance based</span><ul><li><a class="tocitem" href="../joint_distance_distribution/">Joint distance distribution</a></li><li><a class="tocitem" href="../s_measure/">S-measure</a></li><li><a class="tocitem" href="../cross_mapping/">Cross mapping</a></li><li><a class="tocitem" href="../pairwise_asymmetric_inference/">Pairwise asymmetric inference</a></li></ul></li><li><span class="tocitem">Information/entropy based</span><ul><li><a class="tocitem" href="../mutualinfo/">Mutual information</a></li><li><a class="tocitem" href="../TransferEntropy/">Transfer entropy</a></li><li class="is-active"><a class="tocitem" href>Predictive asymmetry</a><ul class="internal"><li><a class="tocitem" href="#Example:-no-coupling"><span>Example: no coupling</span></a></li><li><a class="tocitem" href="#Example:-coupled-Ulam-maps"><span>Example: coupled Ulam maps</span></a></li></ul></li><li><a class="tocitem" href="../generalized_entropy/">Generalized entropy</a></li><li><a class="tocitem" href="../info_estimators/">Estimators</a></li></ul></li><li><a class="tocitem" href="../example_systems/">Example systems</a></li><li><span class="tocitem">Utilities</span><ul><li><a class="tocitem" href="../invariant_measure/">Invariant measures and transfer operators</a></li><li><a class="tocitem" href="../dataset/">Multivariate <code>Dataset</code>s</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Information/entropy based</a></li><li class="is-active"><a href>Predictive asymmetry</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Predictive asymmetry</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/JuliaDynamics/CausalityTools.jl/blob/master/docs/src/predictive_asymmetry.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Predictive-asymmetry"><a class="docs-heading-anchor" href="#Predictive-asymmetry">Predictive asymmetry</a><a id="Predictive-asymmetry-1"></a><a class="docs-heading-anchor-permalink" href="#Predictive-asymmetry" title="Permalink"></a></h1><article class="docstring"><header><a class="docstring-binding" id="CausalityTools.PredictiveAsymmetry.predictive_asymmetry" href="#CausalityTools.PredictiveAsymmetry.predictive_asymmetry"><code>CausalityTools.PredictiveAsymmetry.predictive_asymmetry</code></a> — <span class="docstring-category">Function</span></header><section><div><p><strong>General interface</strong></p><pre><code class="nohighlight hljs">predictive_asymmetry(s, t, [c], 
+    estimator::TransferEntropyEstimator, ηs; 
+    d𝒯 = 1, dT = 1, dS = 1, τT = -1, τS = -1, 
+    [dC = 1, τC = -1,],
+    normalize::Bool = false, f::Real = 1.0) → Vector{Float64}</code></pre><p>Compute the predictive asymmetry<sup class="footnote-reference"><a id="citeref-Haaga2020" href="#footnote-Haaga2020">[Haaga2020]</a></sup> 𝔸(<code>s</code> → <code>t</code>) for source time series <code>s</code> and  target time series <code>t</code> over prediction lags <code>ηs</code>, using the given <code>estimator</code> and embedding  parameters <code>d𝒯</code>, <code>dT</code>, <code>dS</code>, <code>τT</code>, <code>τS</code>. </p><p>If a conditional time series <code>c</code> is provided, compute 𝔸(<code>s</code> → <code>t</code> | <code>c</code>). Then, <code>dC</code> and  <code>τC</code> controls the embedding dimension and embedding lag for the conditional variable.</p><p><strong>Returns</strong></p><p>Returns a vector containing the predictive asymmetry for each value of <code>ηs</code>.</p><p><strong>Normalization (hypothesis test)</strong></p><p>If <code>normalize == true</code> (the default), then compute the normalized predictive asymmetry 𝒜. </p><p>In this case, for each <span>$\eta$</span> in <code>ηs</code>, compute 𝒜(η) by normalizing 𝔸(η) to some fraction <code>f</code> of the  mean transfer entropy over prediction lags <span>$-\eta, ..., \eta$</span> (exluding lag 0). </p><p>Haaga et al. (2020)<sup class="footnote-reference"><a id="citeref-Haaga2020" href="#footnote-Haaga2020">[Haaga2020]</a></sup> uses a normalization with <code>f=1.0</code> as a built-in hypothesis test,  avoiding more computationally costly surrogate testing.</p><p><strong>Estimators</strong></p><p>Any <a href="@ref">estimator</a> that works for <a href="../TransferEntropy/#TransferEntropy.transferentropy"><code>transferentropy</code></a> will also work with  <code>predictive_asymmetry</code>. It is recommended to use either the rectangular  binning-based methods or the symbolic estimators for the fastest computations. </p><p><strong>Examples</strong></p><pre><code class="language-julia hljs">using CausalityTools 
+
+# Some example time series
+x, y = rand(100), rand(100)
+
+# 𝔸(x → y) over prediction lags 1:5
+𝔸reg  = predictive_asymmetry(x, y, VisitationFrequency(RectangularBinning(5)), 1:5) </code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaDynamics/CausalityTools.jl/blob/b07f718338c43d071f8056f94912932b6d03ea2a/src/PredictiveAsymmetry/predictive_asymmetry.jl#L40-L89">source</a></section></article><h2 id="Example:-no-coupling"><a class="docs-heading-anchor" href="#Example:-no-coupling">Example: no coupling</a><a id="Example:-no-coupling-1"></a><a class="docs-heading-anchor-permalink" href="#Example:-no-coupling" title="Permalink"></a></h2><p>Here, we&#39;ll compute the predictive asymmetry on 100 different sets of random time series. Because there is no dynamical coupling between the time series, we expect the predictive asymmetry to be zero.</p><p>We&#39;ll use a visitation frequency estimator.</p><pre><code class="language-julia hljs">using CausalityTools, Plots, StatsBase
+
+# Define prediction lags and estimator
+ηs = 1:10
+est = VisitationFrequency(RectangularBinning(5)) # guess that 5 bins along each coordinate axis is sufficient
+
+nreps = 100
+𝔸xy = zeros(nreps, length(ηs))
+𝔸yx = zeros(nreps, length(ηs))
+
+for i = 1:nreps
+    # Some example time series
+    x, y = rand(1000), rand(1000)
+    𝔸xy[i, :] = predictive_asymmetry(x, y, est, ηs)
+    𝔸yx[i, :] = predictive_asymmetry(y, x, est, ηs)
+end
+
+plot()
+plot!(ηs, dropdims(mean(𝔸xy, dims = 1), dims = 1), label = &quot;X to Y&quot;, c = :black)
+plot!(ηs, dropdims(mean(𝔸yx, dims = 1), dims = 1), label = &quot;Y to X&quot;, c = :red)
+ylims!((-0.1, 0.1))
+xlabel!(&quot;Prediction lag (η)&quot;)
+ylabel!(&quot;Predictive asymmetry (bits)&quot;)</code></pre><p><img src="../random-pa.svg" alt/></p><p>As expected, because there is no dynamical coupling between the variables, the predictive asymmetry is around zero for all prediction lags.</p><h2 id="Example:-coupled-Ulam-maps"><a class="docs-heading-anchor" href="#Example:-coupled-Ulam-maps">Example: coupled Ulam maps</a><a id="Example:-coupled-Ulam-maps-1"></a><a class="docs-heading-anchor-permalink" href="#Example:-coupled-Ulam-maps" title="Permalink"></a></h2><p>Here, we&#39;ll use the same example as in Schreiber&#39;s transfer entropy paper and see if the predictive asymmetry  is able to decipher the directional coupling in the Ulam system.</p><p>Let&#39;s start by defining the Ulam system. Then, we generate time series for different values of the  parameter <code>ε</code> and compute the predictive asymmetry for prediction lags <code>ηs = 1:10</code>.</p><p>We expect that the predictive asymmetry is positive if there is a directional coupling, and zero or negative  if there is no directional coupling.</p><pre><code class="language-julia hljs">using DynamicalSystems, CausalityTools, Plots, Random, StatsBase, TimeseriesSurrogates
+
+Random.seed!(12234)
+
+function ulam_system(dx, x, p, t)
+    f(x) = 2 - x^2
+    ε = p[1]
+    dx[1] = f(ε*x[length(dx)] + (1-ε)*x[1])
+    for i in 2:length(dx)
+        dx[i] = f(ε*x[i-1] + (1-ε)*x[i])
+    end
+end
+
+ds = DiscreteDynamicalSystem(ulam_system, rand(100) .- 0.5, [0.04])
+trajectory(ds, 1000; Ttr = 1000)
+
+εs = 0.02:0.02:1.0
+ηs = 1:10
+pas_x1x2 = zeros(length(εs), length(ηs));
+pas_x2x1 = zeros(length(εs), length(ηs))
+
+for (i, ε) in enumerate(εs)
+    set_parameter!(ds, 1, ε)
+    # Use time series consisting of 1000 points
+    tr = trajectory(ds, 1000; Ttr = 5000)
+    X1 = tr[:, 1]; X2 = tr[:, 2]
+    @assert !any(isnan, X1)
+    @assert !any(isnan, X2)
+    binning = RectangularBinning(0.2) # guess an appropriate bin width of 0.2
+    pas_x1x2[i, :] = predictive_asymmetry(X1, X2, VisitationFrequency(binning), ηs)
+    pas_x2x1[i, :] = predictive_asymmetry(X2, X1, VisitationFrequency(binning), ηs)
+end</code></pre><p>Let&#39;s pick the predictive asymmetry at prediction lag <code>η = 10</code>. </p><pre><code class="language-julia hljs"># Pick predictive asymmetry at η = 10
+pa_x1x2 = [pas_x1x2[i, end] for i = 1:length(εs)]
+pa_x2x1 = [pas_x2x1[i, end] for i = 1:length(εs)]
+
+plot()
+plot(εs, pa_x1x2, label = &quot;X1 to X2&quot;, c = :black, lw = 1.5)
+plot!(εs, pa_x2x1, label = &quot;X2 to X1&quot;, c = :red)
+xlabel!(&quot;epsilon&quot;)
+ylabel!(&quot;Predictive asymmetry (bits)&quot;)
+hline!([0], ls = :dash, label = &quot;&quot;, c = :grey)</code></pre><p><img src="../predasym.svg" alt/></p><p>As expected, predictive asymmetry is positive in the direction <span>$X_1 \\to X_2$</span>, and  negative in the direction <span>$X_2 \\to X_1$</span>.</p><p>Are the results significant? We can test that using a surrogate test. We&#39;ll use random shuffle surrogates from the <code>TimeseriesSurrogates.jl</code> package. </p><p>Using the same parameters, as before, we generate time series for the same values of  <code>εs</code>, but for each <code>ε</code>, we generate 100 different shuffled versions of the source time  series. For each of those surrogate time series, we compute the predictive asymmetry and pick the value at <code>η = 10</code></p><pre><code class="language-julia hljs">n_surr = 100
+pas_x1x2_surr = zeros(length(εs), n_surr);
+pas_x2x1_surr = zeros(length(εs), n_surr)
+
+for (i, ε) in enumerate(εs)
+    set_parameter!(ds, 1, ε)
+    tr = trajectory(ds, 1000; Ttr = 5000)
+    X1 = tr[:, 1]; @assert !any(isnan, X1)
+    X2 = tr[:, 2]; @assert !any(isnan, X2)
+    S1 = surrogenerator(X1, RandomShuffle())
+    S2 = surrogenerator(X2, RandomShuffle())
+
+    binning = RectangularBinning(0.2) # guess an appropriate bin width of 0.2
+
+    pas_x1x2_surr[i, :] = [predictive_asymmetry(S1(), X2, VisitationFrequency(binning), ηs)[end] for k = 1:n_surr]
+    pas_x2x1_surr[i, :] = [predictive_asymmetry(S2(), X1, VisitationFrequency(binning), ηs)[end] for k = 1:n_surr]
+end</code></pre><p>We&#39;ll plot the 95th percentile of the surrogate ensemble predictive asymmetries (dashed lines) along with the original predictive asymmetries (solid lines). If the predictive asymmetry computed on the original time series exceed that of the 95th percentile of the surrogate ensemble, then the predictive asymmetry is significant.</p><pre><code class="language-julia hljs">uq_x1x2 = [quantile(pas_x1x2_surr[i, :], 0.95) for i = 1:length(εs)]
+uq_x2x1 = [quantile(pas_x2x1_surr[i, :], 0.95) for i = 1:length(εs)]
+ymax = maximum(abs.([pa_x1x2; pa_x2x1; uq_x1x2; uq_x2x1]))*1.1
+plot(ylims = (-ymax, ymax))
+plot!(εs, pa_x1x2, label = &quot;X1 to X2&quot;, c = :black, lw = 1.5)
+plot!(εs, uq_x1x2, label = &quot;X1 to X2&quot;, c = :black, ls = :dot)
+plot!(εs, pa_x2x1, label = &quot;X2 to X1&quot;, c = :red)
+plot!(εs, uq_x2x1, label = &quot;X2 to X1&quot;, c = :red, ls = :dot)
+
+xlabel!(&quot;epsilon&quot;)
+ylabel!(&quot;Predictive asymmetry (bits)&quot;)
+hline!([0], ls = :dash, label = &quot;&quot;, c = :grey)</code></pre><p><img src="../predasym_withsurr.svg" alt/></p><p>The predictive asymmetry in the direction <span>$X_1 \\to X_2$</span> is above the 95th percentile of the surrogates for most parameters. Thus, we reject the null hypothesis that <span>$X_1$</span> does not influence <span>$X_2$</span> and accept the alternative hypothesis that <span>$X_1$</span> does in fact influence <span>$X_2$</span>. In the context of causal inference, this means that there is evidence of directional dynamical coupling from <span>$X_1$</span> to <span>$X_2$</span> and that <span>$X_1$</span> is causally coupled to <span>$X_2$</span>. </p><p>In the oppposite direction, <span>$X_2 \\to X_1$</span>, where there should not be any directional coupling (by definition), the predictive asymmetries are below the surrogates, so we cannot reject the null hypothesis that <span>$X_2$</span> does not influence <span>$X_1$</span>. Hence, there is no evidence of directional dynamical coupling from <span>$X_2$</span> to  <span>$X_1$</span>.</p><section class="footnotes is-size-7"><ul><li class="footnote" id="footnote-Haaga2020"><a class="tag is-link" href="#citeref-Haaga2020">Haaga2020</a>Haaga, Kristian Agasøster, David Diego, Jo Brendryen, and Bjarte Hannisdal. &quot;A simple test for causality in complex systems.&quot; arXiv preprint arXiv:2005.01860 (2020).</li></ul></section></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../TransferEntropy/">« Transfer entropy</a><a class="docs-footer-nextpage" href="../generalized_entropy/">Generalized entropy »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.12 on <span class="colophon-date" title="Monday 31 January 2022 11:18">Monday 31 January 2022</span>. Using Julia version 1.7.1.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>

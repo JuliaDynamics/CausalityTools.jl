@@ -1,0 +1,1876 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="Causality detection from time series in Julia.">
+      
+      
+      
+        <meta name="author" content="Kristian Agasøster Haaga">
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-0.17.5, mkdocs-material-2.9.4">
+    
+    
+      
+        <title>Continuous systems - CausalityTools.jl</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.451f80e5.css">
+      
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.1aa3b519.js"></script>
+    
+    
+      <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+      
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+      <link rel="stylesheet" href="../../assets/Documenter.css">
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448"
+    viewBox="0 0 416 448" id="__github">
+  <path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19-18.125
+        8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19 18.125-8.5
+        18.125 8.5 10.75 19 3.125 20.5zM320 304q0 10-3.125 20.5t-10.75
+        19-18.125 8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19
+        18.125-8.5 18.125 8.5 10.75 19 3.125 20.5zM360
+        304q0-30-17.25-51t-46.75-21q-10.25 0-48.75 5.25-17.75 2.75-39.25
+        2.75t-39.25-2.75q-38-5.25-48.75-5.25-29.5 0-46.75 21t-17.25 51q0 22 8
+        38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0
+        37.25-1.75t35-7.375 30.5-15 20.25-25.75 8-38.375zM416 260q0 51.75-15.25
+        82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5-41.75
+        1.125q-19.5 0-35.5-0.75t-36.875-3.125-38.125-7.5-34.25-12.875-30.25-20.25-21.5-28.75q-15.5-30.75-15.5-82.75
+        0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25
+        30.875q36.75-8.75 77.25-8.75 37 0 70 8 26.25-20.5
+        46.75-30.25t47.25-9.75q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34
+        99.5z" />
+</svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#continuous-coupled-dynamical-systems" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="../.." title="CausalityTools.jl" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            
+              <span class="md-header-nav__topic">
+                CausalityTools.jl
+              </span>
+              <span class="md-header-nav__topic">
+                Continuous systems
+              </span>
+            
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          
+            <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+            
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+          
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+
+  <a href="https://github.com/kahaaga/CausalityTools.jl/" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#__github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="../.." title="CausalityTools.jl" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    CausalityTools.jl
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+
+  <a href="https://github.com/kahaaga/CausalityTools.jl/" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#__github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      Causality estimation
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        Causality estimation
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/causality_from_time_series/" title="Causality from time series" class="md-nav__link">
+      Causality from time series
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2-2" type="checkbox" id="nav-2-2">
+    
+    <label class="md-nav__link" for="nav-2-2">
+      Causality from uncertain data
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-2-2">
+        Causality from uncertain data
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/causality_from_uncertain_data/" title="Methods" class="md-nav__link">
+      Methods
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/causality_from_uncertain_data_naive/" title="Naive resampling" class="md-nav__link">
+      Naive resampling
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/causality_from_uncertain_data_naive_constrained/" title="Constrained resampling" class="md-nav__link">
+      Constrained resampling
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/causality_from_uncertain_data_binneddatacausalitytest/" title="Binned resampling" class="md-nav__link">
+      Binned resampling
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/causality_from_uncertain_data_InterpolateBinTest/" title="Interpolate-and-bin resampling" class="md-nav__link">
+      Interpolate-and-bin resampling
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/causality_from_uncertain_data_RandomSequencesTest/" title="Random chunk resampling" class="md-nav__link">
+      Random chunk resampling
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/causality_from_uncertain_data_strictlyincreasing_interpolated/" title="Strictly increasing and interpolated resampling" class="md-nav__link">
+      Strictly increasing and interpolated resampling
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/causality_from_dynamical_systems/" title="Causality from dynamical systems" class="md-nav__link">
+      Causality from dynamical systems
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      Causality tests
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        Causality tests
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/causality_tests/" title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/JointDistanceDistributionTest/" title="JointDistanceDistributionTest" class="md-nav__link">
+      JointDistanceDistributionTest
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/CrossMappingTest/" title="CrossMappingTest" class="md-nav__link">
+      CrossMappingTest
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/ConvergentCrossMappingTest/" title="ConvergentCrossMappingTest" class="md-nav__link">
+      ConvergentCrossMappingTest
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/SMeasureTest/" title="SMeasureTest" class="md-nav__link">
+      SMeasureTest
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/TransferOperatorGridTest/" title="TransferOperatorGridTest" class="md-nav__link">
+      TransferOperatorGridTest
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/VisitationFrequencyTest/" title="VisitationFrequencyTest" class="md-nav__link">
+      VisitationFrequencyTest
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/ApproximateSimplexIntersectionTest/" title="ApproximateSimplexIntersectionTest" class="md-nav__link">
+      ApproximateSimplexIntersectionTest
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/ExactSimplexIntersectionTest/" title="ExactSimplexIntersectionTest" class="md-nav__link">
+      ExactSimplexIntersectionTest
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/PredictiveAsymmetryTest/" title="Predictive asymmetry test" class="md-nav__link">
+      Predictive asymmetry test
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      Fundamentals
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        Fundamentals
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytoolsbase/discretization/" title="Discretization" class="md-nav__link">
+      Discretization
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytoolsbase/delay_reconstructions/" title="Delay reconstruction" class="md-nav__link">
+      Delay reconstruction
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4-3" type="checkbox" id="nav-4-3">
+    
+    <label class="md-nav__link" for="nav-4-3">
+      Invariant properties over partitions
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-4-3">
+        Invariant properties over partitions
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../perronfrobenius/invariantmeasure/" title="Invariant measure" class="md-nav__link">
+      Invariant measure
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../perronfrobenius/transferoperator/" title="Transfer operator" class="md-nav__link">
+      Transfer operator
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      Estimators and algorithms
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        Estimators and algorithms
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-1" type="checkbox" id="nav-5-1">
+    
+    <label class="md-nav__link" for="nav-5-1">
+      Transfer entropy
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-5-1">
+        Transfer entropy
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../transferentropy/convenience_functions_te/" title="Convenience functions" class="md-nav__link">
+      Convenience functions
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../transferentropy/transferentropy_estimators/" title="Low-level estimators" class="md-nav__link">
+      Low-level estimators
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../transferentropy/TEVars/" title="Mapping delay reconstruction to marginals (TEVars)" class="md-nav__link">
+      Mapping delay reconstruction to marginals (TEVars)
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../transferentropy/examples_TE_different_partitionings/" title="Effect of discretization scheme" class="md-nav__link">
+      Effect of discretization scheme
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-2" type="checkbox" id="nav-5-2">
+    
+    <label class="md-nav__link" for="nav-5-2">
+      CCM
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-5-2">
+        CCM
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../crossmappings/ccm/overview/" title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../crossmappings/ccm/crossmapping/" title="Cross mapping" class="md-nav__link">
+      Cross mapping
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../crossmappings/ccm/convergentcrossmapping/" title="Converent cross mapping" class="md-nav__link">
+      Converent cross mapping
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../algorithms/joint_distance_distribution/" title="Joint distance distribution" class="md-nav__link">
+      Joint distance distribution
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../syntax_overview/" title="Syntax overview" class="md-nav__link">
+      Syntax overview
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-6" type="checkbox" id="nav-6" checked>
+    
+    <label class="md-nav__link" for="nav-6">
+      Example systems
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-6">
+        Example systems
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../example_systems_overview/" title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../example_systems_discrete/" title="Discrete systems" class="md-nav__link">
+      Discrete systems
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Continuous systems
+      </label>
+    
+    <a href="./" title="Continuous systems" class="md-nav__link md-nav__link--active">
+      Continuous systems
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#mediated-link" title="Mediated link" class="md-nav__link">
+    Mediated link
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#two-bidirectionally-coupled-3d-lorenz-systems" title="Two bidirectionally coupled 3D Lorenz systems" class="md-nav__link">
+    Two bidirectionally coupled 3D Lorenz systems
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#two-bidirectionally-coupled-3d-lorenz-systems-forced-by-another-3d-lorenz-system" title="Two bidirectionally coupled 3D Lorenz systems forced by another 3D Lorenz system" class="md-nav__link">
+    Two bidirectionally coupled 3D Lorenz systems forced by another 3D Lorenz system
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#three-transitively-connected-3d-lorenz-systems" title="Three transitively connected 3D Lorenz systems" class="md-nav__link">
+    Three transitively connected 3D Lorenz systems
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#two-bidirectionally-coupled-3d-rossler-systems" title="Two bidirectionally coupled 3D Rössler systems" class="md-nav__link">
+    Two bidirectionally coupled 3D Rössler systems
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#two-bidirectionally-coupled-3d-rossler-systems-forced-by-another-3d-rossler-system" title="Two bidirectionally coupled 3D Rössler systems forced by another 3D Rössler system" class="md-nav__link">
+    Two bidirectionally coupled 3D Rössler systems forced by another 3D Rössler system
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unidirectonal-forcing-from-a-3d-rossler-system-to-a-3d-lorenz-system" title="Unidirectonal forcing from a 3D Rössler system to a 3D Lorenz system" class="md-nav__link">
+    Unidirectonal forcing from a 3D Rössler system to a 3D Lorenz system
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#n-scroll-chua-attractors" title="N-scroll Chua attractors" class="md-nav__link">
+    N-scroll Chua attractors
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../noise/" title="Noise processes" class="md-nav__link">
+      Noise processes
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-7" type="checkbox" id="nav-7">
+    
+    <label class="md-nav__link" for="nav-7">
+      Surrogate data
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-7">
+        Surrogate data
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../surrogates/surrogates_overview/" title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-7-2" type="checkbox" id="nav-7-2">
+    
+    <label class="md-nav__link" for="nav-7-2">
+      Methods
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-7-2">
+        Methods
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../surrogates/iaaft_docs/" title="IAAFT" class="md-nav__link">
+      IAAFT
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../surrogates/aaft_docs/" title="AAFT" class="md-nav__link">
+      AAFT
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../surrogates/randomphases_docs/" title="Fourier surrogates, random phases" class="md-nav__link">
+      Fourier surrogates, random phases
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../surrogates/randomamplitudes_docs/" title="Fourier surrogates, random amplitudes" class="md-nav__link">
+      Fourier surrogates, random amplitudes
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../surrogates/randomshuffle_docs/" title="Random shuffle" class="md-nav__link">
+      Random shuffle
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-8" type="checkbox" id="nav-8">
+    
+    <label class="md-nav__link" for="nav-8">
+      Uncertain data handling
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-8">
+        Uncertain data handling
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../uncertaindata/BinnedDataCausalityTest/" title="BinnedDataCausalityTest" class="md-nav__link">
+      BinnedDataCausalityTest
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-9" type="checkbox" id="nav-9">
+    
+    <label class="md-nav__link" for="nav-9">
+      Tutorials/examples
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-9">
+        Tutorials/examples
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/list_of_tutorials/" title="List of tutorials" class="md-nav__link">
+      List of tutorials
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-9-2" type="checkbox" id="nav-9-2">
+    
+    <label class="md-nav__link" for="nav-9-2">
+      Causality from scalar data
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-9-2">
+        Causality from scalar data
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/tutorial_SMeasureTest/" title="SMeasureTest" class="md-nav__link">
+      SMeasureTest
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-9-3" type="checkbox" id="nav-9-3">
+    
+    <label class="md-nav__link" for="nav-9-3">
+      Causality from uncertain data
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-9-3">
+        Causality from uncertain data
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-9-3-1" type="checkbox" id="nav-9-3-1">
+    
+    <label class="md-nav__link" for="nav-9-3-1">
+      PredictiveAsymmetryTest
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="3">
+      <label class="md-nav__title" for="nav-9-3-1">
+        PredictiveAsymmetryTest
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/causality/binned_uncertain_data/tutorial_BinnedDataCausalityTest_PredictiveAsymmetryTest_BinnedResampling/" title="BinnedResampling" class="md-nav__link">
+      BinnedResampling
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/causality/binned_uncertain_data/tutorial_BinnedDataCausalityTest_PredictiveAsymmetryTest_BinnedMeanResampling/" title="BinnedMeanResampling" class="md-nav__link">
+      BinnedMeanResampling
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-9-4" type="checkbox" id="nav-9-4">
+    
+    <label class="md-nav__link" for="nav-9-4">
+      Worked examples
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-9-4">
+        Worked examples
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../worked_examples/worked_example_transferentropy/" title="Transfer entropy" class="md-nav__link">
+      Transfer entropy
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../CHANGELOG/" title="Changelog" class="md-nav__link">
+      Changelog
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#mediated-link" title="Mediated link" class="md-nav__link">
+    Mediated link
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#two-bidirectionally-coupled-3d-lorenz-systems" title="Two bidirectionally coupled 3D Lorenz systems" class="md-nav__link">
+    Two bidirectionally coupled 3D Lorenz systems
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#two-bidirectionally-coupled-3d-lorenz-systems-forced-by-another-3d-lorenz-system" title="Two bidirectionally coupled 3D Lorenz systems forced by another 3D Lorenz system" class="md-nav__link">
+    Two bidirectionally coupled 3D Lorenz systems forced by another 3D Lorenz system
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#three-transitively-connected-3d-lorenz-systems" title="Three transitively connected 3D Lorenz systems" class="md-nav__link">
+    Three transitively connected 3D Lorenz systems
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#two-bidirectionally-coupled-3d-rossler-systems" title="Two bidirectionally coupled 3D Rössler systems" class="md-nav__link">
+    Two bidirectionally coupled 3D Rössler systems
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#two-bidirectionally-coupled-3d-rossler-systems-forced-by-another-3d-rossler-system" title="Two bidirectionally coupled 3D Rössler systems forced by another 3D Rössler system" class="md-nav__link">
+    Two bidirectionally coupled 3D Rössler systems forced by another 3D Rössler system
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unidirectonal-forcing-from-a-3d-rossler-system-to-a-3d-lorenz-system" title="Unidirectonal forcing from a 3D Rössler system to a 3D Lorenz system" class="md-nav__link">
+    Unidirectonal forcing from a 3D Rössler system to a 3D Lorenz system
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#n-scroll-chua-attractors" title="N-scroll Chua attractors" class="md-nav__link">
+    N-scroll Chua attractors
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/kahaaga/CausalityTools.jl/edit/master/docs/example_systems/example_systems_continuous.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                
+                
+                <p><a id='continuous_systems-1'></a></p>
+<h1 id="continuous-coupled-dynamical-systems">Continuous coupled dynamical systems</h1>
+<p><a id='Mediated-link-1'></a></p>
+<h2 id="mediated-link">Mediated link</h2>
+<p><a id='CausalityTools.Systems.mediated_link-Tuple{}' href='#CausalityTools.Systems.mediated_link-Tuple{}'>#</a>
+<strong><code>CausalityTools.Systems.mediated_link</code></strong> &mdash; <em>Method</em>.</p>
+<div class="highlight"><pre><span></span><span class="n">mediated_link</span><span class="p">(;</span><span class="n">u₀</span> <span class="o">=</span> <span class="n">rand</span><span class="p">(</span><span class="mi">9</span><span class="p">),</span> <span class="n">ωx</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ωy</span> <span class="o">=</span> <span class="mf">1.015</span><span class="p">,</span> <span class="n">ωz</span> <span class="o">=</span> <span class="mf">0.985</span><span class="p">,</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="mf">0.15</span><span class="p">,</span> <span class="n">l</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="mf">10.0</span><span class="p">,</span> 
+    <span class="n">c</span> <span class="o">=</span> <span class="mf">0.06</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ContinuousDynamicalSystem</span>
+</pre></div>
+
+<p>Initialise a three-subsystem dynamical system where <code>X</code> and <code>Y</code> are driven by <code>Z</code>. At the default value of the coupling constant <code>c = 0.06</code>, the responses <code>X</code> and <code>Y</code> are already synchronized to the driver <code>Z</code>.</p>
+<p><strong>Equations of motion</strong></p>
+<p>The dynamics is generated by the following vector field</p>
+<div>
+<div class="MathJax_Preview">
+\begin{aligned}
+dx_1 &amp;= -\omega_x x_2 - x_3 + c*(z_1 - x_1) \\
+dx_2 &amp;= \omega_x x_1 + k*x_2  \\
+dx_3 &amp;= l + x_3(x_1 - m)  \\
+dy_1 &amp;= -\omega_y y_2 - y_3 + c*(z_1 - y_1)  \\
+dy_2 &amp;= \omega_y y_1 + k*y_2  \\
+dy_3 &amp;= l + y_3(y_1 - m)  \\
+dz_1 &amp;= -\omega_z z_2 - z_3  \\
+dz_2 &amp;= \omega_z z_1 + k*z_2  \\
+dz_3 &amp;= l + z_3(z_1 - m)
+\end{aligned}
+</div>
+<script type="math/tex; mode=display">
+\begin{aligned}
+dx_1 &= -\omega_x x_2 - x_3 + c*(z_1 - x_1) \\
+dx_2 &= \omega_x x_1 + k*x_2  \\
+dx_3 &= l + x_3(x_1 - m)  \\
+dy_1 &= -\omega_y y_2 - y_3 + c*(z_1 - y_1)  \\
+dy_2 &= \omega_y y_1 + k*y_2  \\
+dy_3 &= l + y_3(y_1 - m)  \\
+dz_1 &= -\omega_z z_2 - z_3  \\
+dz_2 &= \omega_z z_1 + k*z_2  \\
+dz_3 &= l + z_3(z_1 - m)
+\end{aligned}
+</script>
+</div>
+<p><strong>References</strong></p>
+<ol>
+<li>Krakovská, Anna, et al. "Comparison of six methods for the detection of   causality in a bivariate time series." Physical Review E 97.4 (2018): 042207</li>
+</ol>
+<p><a target='_blank' href='https://github.com/kahaaga/CausalityTools.jl/blob/1015b4f94dabf2c54869fa6590c38d64e01dbe5f/src/systems/continuous_systems/mediated_link.jl#L26-L57' class='documenter-source'>source</a><br></p>
+<p><a id='Two-bidirectionally-coupled-3D-Lorenz-systems-1'></a></p>
+<h2 id="two-bidirectionally-coupled-3d-lorenz-systems">Two bidirectionally coupled 3D Lorenz systems</h2>
+<p><a id='CausalityTools.Systems.lorenz_lorenz_bidir-Tuple{}' href='#CausalityTools.Systems.lorenz_lorenz_bidir-Tuple{}'>#</a>
+<strong><code>CausalityTools.Systems.lorenz_lorenz_bidir</code></strong> &mdash; <em>Method</em>.</p>
+<div class="highlight"><pre><span></span><span class="n">lorenz_lorenz_bidir</span><span class="p">(;</span> <span class="n">u0</span> <span class="o">=</span> <span class="n">rand</span><span class="p">(</span><span class="mi">6</span><span class="p">),</span> 
+    <span class="n">c_xy</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">c_yx</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span> 
+    <span class="n">a₁</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">a₂</span> <span class="o">=</span> <span class="mi">28</span><span class="p">,</span> <span class="n">a₃</span> <span class="o">=</span> <span class="mi">8</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> 
+    <span class="n">b₁</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">b₂</span> <span class="o">=</span> <span class="mi">28</span><span class="p">,</span> <span class="n">b₃</span> <span class="o">=</span> <span class="mi">9</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ContinuousDynamicalSystem</span>
+</pre></div>
+
+<p>Initialise a bidirectionally coupled Lorenz-Lorenz system, where each  subsystem is a 3D Lorenz system [1]. Default values for the parameters  <code>a₁</code>, <code>a₂</code>, <code>a₃</code>, <code>b₁</code>, <code>b₂</code>, <code>b₃</code> are as in [1].</p>
+<p><strong>Equations of motion</strong></p>
+<p>The dynamics is generated by the following vector field</p>
+<div>
+<div class="MathJax_Preview">
+\begin{aligned}
+\dot{x_1} &amp;= -a_1 (x_1 - x_2) + c_{yx}(y_1 - x_1) \\
+\dot{x_2} &amp;= -x_1 x_3 + a_2 x_1 - x_2 \\
+\dot{x_3} &amp;= x_1 x_2 - a_3 x_3 \\
+\dot{y_1} &amp;= -b_1 (y_1 - y_2) + c_{xy} (x_1 - y_1) \\
+\dot{y_2} &amp;= -y_1 y_3 + b_2 y_1 - y_2 \\
+\dot{y_3} &amp;= y_1 y_2 - b_3 y_3
+\end{aligned}
+</div>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\dot{x_1} &= -a_1 (x_1 - x_2) + c_{yx}(y_1 - x_1) \\
+\dot{x_2} &= -x_1 x_3 + a_2 x_1 - x_2 \\
+\dot{x_3} &= x_1 x_2 - a_3 x_3 \\
+\dot{y_1} &= -b_1 (y_1 - y_2) + c_{xy} (x_1 - y_1) \\
+\dot{y_2} &= -y_1 y_3 + b_2 y_1 - y_2 \\
+\dot{y_3} &= y_1 y_2 - b_3 y_3
+\end{aligned}
+</script>
+</div>
+<p><strong>References</strong></p>
+<ol>
+<li>Amigó, José M., and Yoshito Hirata. "Detecting directional couplings from   multivariate flows by the joint distance distribution." Chaos: An   Interdisciplinary Journal of Nonlinear Science 28.7 (2018): 075302.</li>
+</ol>
+<p><a target='_blank' href='https://github.com/kahaaga/CausalityTools.jl/blob/1015b4f94dabf2c54869fa6590c38d64e01dbe5f/src/systems/continuous_systems/lorenz_lorenz_bidir.jl#L17-L47' class='documenter-source'>source</a><br></p>
+<p><a id='Two-bidirectionally-coupled-3D-Lorenz-systems-forced-by-another-3D-Lorenz-system-1'></a></p>
+<h2 id="two-bidirectionally-coupled-3d-lorenz-systems-forced-by-another-3d-lorenz-system">Two bidirectionally coupled 3D Lorenz systems forced by another 3D Lorenz system</h2>
+<p><a id='CausalityTools.Systems.lorenz_lorenz_lorenz_bidir_forced-Tuple{}' href='#CausalityTools.Systems.lorenz_lorenz_lorenz_bidir_forced-Tuple{}'>#</a>
+<strong><code>CausalityTools.Systems.lorenz_lorenz_lorenz_bidir_forced</code></strong> &mdash; <em>Method</em>.</p>
+<div class="highlight"><pre><span></span><span class="n">lorenz_lorenz_lorenz_bidir_forced</span><span class="p">(;</span> <span class="n">u0</span> <span class="o">=</span> <span class="n">rand</span><span class="p">(</span><span class="mi">9</span><span class="p">),</span> 
+    <span class="n">c_xy</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">c_yx</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">c_zx</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span> <span class="n">c_zy</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span> 
+    <span class="n">a₁</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">a₂</span> <span class="o">=</span> <span class="mi">28</span><span class="p">,</span> <span class="n">a₃</span> <span class="o">=</span> <span class="mi">8</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">b₁</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">b₂</span> <span class="o">=</span> <span class="mi">28</span><span class="p">,</span> <span class="n">b₃</span> <span class="o">=</span> <span class="mi">8</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">c₁</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">c₂</span> <span class="o">=</span> <span class="mi">28</span><span class="p">,</span> <span class="n">c₃</span> <span class="o">=</span> <span class="mi">8</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+
+<p>Initialise a system consisting of two bidirectionally coupled 3D Lorenz  systems forced by an external 3D Lorenz system, giving a 9D system.</p>
+<p><strong>Equations of motion</strong></p>
+<p>The dynamics is generated by the following vector field</p>
+<div>
+<div class="MathJax_Preview">
+\begin{aligned}
+\dot{x_1} &amp;= - a_1 (x_1 - x_2) + c_{yx}(y_1 - x_1) + c_{zx}(z_1 - x_1) \\
+\dot{x_2} &amp;= - x_1 x_3 + a_2 x_1 - x_2 \\
+\dot{x_3} &amp;= x_1 x_2 - a_3 x_3 \\
+\dot{y_1} &amp;= -b_1 (y_1 - y_2) + c_{xy} (x_1 - y_1) + c_{zy}(z_1 - y_1) \\
+\dot{y_2} &amp;= - y_1 y_3 + b_2 y_1 - y_2 \\
+\dot{y_3} &amp;= y_1 y_2 - b_3 y_3 \\
+\dot{z_1} &amp;= - c_1 (z_1 - z_2) \\
+\dot{z_2} &amp;= - z_1 z_3 + c_2 z_1 - z_2 \\
+\dot{z_3} &amp;= z_1 z_2 - c_3 z_3 
+\end{aligned}
+</div>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\dot{x_1} &= - a_1 (x_1 - x_2) + c_{yx}(y_1 - x_1) + c_{zx}(z_1 - x_1) \\
+\dot{x_2} &= - x_1 x_3 + a_2 x_1 - x_2 \\
+\dot{x_3} &= x_1 x_2 - a_3 x_3 \\
+\dot{y_1} &= -b_1 (y_1 - y_2) + c_{xy} (x_1 - y_1) + c_{zy}(z_1 - y_1) \\
+\dot{y_2} &= - y_1 y_3 + b_2 y_1 - y_2 \\
+\dot{y_3} &= y_1 y_2 - b_3 y_3 \\
+\dot{z_1} &= - c_1 (z_1 - z_2) \\
+\dot{z_2} &= - z_1 z_3 + c_2 z_1 - z_2 \\
+\dot{z_3} &= z_1 z_2 - c_3 z_3 
+\end{aligned}
+</script>
+</div>
+<p><strong>References</strong></p>
+<ol>
+<li>Amigó, José M., and Yoshito Hirata. "Detecting directional couplings from   multivariate flows by the joint distance distribution." Chaos: An   Interdisciplinary Journal of Nonlinear Science 28.7 (2018): 075302.</li>
+</ol>
+<p><a target='_blank' href='https://github.com/kahaaga/CausalityTools.jl/blob/1015b4f94dabf2c54869fa6590c38d64e01dbe5f/src/systems/continuous_systems/lorenz_lorenz_lorenz_bidir_forced.jl#L21-L56' class='documenter-source'>source</a><br></p>
+<p><a id='Three-transitively-connected-3D-Lorenz-systems-1'></a></p>
+<h2 id="three-transitively-connected-3d-lorenz-systems">Three transitively connected 3D Lorenz systems</h2>
+<p><a id='CausalityTools.Systems.lorenz_lorenz_lorenz_transitive-Tuple{}' href='#CausalityTools.Systems.lorenz_lorenz_lorenz_transitive-Tuple{}'>#</a>
+<strong><code>CausalityTools.Systems.lorenz_lorenz_lorenz_transitive</code></strong> &mdash; <em>Method</em>.</p>
+<div class="highlight"><pre><span></span><span class="n">lorenz_lorenz_lorenz_transitive</span><span class="p">(;</span><span class="n">uᵢ</span><span class="o">=</span><span class="n">rand</span><span class="p">(</span><span class="mi">9</span><span class="p">),</span>
+            <span class="n">σ₁</span> <span class="o">=</span> <span class="mf">10.0</span><span class="p">,</span> <span class="n">σ₂</span> <span class="o">=</span> <span class="mf">10.0</span><span class="p">,</span> <span class="n">σ₃</span> <span class="o">=</span> <span class="mf">10.0</span><span class="p">,</span>
+            <span class="n">ρ₁</span> <span class="o">=</span> <span class="mf">28.0</span><span class="p">,</span> <span class="n">ρ₂</span> <span class="o">=</span> <span class="mf">28.0</span><span class="p">,</span> <span class="n">ρ₃</span> <span class="o">=</span> <span class="mf">28.0</span><span class="p">,</span>
+            <span class="n">β₁</span> <span class="o">=</span> <span class="mi">8</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span>  <span class="n">β₂</span> <span class="o">=</span> <span class="mi">8</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span>  <span class="n">β₃</span> <span class="o">=</span> <span class="mf">8.3</span><span class="p">,</span>
+            <span class="n">c₁₂</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">c₂₃</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ContinuousDynamicalSystem</span>
+</pre></div>
+
+<p>Initalise a dynamical system consisting of three coupled Lorenz attractors with a transitive causality chain where X₁ → X₂ and X₂ → X₃. In total, the three 3D-subsystems create a 9-dimensional dynamical system.</p>
+<p>The strength of the forcing X₁ → X₂ is controlled by the parameter <code>c₁</code>, and the forcing from X₂ → X₃ by <code>c₂</code>. The remaining parameters are the usual parameters for the Lorenz system, where the subscript <code>i</code> refers to the subsystem Xᵢ. </p>
+<p><strong>Equations of motion</strong></p>
+<p>The dynamics is generated by the following vector field</p>
+<div>
+<div class="MathJax_Preview">
+\begin{aligned}
+\dot{x_1} &amp;= \sigma_1(y_1 - x_1) \\
+\dot{y_1} &amp;= \rho_1 x_1 - y_1 - x_1 z_1 \\
+\dot{z_1} &amp;= x_1 y_1 - \beta_1 z_1 \\
+\dot{x_2} &amp;=  \sigma_2 (y_2 - x_2) + c_{12}(x_1 - x_2) \\
+\dot{y_2} &amp;= \rho_2 x_2 - y_2 - x_2 z_2 \\
+\dot{z_2} &amp;= x_2 y_2 - \beta_2 z_2 \\
+\dot{x_3} &amp;= \sigma_3 (y_3 - x_3) + c_{23} (x_2 - x_3) \\
+\dot{y_3} &amp;= \rho_3 x_3 - y_3 - x_3 z_3 \\
+\dot{z_3} &amp;= x_3 y_3 - \beta_3 z_3
+\end{aligned}
+</div>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\dot{x_1} &= \sigma_1(y_1 - x_1) \\
+\dot{y_1} &= \rho_1 x_1 - y_1 - x_1 z_1 \\
+\dot{z_1} &= x_1 y_1 - \beta_1 z_1 \\
+\dot{x_2} &=  \sigma_2 (y_2 - x_2) + c_{12}(x_1 - x_2) \\
+\dot{y_2} &= \rho_2 x_2 - y_2 - x_2 z_2 \\
+\dot{z_2} &= x_2 y_2 - \beta_2 z_2 \\
+\dot{x_3} &= \sigma_3 (y_3 - x_3) + c_{23} (x_2 - x_3) \\
+\dot{y_3} &= \rho_3 x_3 - y_3 - x_3 z_3 \\
+\dot{z_3} &= x_3 y_3 - \beta_3 z_3
+\end{aligned}
+</script>
+</div>
+<p><strong>Usage in literature</strong></p>
+<p>This system was studied by Papana et al. (2013) for coupling strengths  <span><span class="MathJax_Preview">c_{12} = 0, 1, 3, 5</span><script type="math/tex">c_{12} = 0, 1, 3, 5</script></span> and <span><span class="MathJax_Preview">c_{23} = 0, 1, 3, 5</span><script type="math/tex">c_{23} = 0, 1, 3, 5</script></span>.</p>
+<p><strong>References</strong></p>
+<ol>
+<li>Papana et al., Simulation Study of Direct Causality Measures in Multivariate   Time Series. Entropy 2013, 15(7), 2635-2661; doi:10.3390/e15072635</li>
+</ol>
+<p><a target='_blank' href='https://github.com/kahaaga/CausalityTools.jl/blob/1015b4f94dabf2c54869fa6590c38d64e01dbe5f/src/systems/continuous_systems/lorenz_lorenz_lorenz_transitive.jl#L27-L70' class='documenter-source'>source</a><br></p>
+<p><a id='Two-bidirectionally-coupled-3D-Rössler-systems-1'></a></p>
+<h2 id="two-bidirectionally-coupled-3d-rossler-systems">Two bidirectionally coupled 3D Rössler systems</h2>
+<p><a id='CausalityTools.Systems.rossler_rossler_bidir-Tuple{}' href='#CausalityTools.Systems.rossler_rossler_bidir-Tuple{}'>#</a>
+<strong><code>CausalityTools.Systems.rossler_rossler_bidir</code></strong> &mdash; <em>Method</em>.</p>
+<div class="highlight"><pre><span></span><span class="n">rossler_rossler_bidir</span><span class="p">(;</span> <span class="n">u0</span> <span class="o">=</span> <span class="n">rand</span><span class="p">(</span><span class="mi">6</span><span class="p">),</span> 
+    <span class="n">ω₁</span> <span class="o">=</span> <span class="mf">1.015</span><span class="p">,</span> <span class="n">ω₂</span> <span class="o">=</span> <span class="mf">0.985</span><span class="p">,</span> 
+    <span class="n">c_xy</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">c_yx</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span> 
+    <span class="n">a₁</span> <span class="o">=</span> <span class="mf">0.15</span><span class="p">,</span> <span class="n">a₂</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">a₃</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="n">b₁</span> <span class="o">=</span> <span class="mf">0.15</span><span class="p">,</span> <span class="n">b₂</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">b₃</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span>
+</pre></div>
+
+<p>Initialise a system of two bidirectionally coupled 3D Rössler systems.  This system has been modified from [1] to allow other parameterisations,  but default parameters are as in [1].</p>
+<p>The <span><span class="MathJax_Preview">X</span><script type="math/tex">X</script></span> and <span><span class="MathJax_Preview">Y</span><script type="math/tex">Y</script></span> subsystems are mostly synchronized for  <code>c_xy &gt; 0.1</code> or <code>c_yx &gt; 0.1</code>.</p>
+<p><strong>Equations of motion</strong></p>
+<p>The dynamics is generated by the following vector field</p>
+<div>
+<div class="MathJax_Preview">
+\begin{aligned}
+\dot{x_1} &amp;= -\omega_1(x_2 + x_3) + c_{yx}(y_1 - x_1) \\
+\dot{x_2} &amp;= \omega_1 x_1 + a_1 x_2 \\
+\dot{x_3} &amp;= a_2 + x_3 (x_1 - a_3) \\
+\dot{y_1} &amp;= -\omega_2 (y_2 + y_3) + c_{xy}(x_1 - y_1) \\
+\dot{y_2} &amp;= \omega_2 y_1 + b_1 y_2 \\
+\dot{y_3} &amp;= b_2 + y_3 (y_1 - b_3)
+\end{aligned}
+</div>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\dot{x_1} &= -\omega_1(x_2 + x_3) + c_{yx}(y_1 - x_1) \\
+\dot{x_2} &= \omega_1 x_1 + a_1 x_2 \\
+\dot{x_3} &= a_2 + x_3 (x_1 - a_3) \\
+\dot{y_1} &= -\omega_2 (y_2 + y_3) + c_{xy}(x_1 - y_1) \\
+\dot{y_2} &= \omega_2 y_1 + b_1 y_2 \\
+\dot{y_3} &= b_2 + y_3 (y_1 - b_3)
+\end{aligned}
+</script>
+</div>
+<p><strong>References</strong></p>
+<ol>
+<li>Amigó, José M., and Yoshito Hirata. "Detecting directional couplings from   multivariate flows by the joint distance distribution." Chaos: An   Interdisciplinary Journal of Nonlinear Science 28.7 (2018): 075302.</li>
+</ol>
+<p><a target='_blank' href='https://github.com/kahaaga/CausalityTools.jl/blob/1015b4f94dabf2c54869fa6590c38d64e01dbe5f/src/systems/continuous_systems/rossler_rossler_bidir.jl#L16-L51' class='documenter-source'>source</a><br></p>
+<p><a id='Two-bidirectionally-coupled-3D-Rössler-systems-forced-by-another-3D-Rössler-system-1'></a></p>
+<h2 id="two-bidirectionally-coupled-3d-rossler-systems-forced-by-another-3d-rossler-system">Two bidirectionally coupled 3D Rössler systems forced by another 3D Rössler system</h2>
+<p><a id='CausalityTools.Systems.rossler_rossler_rossler_bidir_forced-Tuple{}' href='#CausalityTools.Systems.rossler_rossler_rossler_bidir_forced-Tuple{}'>#</a>
+<strong><code>CausalityTools.Systems.rossler_rossler_rossler_bidir_forced</code></strong> &mdash; <em>Method</em>.</p>
+<div class="highlight"><pre><span></span><span class="n">rossler_rossler_rossler_bidir_forced</span><span class="p">(;</span> <span class="n">u0</span> <span class="o">=</span> <span class="n">rand</span><span class="p">(</span><span class="mi">9</span><span class="p">),</span> 
+    <span class="n">ω₁</span> <span class="o">=</span> <span class="mf">1.015</span><span class="p">,</span> <span class="n">ω₂</span> <span class="o">=</span> <span class="mf">0.985</span><span class="p">,</span> <span class="n">ω₃</span> <span class="o">=</span> <span class="mf">0.95</span><span class="p">,</span>
+    <span class="n">c_xy</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">c_yx</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">c_zx</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span> <span class="n">c_zy</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span> 
+    <span class="n">a₁</span> <span class="o">=</span> <span class="mf">0.15</span><span class="p">,</span> <span class="n">a₂</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">a₃</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="n">b₁</span> <span class="o">=</span> <span class="mf">0.15</span><span class="p">,</span> <span class="n">b₂</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">b₃</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="n">c₁</span> <span class="o">=</span> <span class="mf">0.15</span><span class="p">,</span> <span class="n">c₂</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">c₃</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span>
+</pre></div>
+
+<p>Equations of motion for a system consisting of three coupled 3D Rössler systems  (<span><span class="MathJax_Preview">X</span><script type="math/tex">X</script></span>, <span><span class="MathJax_Preview">Y</span><script type="math/tex">Y</script></span>, <span><span class="MathJax_Preview">Z</span><script type="math/tex">Z</script></span>), giving a 9D system [1]. The external system  <span><span class="MathJax_Preview">Z</span><script type="math/tex">Z</script></span> influences both <span><span class="MathJax_Preview">X</span><script type="math/tex">X</script></span> and <span><span class="MathJax_Preview">Y</span><script type="math/tex">Y</script></span> (controlled by <code>c_zx</code> and <code>c_zy</code>).  Simultaneously, the subsystems  <span><span class="MathJax_Preview">X</span><script type="math/tex">X</script></span> and <span><span class="MathJax_Preview">Y</span><script type="math/tex">Y</script></span> bidirectionally  influences each other (controlled by <code>c_xy</code> and <code>c_yx</code>).</p>
+<p>The <span><span class="MathJax_Preview">X</span><script type="math/tex">X</script></span> and <span><span class="MathJax_Preview">Y</span><script type="math/tex">Y</script></span> subsystems are mostly synchronized for <code>c_xy &gt; 0.1</code> or  <code>c_yx &gt; 0.1</code>.</p>
+<p><strong>Equations of motion</strong></p>
+<p>The dynamics is generated by the following vector field</p>
+<div>
+<div class="MathJax_Preview">
+\begin{aligned}
+\dot{x_1} &amp;= -\omega_1 (x_2 + x_3) + c_{yx}(y_1 - x_1) + c_{zx}(z_1 - x_1) \\
+\dot{x_2} &amp;= \omega_1 x_1 + a_1 x_2 \\
+\dot{x_3} &amp;= a_2 + x_3 (x_1 - a_3) \\
+\dot{y_1} &amp;= -\omega_1 (y_2 + y_3) + c_{xy}(x_1 - y_1) + c_{zy}(z_1 - y_1) \\
+\dot{x_2} &amp;= \omega_2 y_1 + b_1 y_2 \\
+\dot{x_3} &amp;= b_2 + x_3 (y_1 - b_3) \\
+\dot{y_1} &amp;= -\omega_2 (z_2  + z_3) \\
+\dot{x_2} &amp;= \omega_2 z_1 + c_1 z_2 \\
+\dot{x_3} &amp;= c_2 + z_3 (z_1 - c_3)
+\end{aligned}
+</div>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\dot{x_1} &= -\omega_1 (x_2 + x_3) + c_{yx}(y_1 - x_1) + c_{zx}(z_1 - x_1) \\
+\dot{x_2} &= \omega_1 x_1 + a_1 x_2 \\
+\dot{x_3} &= a_2 + x_3 (x_1 - a_3) \\
+\dot{y_1} &= -\omega_1 (y_2 + y_3) + c_{xy}(x_1 - y_1) + c_{zy}(z_1 - y_1) \\
+\dot{x_2} &= \omega_2 y_1 + b_1 y_2 \\
+\dot{x_3} &= b_2 + x_3 (y_1 - b_3) \\
+\dot{y_1} &= -\omega_2 (z_2  + z_3) \\
+\dot{x_2} &= \omega_2 z_1 + c_1 z_2 \\
+\dot{x_3} &= c_2 + z_3 (z_1 - c_3)
+\end{aligned}
+</script>
+</div>
+<p><strong>References</strong></p>
+<ol>
+<li>Amigó, José M., and Yoshito Hirata. "Detecting directional couplings from   multivariate flows by the joint distance distribution." Chaos: An   Interdisciplinary Journal of Nonlinear Science 28.7 (2018): 075302.</li>
+</ol>
+<p><a target='_blank' href='https://github.com/kahaaga/CausalityTools.jl/blob/1015b4f94dabf2c54869fa6590c38d64e01dbe5f/src/systems/continuous_systems/rossler_rossler_rossler_bidir_forced.jl#L20-L61' class='documenter-source'>source</a><br></p>
+<p><a id='Unidirectonal-forcing-from-a-3D-Rössler-system-to-a-3D-Lorenz-system-1'></a></p>
+<h2 id="unidirectonal-forcing-from-a-3d-rossler-system-to-a-3d-lorenz-system">Unidirectonal forcing from a 3D Rössler system to a 3D Lorenz system</h2>
+<p><a id='CausalityTools.Systems.rossler_lorenz-Tuple{}' href='#CausalityTools.Systems.rossler_lorenz-Tuple{}'>#</a>
+<strong><code>CausalityTools.Systems.rossler_lorenz</code></strong> &mdash; <em>Method</em>.</p>
+<div class="highlight"><pre><span></span><span class="n">rossler_lorenz</span><span class="p">(;</span><span class="n">u₀</span> <span class="o">=</span> <span class="n">rand</span><span class="p">(</span><span class="mi">6</span><span class="p">),</span> <span class="n">a₁</span> <span class="o">=</span> <span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="n">a₂</span> <span class="o">=</span> <span class="mi">6</span><span class="p">,</span> <span class="n">a₃</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">,</span> 
+    <span class="n">b₁</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">b₂</span> <span class="o">=</span> <span class="mi">28</span><span class="p">,</span> <span class="n">b₃</span> <span class="o">=</span> <span class="mi">8</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="n">c_xy</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ContinuousDynamicalSystem</span>
+</pre></div>
+
+<p>Initialise a Rössler-Lorenz system consisting of two independent 3D subsystems: one Rössler system and one Lorenz system. They are coupled such that the second component (<code>x₂</code>) of the Rössler system unidirectionally forces the second component (<code>y₂</code>) of the Lorenz system. </p>
+<p>The parameter <code>c_xy</code> controls the coupling strength. The implementation here also  allows for tuning the parameters of each subsystem by introducing the constants  <code>a₁</code>, <code>a₂</code>, <code>a₃</code>, <code>b₁</code>, <code>b₂</code>, <code>b₃</code>. Default values for these parameters are  as in [1].</p>
+<p><strong>Equations of motion</strong></p>
+<p>The dynamics is generated by the following vector field</p>
+<div>
+<div class="MathJax_Preview">
+\begin{aligned}
+\dot x_1 &amp;= a_1(x_2 + x_3) \\
+\dot x_2 &amp;= a_2(x_1 + 0.2x_2) \\
+\dot x_3 &amp;= a_2(0.2 + x_3(x_1 - a_3)) \\
+\dot y_1 &amp;= b_1(y_2 - y_1) \\
+\dot y_2 &amp;= y_1(b_2 - y_3) - y_2 +c_{xy}(x_2)^2 \\
+\dot y_3 &amp;= y_1 y_2 - b_3y_3
+\end{aligned}
+</div>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\dot x_1 &= a_1(x_2 + x_3) \\
+\dot x_2 &= a_2(x_1 + 0.2x_2) \\
+\dot x_3 &= a_2(0.2 + x_3(x_1 - a_3)) \\
+\dot y_1 &= b_1(y_2 - y_1) \\
+\dot y_2 &= y_1(b_2 - y_3) - y_2 +c_{xy}(x_2)^2 \\
+\dot y_3 &= y_1 y_2 - b_3y_3
+\end{aligned}
+</script>
+</div>
+<p>with the coupling constant <span><span class="MathJax_Preview">c_{xy} \geq 0</span><script type="math/tex">c_{xy} \geq 0</script></span>.</p>
+<p><strong>References</strong></p>
+<ol>
+<li>Krakovská, Anna, et al. "Comparison of six methods for the detection of causality in a   bivariate time series." Physical Review E 97.4 (2018):042207.   <a href="https://journals.aps.org/pre/abstract/10.1103/PhysRevE.97.042207">https://journals.aps.org/pre/abstract/10.1103/PhysRevE.97.042207</a></li>
+</ol>
+<p><a target='_blank' href='https://github.com/kahaaga/CausalityTools.jl/blob/1015b4f94dabf2c54869fa6590c38d64e01dbe5f/src/systems/continuous_systems/rossler_lorenz.jl#L15-L51' class='documenter-source'>source</a><br></p>
+<p><a id='N-scroll-Chua-attractors-1'></a></p>
+<h2 id="n-scroll-chua-attractors">N-scroll Chua attractors</h2>
+<p><a id='CausalityTools.Systems.chuacircuit_nscroll_sine-Tuple{}' href='#CausalityTools.Systems.chuacircuit_nscroll_sine-Tuple{}'>#</a>
+<strong><code>CausalityTools.Systems.chuacircuit_nscroll_sine</code></strong> &mdash; <em>Method</em>.</p>
+<div class="highlight"><pre><span></span><span class="n">chuacircuit_nscroll_sine</span><span class="p">(;</span><span class="n">u₀</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.28695</span><span class="p">],</span>
+    <span class="n">α</span> <span class="o">=</span> <span class="mf">10.814</span><span class="p">,</span> <span class="n">β</span> <span class="o">=</span> <span class="mi">14</span><span class="p">,</span> <span class="nb">γ</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="mf">1.3</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mf">0.11</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="n">σx</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">σy</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">σz</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">)</span>
+</pre></div>
+
+<p>Initialise an adjusted Chua system giving rise to n-scroll attractors [1].</p>
+<p><strong>Equations of motion</strong></p>
+<p>The dynamics is generated by the following vector field</p>
+<div>
+<div class="MathJax_Preview">
+\begin{aligned}
+\dot{x} = \alpha (y - fx) + \eta x \\
+\dot{y} = x - y + z + \eta y \\
+\dot{z} = -\beta y - \gamma z + \eta z 
+\end{aligned}
+</div>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\dot{x} = \alpha (y - fx) + \eta x \\
+\dot{y} = x - y + z + \eta y \\
+\dot{z} = -\beta y - \gamma z + \eta z 
+\end{aligned}
+</script>
+</div>
+<p>where <span><span class="MathJax_Preview">\eta x</span><script type="math/tex">\eta x</script></span>, <span><span class="MathJax_Preview">\eta z</span><script type="math/tex">\eta z</script></span>, and <span><span class="MathJax_Preview">\eta z</span><script type="math/tex">\eta z</script></span> are drawn independently from  normal distributions with zero mean and standard deviations <code>σx</code>, <code>σy</code>  and <code>σz</code> at each iteration.</p>
+<p><span><span class="MathJax_Preview">fx</span><script type="math/tex">fx</script></span> is given by the following conditions: </p>
+<div class="highlight"><pre><span></span><span class="n">n</span><span class="o">::</span><span class="kt">Int</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="mi">1</span>
+
+<span class="k">if</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="o">*</span><span class="n">a</span><span class="o">*</span><span class="n">c</span>
+    <span class="n">fx</span> <span class="o">=</span> <span class="p">(</span><span class="n">b</span><span class="o">*</span><span class="nb">pi</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span><span class="n">a</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">a</span><span class="o">*</span><span class="n">c</span><span class="p">)</span>
+<span class="k">elseif</span> <span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">a</span><span class="o">*</span><span class="n">c</span> <span class="o">&lt;</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="o">*</span><span class="n">a</span><span class="o">*</span><span class="n">c</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">ifelse</span><span class="p">(</span><span class="n">isodd</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="nb">pi</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">fx</span> <span class="o">=</span> <span class="o">-</span><span class="n">b</span><span class="o">*</span><span class="n">sin</span><span class="p">((</span><span class="nb">pi</span><span class="o">*</span><span class="n">x</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span><span class="n">a</span><span class="p">)</span> <span class="o">+</span> <span class="n">d</span><span class="p">)</span>
+<span class="k">elseif</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">a</span><span class="o">*</span><span class="n">c</span>
+    <span class="n">fx</span> <span class="o">=</span> <span class="p">(</span><span class="n">b</span><span class="o">*</span><span class="nb">pi</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span><span class="n">a</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">a</span><span class="o">*</span><span class="n">c</span><span class="p">)</span>
+<span class="k">end</span>
+</pre></div>
+
+<p><strong>References</strong></p>
+<ol>
+<li>Tang, Wallace KS, et al. "Generation of n-scroll attractors via   sine function." IEEE Transactions on Circuits and Systems I:   Fundamental Theory and Applications 48.11 (2001): 1369-1372.</li>
+</ol>
+<p><a target='_blank' href='https://github.com/kahaaga/CausalityTools.jl/blob/1015b4f94dabf2c54869fa6590c38d64e01dbe5f/src/systems/continuous_systems/chuacircuit_nscroll_sine.jl#L31-L74' class='documenter-source'>source</a><br></p>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../example_systems_discrete/" title="Discrete systems" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Discrete systems
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../noise/" title="Noise processes" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Noise processes
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+        
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.30f6b8b1.js"></script>
+      
+      <script>app.initialize({version:"0.17.5",url:{base:"../.."}})</script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+      
+        <script src="../../assets/mathjaxhelper.js"></script>
+      
+    
+    
+      
+    
+  </body>
+</html>

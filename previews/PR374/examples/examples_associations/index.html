@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Association measures · CausalityTools.jl</title><meta name="title" content="Association measures · CausalityTools.jl"/><meta property="og:title" content="Association measures · CausalityTools.jl"/><meta property="twitter:title" content="Association measures · CausalityTools.jl"/><meta name="description" content="Documentation for CausalityTools.jl."/><meta property="og:description" content="Documentation for CausalityTools.jl."/><meta property="twitter:description" content="Documentation for CausalityTools.jl."/><script data-outdated-warner src="../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../search_index.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script><link href="https://fonts.googleapis.com/css?family=Montserrat|Source+Code+Pro&amp;display=swap" rel="stylesheet" type="text/css"/></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../../"><img class="docs-light-only" src="../../assets/logo.png" alt="CausalityTools.jl logo"/><img class="docs-dark-only" src="../../assets/logo-dark.png" alt="CausalityTools.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit"><a href="../../">CausalityTools.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../../">CausalityTools.jl</a></li><li><a class="tocitem" href="../../associations/">Association measures</a></li><li><a class="tocitem" href="../../independence/">Independence</a></li><li><a class="tocitem" href="../../causal_graphs/">Network/graph inference</a></li><li><span class="tocitem">Examples</span><ul><li class="is-active"><a class="tocitem" href>Association measures</a><ul class="internal"><li><a class="tocitem" href="#[HellingerDistance](@ref)"><span><code>HellingerDistance</code></span></a></li><li><a class="tocitem" href="#[KLDivergence](@ref)"><span><code>KLDivergence</code></span></a></li><li><a class="tocitem" href="#[RenyiDivergence](@ref)"><span><code>RenyiDivergence</code></span></a></li><li><a class="tocitem" href="#[VariationDistance](@ref)"><span><code>VariationDistance</code></span></a></li><li><a class="tocitem" href="#[JointEntropyShannon](@ref)"><span><code>JointEntropyShannon</code></span></a></li><li><a class="tocitem" href="#[JointEntropyTsallis](@ref)"><span><code>JointEntropyTsallis</code></span></a></li><li><a class="tocitem" href="#[JointEntropyRenyi](@ref)"><span><code>JointEntropyRenyi</code></span></a></li><li><a class="tocitem" href="#[ConditionalEntropyShannon](@ref)"><span><code>ConditionalEntropyShannon</code></span></a></li><li><a class="tocitem" href="#[ConditionalEntropyTsallisAbe](@ref)"><span><code>ConditionalEntropyTsallisAbe</code></span></a></li><li><a class="tocitem" href="#[ConditionalEntropyTsallisFuruichi](@ref)"><span><code>ConditionalEntropyTsallisFuruichi</code></span></a></li><li><a class="tocitem" href="#[MIShannon](@ref)"><span><code>MIShannon</code></span></a></li><li><a class="tocitem" href="#[MIRenyiJizba](@ref)"><span><code>MIRenyiJizba</code></span></a></li><li><a class="tocitem" href="#[MIRenyiSarbu](@ref)"><span><code>MIRenyiSarbu</code></span></a></li><li><a class="tocitem" href="#[MITsallisFuruichi](@ref)"><span><code>MITsallisFuruichi</code></span></a></li><li><a class="tocitem" href="#[MITsallisMartin](@ref)"><span><code>MITsallisMartin</code></span></a></li><li><a class="tocitem" href="#[CMIShannon](@ref)"><span><code>CMIShannon</code></span></a></li><li><a class="tocitem" href="#[CMIRenyiPoczos](@ref)"><span><code>CMIRenyiPoczos</code></span></a></li><li><a class="tocitem" href="#[CMIShannon](@ref)-2"><span><code>CMIShannon</code></span></a></li><li><a class="tocitem" href="#[CMIRenyiJizba](@ref)"><span><code>CMIRenyiJizba</code></span></a></li><li><a class="tocitem" href="#[TEShannon](@ref)"><span><code>TEShannon</code></span></a></li><li><a class="tocitem" href="#[TERenyiJizba](@ref)"><span><code>TERenyiJizba</code></span></a></li><li><a class="tocitem" href="#[ConvergentCrossMapping](@ref)"><span><code>ConvergentCrossMapping</code></span></a></li><li><a class="tocitem" href="#[PairwiseAsymmetricInference](@ref)"><span><code>PairwiseAsymmetricInference</code></span></a></li><li><a class="tocitem" href="#example_MCR"><span><code>MCR</code></span></a></li><li><a class="tocitem" href="#example_RMCD"><span><code>RMCD</code></span></a></li></ul></li><li><a class="tocitem" href="../examples_infer_graphs/">Graph inference</a></li><li><span class="tocitem">Extended examples</span><ul><li><a class="tocitem" href="../../extended_examples/cross_mapping/"><code>ConvergentCrossMapping</code></a></li><li><a class="tocitem" href="../../extended_examples/pairwise_asymmetric_inference/"><code>PairwiseAsymmetricInference</code></a></li><li><a class="tocitem" href="../../extended_examples/mutual_information/"><code>MIShannon</code></a></li></ul></li></ul></li><li><span class="tocitem">Basics and tutorials</span><ul><li><a class="tocitem" href="../../encoding_tutorial/">Encoding elements</a></li><li><a class="tocitem" href="../../discretization_tutorial/">Encoding input datasets</a></li><li><a class="tocitem" href="../../probabilities_tutorial/">Counts and probabilities</a></li><li><a class="tocitem" href="../../info_tutorial/">Information measures</a></li></ul></li><li><a class="tocitem" href="../../references/">References</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Examples</a></li><li class="is-active"><a href>Association measures</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Association measures</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/JuliaDynamics/CausalityTools.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/JuliaDynamics/CausalityTools.jl/blob/main/docs/src/examples/examples_associations.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="Examples-of-association-measure-estimation"><a class="docs-heading-anchor" href="#Examples-of-association-measure-estimation">Examples of association measure estimation</a><a id="Examples-of-association-measure-estimation-1"></a><a class="docs-heading-anchor-permalink" href="#Examples-of-association-measure-estimation" title="Permalink"></a></h1><h2 id="[HellingerDistance](@ref)"><a class="docs-heading-anchor" href="#[HellingerDistance](@ref)"><a href="../../associations/#CausalityTools.HellingerDistance"><code>HellingerDistance</code></a></a><a id="[HellingerDistance](@ref)-1"></a><a class="docs-heading-anchor-permalink" href="#[HellingerDistance](@ref)" title="Permalink"></a></h2><h3 id="example_HellingerDistance_precomputed_probabilities"><a class="docs-heading-anchor" href="#example_HellingerDistance_precomputed_probabilities">From precomputed probabilities</a><a id="example_HellingerDistance_precomputed_probabilities-1"></a><a class="docs-heading-anchor-permalink" href="#example_HellingerDistance_precomputed_probabilities" title="Permalink"></a></h3><pre><code class="language-julia hljs">using CausalityTools
+# From pre-computed PMFs
+p1 = Probabilities([0.1, 0.5, 0.2, 0.2])
+p2 = Probabilities([0.3, 0.3, 0.2, 0.2])
+association(HellingerDistance(), p1, p2)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">0.055856605640373105</code></pre><h3 id="example_HellingerDistance_JointProbabilities_OrdinalPatterns"><a class="docs-heading-anchor" href="#example_HellingerDistance_JointProbabilities_OrdinalPatterns"><a href="../../associations/#CausalityTools.JointProbabilities"><code>JointProbabilities</code></a> + <a href="../../discretization_tutorial/#ComplexityMeasures.OrdinalPatterns"><code>OrdinalPatterns</code></a></a><a id="example_HellingerDistance_JointProbabilities_OrdinalPatterns-1"></a><a class="docs-heading-anchor-permalink" href="#example_HellingerDistance_JointProbabilities_OrdinalPatterns" title="Permalink"></a></h3><p>We expect the Hellinger distance between two uncorrelated variables to be close to zero.</p><pre><code class="language-julia hljs">using CausalityTools
+using Random; rng = Xoshiro(1234)
+n = 100000
+x, y = rand(rng, n), rand(rng, n)
+est = JointProbabilities(HellingerDistance(), CodifyVariables(OrdinalPatterns(m=3)))
+div_hd = association(est, x, y) # pretty close to zero</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">3.1541797712493756e-6</code></pre><h2 id="[KLDivergence](@ref)"><a class="docs-heading-anchor" href="#[KLDivergence](@ref)"><a href="../../associations/#CausalityTools.KLDivergence"><code>KLDivergence</code></a></a><a id="[KLDivergence](@ref)-1"></a><a class="docs-heading-anchor-permalink" href="#[KLDivergence](@ref)" title="Permalink"></a></h2><h3 id="example_KLDivergence_precomputed_probabilities"><a class="docs-heading-anchor" href="#example_KLDivergence_precomputed_probabilities">From precomputed probabilities</a><a id="example_KLDivergence_precomputed_probabilities-1"></a><a class="docs-heading-anchor-permalink" href="#example_KLDivergence_precomputed_probabilities" title="Permalink"></a></h3><pre><code class="language-julia hljs">using CausalityTools
+# From pre-computed PMFs
+p1 = Probabilities([0.1, 0.5, 0.2, 0.2])
+p2 = Probabilities([0.3, 0.3, 0.2, 0.2])
+association(KLDivergence(), p1, p2)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">0.20998654701098748</code></pre><h3 id="example_KLDivergence_JointProbabilities_OrdinalPatterns"><a class="docs-heading-anchor" href="#example_KLDivergence_JointProbabilities_OrdinalPatterns"><a href="../../associations/#CausalityTools.JointProbabilities"><code>JointProbabilities</code></a> + <a href="../../discretization_tutorial/#ComplexityMeasures.OrdinalPatterns"><code>OrdinalPatterns</code></a></a><a id="example_KLDivergence_JointProbabilities_OrdinalPatterns-1"></a><a class="docs-heading-anchor-permalink" href="#example_KLDivergence_JointProbabilities_OrdinalPatterns" title="Permalink"></a></h3><p>We expect the <a href="@ref"><code>KlDivergence</code></a> between two uncorrelated variables to be close to zero.</p><pre><code class="language-julia hljs">using CausalityTools
+using Random; rng = Xoshiro(1234)
+n = 100000
+x, y = rand(rng, n), rand(rng, n)
+est = JointProbabilities(KLDivergence(), CodifyVariables(OrdinalPatterns(m=3)))
+div_hd = association(est, x, y) # pretty close to zero</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">1.2875933381844337e-5</code></pre><h2 id="[RenyiDivergence](@ref)"><a class="docs-heading-anchor" href="#[RenyiDivergence](@ref)"><a href="../../associations/#CausalityTools.RenyiDivergence"><code>RenyiDivergence</code></a></a><a id="[RenyiDivergence](@ref)-1"></a><a class="docs-heading-anchor-permalink" href="#[RenyiDivergence](@ref)" title="Permalink"></a></h2><h3 id="example_RenyiDivergence_precomputed_probabilities"><a class="docs-heading-anchor" href="#example_RenyiDivergence_precomputed_probabilities">From precomputed probabilities</a><a id="example_RenyiDivergence_precomputed_probabilities-1"></a><a class="docs-heading-anchor-permalink" href="#example_RenyiDivergence_precomputed_probabilities" title="Permalink"></a></h3><pre><code class="language-julia hljs">using CausalityTools
+# From pre-computed PMFs
+p1 = Probabilities([0.1, 0.5, 0.2, 0.2])
+p2 = Probabilities([0.3, 0.3, 0.2, 0.2])
+association(RenyiDivergence(), p1, p2)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">0.11627470204599202</code></pre><h3 id="example_RenyiDivergence_JointProbabilities_OrdinalPatterns"><a class="docs-heading-anchor" href="#example_RenyiDivergence_JointProbabilities_OrdinalPatterns"><a href="../../associations/#CausalityTools.JointProbabilities"><code>JointProbabilities</code></a> + <a href="../../discretization_tutorial/#ComplexityMeasures.OrdinalPatterns"><code>OrdinalPatterns</code></a></a><a id="example_RenyiDivergence_JointProbabilities_OrdinalPatterns-1"></a><a class="docs-heading-anchor-permalink" href="#example_RenyiDivergence_JointProbabilities_OrdinalPatterns" title="Permalink"></a></h3><p>We expect the <a href="../../associations/#CausalityTools.RenyiDivergence"><code>RenyiDivergence</code></a> between two uncorrelated variables to be close to zero.</p><pre><code class="language-julia hljs">using CausalityTools
+using Random; rng = Xoshiro(1234)
+n = 100000
+x, y = rand(rng, n), rand(rng, n)
+est = JointProbabilities(RenyiDivergence(), CodifyVariables(OrdinalPatterns(m=3)))
+div_hd = association(est, x, y) # pretty close to zero</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">6.4354135893600935e-6</code></pre><h2 id="[VariationDistance](@ref)"><a class="docs-heading-anchor" href="#[VariationDistance](@ref)"><a href="../../associations/#CausalityTools.VariationDistance"><code>VariationDistance</code></a></a><a id="[VariationDistance](@ref)-1"></a><a class="docs-heading-anchor-permalink" href="#[VariationDistance](@ref)" title="Permalink"></a></h2><h3 id="example_VariationDistance_precomputed_probabilities"><a class="docs-heading-anchor" href="#example_VariationDistance_precomputed_probabilities">From precomputed probabilities</a><a id="example_VariationDistance_precomputed_probabilities-1"></a><a class="docs-heading-anchor-permalink" href="#example_VariationDistance_precomputed_probabilities" title="Permalink"></a></h3><pre><code class="language-julia hljs">using CausalityTools
+# From pre-computed PMFs
+p1 = Probabilities([0.1, 0.5, 0.2, 0.2])
+p2 = Probabilities([0.3, 0.3, 0.2, 0.2])
+association(VariationDistance(), p1, p2)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">0.2</code></pre><h3 id="example_VariationDistance_JointProbabilities_OrdinalPatterns"><a class="docs-heading-anchor" href="#example_VariationDistance_JointProbabilities_OrdinalPatterns"><a href="../../associations/#CausalityTools.JointProbabilities"><code>JointProbabilities</code></a> + <a href="../../discretization_tutorial/#ComplexityMeasures.OrdinalPatterns"><code>OrdinalPatterns</code></a></a><a id="example_VariationDistance_JointProbabilities_OrdinalPatterns-1"></a><a class="docs-heading-anchor-permalink" href="#example_VariationDistance_JointProbabilities_OrdinalPatterns" title="Permalink"></a></h3><p>We expect the <a href="../../associations/#CausalityTools.VariationDistance"><code>VariationDistance</code></a> between two uncorrelated variables to be close to zero.</p><pre><code class="language-julia hljs">using CausalityTools
+using Random; rng = Xoshiro(1234)
+n = 100000
+x, y = rand(rng, n), rand(rng, n)
+est = JointProbabilities(VariationDistance(), CodifyVariables(OrdinalPatterns(m=3)))
+div_hd = association(est, x, y) # pretty close to zero</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">0.001530030600612034</code></pre><h2 id="[JointEntropyShannon](@ref)"><a class="docs-heading-anchor" href="#[JointEntropyShannon](@ref)"><a href="../../associations/#CausalityTools.JointEntropyShannon"><code>JointEntropyShannon</code></a></a><a id="[JointEntropyShannon](@ref)-1"></a><a class="docs-heading-anchor-permalink" href="#[JointEntropyShannon](@ref)" title="Permalink"></a></h2><h3 id="example_JointEntropyShannon_Dispersion"><a class="docs-heading-anchor" href="#example_JointEntropyShannon_Dispersion"><a href="../../associations/#CausalityTools.JointProbabilities"><code>JointProbabilities</code></a> with <a href="../../discretization_tutorial/#ComplexityMeasures.Dispersion"><code>Dispersion</code></a></a><a id="example_JointEntropyShannon_Dispersion-1"></a><a class="docs-heading-anchor-permalink" href="#example_JointEntropyShannon_Dispersion" title="Permalink"></a></h3><pre><code class="language-julia hljs">using CausalityTools
+using Random; rng = Xoshiro(1234)
+x, y = rand(rng, 100), rand(rng, 100)
+measure = JointEntropyShannon()
+discretization = CodifyVariables(Dispersion(m = 2, c = 3))
+est = JointProbabilities(measure, discretization)
+association(est, x, y)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">3.115303256966459</code></pre><h2 id="[JointEntropyTsallis](@ref)"><a class="docs-heading-anchor" href="#[JointEntropyTsallis](@ref)"><a href="../../associations/#CausalityTools.JointEntropyTsallis"><code>JointEntropyTsallis</code></a></a><a id="[JointEntropyTsallis](@ref)-1"></a><a class="docs-heading-anchor-permalink" href="#[JointEntropyTsallis](@ref)" title="Permalink"></a></h2><h3 id="example_JointEntropyTsallis_OrdinalPatterns"><a class="docs-heading-anchor" href="#example_JointEntropyTsallis_OrdinalPatterns"><a href="../../associations/#CausalityTools.JointProbabilities"><code>JointProbabilities</code></a> with <a href="../../discretization_tutorial/#ComplexityMeasures.OrdinalPatterns"><code>OrdinalPatterns</code></a></a><a id="example_JointEntropyTsallis_OrdinalPatterns-1"></a><a class="docs-heading-anchor-permalink" href="#example_JointEntropyTsallis_OrdinalPatterns" title="Permalink"></a></h3><pre><code class="language-julia hljs">using CausalityTools
+using Random; rng = Xoshiro(1234)
+x, y = rand(rng, 100), rand(rng, 100)
+measure = JointEntropyTsallis()
+discretization = CodifyVariables(OrdinalPatterns(m = 3))
+est = JointProbabilities(measure, discretization)
+association(est, x, y)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">2.3340683377759546</code></pre><h2 id="[JointEntropyRenyi](@ref)"><a class="docs-heading-anchor" href="#[JointEntropyRenyi](@ref)"><a href="../../associations/#CausalityTools.JointEntropyRenyi"><code>JointEntropyRenyi</code></a></a><a id="[JointEntropyRenyi](@ref)-1"></a><a class="docs-heading-anchor-permalink" href="#[JointEntropyRenyi](@ref)" title="Permalink"></a></h2><h3 id="example_JointEntropyRenyi_ValueBinning"><a class="docs-heading-anchor" href="#example_JointEntropyRenyi_ValueBinning"><a href="../../associations/#CausalityTools.JointProbabilities"><code>JointProbabilities</code></a> with <a href="../../discretization_tutorial/#ComplexityMeasures.OrdinalPatterns"><code>OrdinalPatterns</code></a></a><a id="example_JointEntropyRenyi_ValueBinning-1"></a><a class="docs-heading-anchor-permalink" href="#example_JointEntropyRenyi_ValueBinning" title="Permalink"></a></h3><pre><code class="language-julia hljs">using CausalityTools
+using Random; rng = Xoshiro(1234)
+x, y = rand(rng, 100), rand(rng, 100)
+measure = JointEntropyRenyi(q = 0.5)
+discretization = CodifyVariables(ValueBinning(2))
+est = JointProbabilities(measure, discretization)
+association(est, x, y)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">1.9472483134811365</code></pre><h2 id="[ConditionalEntropyShannon](@ref)"><a class="docs-heading-anchor" href="#[ConditionalEntropyShannon](@ref)"><a href="../../associations/#CausalityTools.ConditionalEntropyShannon"><code>ConditionalEntropyShannon</code></a></a><a id="[ConditionalEntropyShannon](@ref)-1"></a><a class="docs-heading-anchor-permalink" href="#[ConditionalEntropyShannon](@ref)" title="Permalink"></a></h2><h3 id="example_ConditionalEntropyShannon_analytical"><a class="docs-heading-anchor" href="#example_ConditionalEntropyShannon_analytical">Analytical examples</a><a id="example_ConditionalEntropyShannon_analytical-1"></a><a class="docs-heading-anchor-permalink" href="#example_ConditionalEntropyShannon_analytical" title="Permalink"></a></h3><p>This is essentially example 2.2.1 in Cover &amp; Thomas (2006), where they use the following relative frequency table as an example. Notethat Julia is column-major, so we need to transpose their example. Then their <code>X</code> is in the first dimension of our table (along columns) and their <code>Y</code> is our second dimension (rows).</p><pre><code class="language-julia hljs">using CausalityTools
+freqs_yx = [1//8 1//16 1//32 1//32;
+    1//16 1//8  1//32 1//32;
+    1//16 1//16 1//16 1//16;
+    1//4  0//1  0//1  0//1];
+# `freqs_yx` is already normalized, se we can feed it directly to `Probabilities`
+pxy = Probabilities(freqs_yx)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi"><span class="sgr33"> 4×4 Probabilities{Rational{Int64},2}</span>
+                <span class="sgr90">Outcome(1)</span>     <span class="sgr90">Outcome(2)</span>     <span class="sgr90">Outcome(3)</span>     <span class="sgr90">Outcome(4)</span>
+ <span class="sgr90">Outcome(1)</span>             1//8           1//16          1//32          1//32
+ <span class="sgr90">Outcome(2)</span>             1//16          1//8           1//32          1//32
+ <span class="sgr90">Outcome(3)</span>             1//16          1//16          1//16          1//16
+ <span class="sgr90">Outcome(4)</span>             1//4           0//1           0//1           0//1</code></pre><p>The marginal distribution for <code>x</code> (first dimension) is</p><pre><code class="language-julia hljs">marginal(pxy, dims = 2)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi"><span class="sgr33"> Probabilities{Rational{Int64},1} over 4 outcomes</span>
+ <span class="sgr90">Outcome(1)</span>  1//2
+ <span class="sgr90">Outcome(2)</span>  1//4
+ <span class="sgr90">Outcome(3)</span>  1//8
+ <span class="sgr90">Outcome(4)</span>  1//8</code></pre><p>The marginal distribution for <code>y</code> (second dimension) is</p><pre><code class="language-julia hljs">marginal(pxy, dims = 1)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi"><span class="sgr33"> Probabilities{Rational{Int64},1} over 4 outcomes</span>
+ <span class="sgr90">Outcome(1)</span>  1//4
+ <span class="sgr90">Outcome(2)</span>  1//4
+ <span class="sgr90">Outcome(3)</span>  1//4
+ <span class="sgr90">Outcome(4)</span>  1//4</code></pre><p>And the Shannon conditional entropy <span>$H^S(X | Y)$</span></p><pre><code class="language-julia hljs">ce_x_given_y = association(ConditionalEntropyShannon(), pxy) |&gt; Rational</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">13//8</code></pre><p>This is the same as in their example. Hooray! To compute <span>$H^S(Y | X)$</span>, we just need to flip the contingency matrix.</p><pre><code class="language-julia hljs">pyx = Probabilities(transpose(freqs_yx))
+ce_y_given_x = association(ConditionalEntropyShannon(), pyx) |&gt; Rational</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">11//8</code></pre><h3 id="example_ConditionalEntropyShannon_JointProbabilities_CodifyVariables_UniqueElements"><a class="docs-heading-anchor" href="#example_ConditionalEntropyShannon_JointProbabilities_CodifyVariables_UniqueElements"><a href="../../associations/#CausalityTools.JointProbabilities"><code>JointProbabilities</code></a> + <a href="../../discretization_tutorial/#CausalityTools.CodifyVariables"><code>CodifyVariables</code></a> + <a href="../../discretization_tutorial/#ComplexityMeasures.UniqueElements"><code>UniqueElements</code></a></a><a id="example_ConditionalEntropyShannon_JointProbabilities_CodifyVariables_UniqueElements-1"></a><a class="docs-heading-anchor-permalink" href="#example_ConditionalEntropyShannon_JointProbabilities_CodifyVariables_UniqueElements" title="Permalink"></a></h3><p>We can of course also estimate conditional entropy from data. To do so, we&#39;ll use the  <a href="../../associations/#CausalityTools.JointProbabilities"><code>JointProbabilities</code></a> estimator, which constructs a multivariate PMF for us. Thus, we don&#39;t explicitly need a set of counts, like in the example above, because they are estimated under the hood for us. </p><p>Let&#39;s first demonstrate on some categorical data. For that, we must use <a href="../../discretization_tutorial/#ComplexityMeasures.UniqueElements"><code>UniqueElements</code></a> as the discretization (i.e. just count unique elements).</p><pre><code class="language-julia hljs">using CausalityTools
+using Random; rng = Xoshiro(1234)
+n = 1000
+rating = rand(rng, 1:6, n)
+movie = rand(rng, [&quot;The Witcher: the movie&quot;, &quot;Lord of the Rings&quot;], n)
+
+disc = CodifyVariables(UniqueElements())
+est = JointProbabilities(ConditionalEntropyShannon(), disc)
+association(est, rating, movie)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">2.5744931842297527</code></pre><h3 id="example_ConditionalEntropyShannon_JointProbabilities_CodifyPoints_UniqueElementsEncoding"><a class="docs-heading-anchor" href="#example_ConditionalEntropyShannon_JointProbabilities_CodifyPoints_UniqueElementsEncoding"><a href="../../associations/#CausalityTools.JointProbabilities"><code>JointProbabilities</code></a> + <a href="../../discretization_tutorial/#CausalityTools.CodifyPoints"><code>CodifyPoints</code></a> + <a href="../../encoding_tutorial/#ComplexityMeasures.UniqueElementsEncoding"><code>UniqueElementsEncoding</code></a></a><a id="example_ConditionalEntropyShannon_JointProbabilities_CodifyPoints_UniqueElementsEncoding-1"></a><a class="docs-heading-anchor-permalink" href="#example_ConditionalEntropyShannon_JointProbabilities_CodifyPoints_UniqueElementsEncoding" title="Permalink"></a></h3><pre><code class="language-julia hljs">using CausalityTools
+using Random; rng = Xoshiro(1234)
+x, y, z = rand(rng, 1:5, 100), rand(rng, 1:5, 100), rand(rng, 1:3, 100)
+X = StateSpaceSet(x, z)
+Y = StateSpaceSet(y, z)
+disc = CodifyPoints(UniqueElementsEncoding(X), UniqueElementsEncoding(Y));
+est = JointProbabilities(ConditionalEntropyShannon(), disc);
+association(est, X, Y)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">1.8234663200044612</code></pre><h2 id="[ConditionalEntropyTsallisAbe](@ref)"><a class="docs-heading-anchor" href="#[ConditionalEntropyTsallisAbe](@ref)"><a href="../../associations/#CausalityTools.ConditionalEntropyTsallisAbe"><code>ConditionalEntropyTsallisAbe</code></a></a><a id="[ConditionalEntropyTsallisAbe](@ref)-1"></a><a class="docs-heading-anchor-permalink" href="#[ConditionalEntropyTsallisAbe](@ref)" title="Permalink"></a></h2><h3 id="example_ConditionalEntropyTsallisAbe_JointProbabilities_CodifyVariables_UniqueElements"><a class="docs-heading-anchor" href="#example_ConditionalEntropyTsallisAbe_JointProbabilities_CodifyVariables_UniqueElements"><a href="../../associations/#CausalityTools.JointProbabilities"><code>JointProbabilities</code></a> + <a href="../../discretization_tutorial/#CausalityTools.CodifyVariables"><code>CodifyVariables</code></a> + <a href="../../discretization_tutorial/#ComplexityMeasures.UniqueElements"><code>UniqueElements</code></a></a><a id="example_ConditionalEntropyTsallisAbe_JointProbabilities_CodifyVariables_UniqueElements-1"></a><a class="docs-heading-anchor-permalink" href="#example_ConditionalEntropyTsallisAbe_JointProbabilities_CodifyVariables_UniqueElements" title="Permalink"></a></h3><p>We&#39;ll here repeat the analysis we did for <a href="../../associations/#CausalityTools.ConditionalEntropyShannon"><code>ConditionalEntropyShannon</code></a> above.</p><pre><code class="language-julia hljs">using CausalityTools
+using Random; rng = Xoshiro(1234)
+n = 1000
+rating = rand(rng, 1:6, n)
+movie = rand(rng, [&quot;The Witcher: the movie&quot;, &quot;Lord of the Rings&quot;], n)
+
+disc = CodifyVariables(UniqueElements())
+est = JointProbabilities(ConditionalEntropyTsallisAbe(q =1.5), disc)
+association(est, rating, movie)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">1.7608975191987752</code></pre><h3 id="example_ConditionalEntropyTsallisAbe_JointProbabilities_CodifyPoints_UniqueElementsEncoding"><a class="docs-heading-anchor" href="#example_ConditionalEntropyTsallisAbe_JointProbabilities_CodifyPoints_UniqueElementsEncoding"><a href="../../associations/#CausalityTools.JointProbabilities"><code>JointProbabilities</code></a> + <a href="../../discretization_tutorial/#CausalityTools.CodifyPoints"><code>CodifyPoints</code></a> + <a href="../../encoding_tutorial/#ComplexityMeasures.UniqueElementsEncoding"><code>UniqueElementsEncoding</code></a></a><a id="example_ConditionalEntropyTsallisAbe_JointProbabilities_CodifyPoints_UniqueElementsEncoding-1"></a><a class="docs-heading-anchor-permalink" href="#example_ConditionalEntropyTsallisAbe_JointProbabilities_CodifyPoints_UniqueElementsEncoding" title="Permalink"></a></h3><pre><code class="language-julia hljs">using CausalityTools
+using Random; rng = Xoshiro(1234)
+x, y, z = rand(rng, 1:5, 100), rand(rng, 1:5, 100), rand(rng, 1:3, 100)
+X = StateSpaceSet(x, z)
+Y = StateSpaceSet(y, z)
+disc = CodifyPoints(UniqueElementsEncoding(X), UniqueElementsEncoding(Y));
+est = JointProbabilities(ConditionalEntropyTsallisAbe(q = 1.5), disc);
+association(est, X, Y)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">1.8293074543081442</code></pre><h2 id="[ConditionalEntropyTsallisFuruichi](@ref)"><a class="docs-heading-anchor" href="#[ConditionalEntropyTsallisFuruichi](@ref)"><a href="../../associations/#CausalityTools.ConditionalEntropyTsallisFuruichi"><code>ConditionalEntropyTsallisFuruichi</code></a></a><a id="[ConditionalEntropyTsallisFuruichi](@ref)-1"></a><a class="docs-heading-anchor-permalink" href="#[ConditionalEntropyTsallisFuruichi](@ref)" title="Permalink"></a></h2><h3 id="example_ConditionalEntropyTsallisFuruichi_JointProbabilities_CodifyVariables_UniqueElements"><a class="docs-heading-anchor" href="#example_ConditionalEntropyTsallisFuruichi_JointProbabilities_CodifyVariables_UniqueElements"><a href="../../associations/#CausalityTools.JointProbabilities"><code>JointProbabilities</code></a> + <a href="../../discretization_tutorial/#CausalityTools.CodifyVariables"><code>CodifyVariables</code></a> + <a href="../../discretization_tutorial/#ComplexityMeasures.UniqueElements"><code>UniqueElements</code></a></a><a id="example_ConditionalEntropyTsallisFuruichi_JointProbabilities_CodifyVariables_UniqueElements-1"></a><a class="docs-heading-anchor-permalink" href="#example_ConditionalEntropyTsallisFuruichi_JointProbabilities_CodifyVariables_UniqueElements" title="Permalink"></a></h3><p>We&#39;ll here repeat the analysis we did for <a href="../../associations/#CausalityTools.ConditionalEntropyShannon"><code>ConditionalEntropyShannon</code></a> and <a href="../../associations/#CausalityTools.ConditionalEntropyTsallisAbe"><code>ConditionalEntropyTsallisAbe</code></a> above.</p><pre><code class="language-julia hljs">using CausalityTools
+using Random; rng = Xoshiro(1234)
+n = 1000
+rating = rand(rng, 1:6, n)
+movie = rand(rng, [&quot;The Witcher: the movie&quot;, &quot;Lord of the Rings&quot;], n)
+
+disc = CodifyVariables(UniqueElements())
+est = JointProbabilities(ConditionalEntropyTsallisFuruichi(q =0.5), disc)
+association(est, rating, movie)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">4.087134896624493</code></pre><h3 id="example_ConditionalEntropyTsallisFuruichi_JointProbabilities_CodifyPoints_UniqueElementsEncoding"><a class="docs-heading-anchor" href="#example_ConditionalEntropyTsallisFuruichi_JointProbabilities_CodifyPoints_UniqueElementsEncoding"><a href="../../associations/#CausalityTools.JointProbabilities"><code>JointProbabilities</code></a> + <a href="../../discretization_tutorial/#CausalityTools.CodifyPoints"><code>CodifyPoints</code></a> + <a href="../../encoding_tutorial/#ComplexityMeasures.UniqueElementsEncoding"><code>UniqueElementsEncoding</code></a></a><a id="example_ConditionalEntropyTsallisFuruichi_JointProbabilities_CodifyPoints_UniqueElementsEncoding-1"></a><a class="docs-heading-anchor-permalink" href="#example_ConditionalEntropyTsallisFuruichi_JointProbabilities_CodifyPoints_UniqueElementsEncoding" title="Permalink"></a></h3><pre><code class="language-julia hljs">using CausalityTools
+using Random; rng = Xoshiro(1234)
+x, y, z = rand(rng, 1:5, 100), rand(rng, 1:5, 100), rand(rng, 1:3, 100)
+X = StateSpaceSet(x, z)
+Y = StateSpaceSet(y, z)
+disc = CodifyPoints(UniqueElementsEncoding(X), UniqueElementsEncoding(Y));
+est = JointProbabilities(ConditionalEntropyTsallisFuruichi(q = 0.5), disc);
+association(est, X, Y)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">6.6943366123303045</code></pre><h2 id="[MIShannon](@ref)"><a class="docs-heading-anchor" href="#[MIShannon](@ref)"><a href="../../associations/#CausalityTools.MIShannon"><code>MIShannon</code></a></a><a id="[MIShannon](@ref)-1"></a><a class="docs-heading-anchor-permalink" href="#[MIShannon](@ref)" title="Permalink"></a></h2><h3 id="example_MIShannon_JointProbabilities_ValueBinning"><a class="docs-heading-anchor" href="#example_MIShannon_JointProbabilities_ValueBinning"><a href="../../associations/#CausalityTools.JointProbabilities"><code>JointProbabilities</code></a> + <a href="../../discretization_tutorial/#ComplexityMeasures.ValueBinning"><code>ValueBinning</code></a></a><a id="example_MIShannon_JointProbabilities_ValueBinning-1"></a><a class="docs-heading-anchor-permalink" href="#example_MIShannon_JointProbabilities_ValueBinning" title="Permalink"></a></h3><pre><code class="language-julia hljs">using CausalityTools
+using Random; rng = MersenneTwister(1234)
+x = rand(rng, 1000)
+y = rand(rng, 1000)
+discretization = CodifyVariables(ValueBinning(FixedRectangularBinning(0, 1, 5)))
+est = JointProbabilities(MIShannon(), discretization)
+association(est, x, y)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">0.0026305563117749483</code></pre><h3 id="example_MIShannon_JointProbabilities_UniqueElements"><a class="docs-heading-anchor" href="#example_MIShannon_JointProbabilities_UniqueElements"><a href="../../associations/#CausalityTools.JointProbabilities"><code>JointProbabilities</code></a> + <a href="../../discretization_tutorial/#ComplexityMeasures.UniqueElements"><code>UniqueElements</code></a></a><a id="example_MIShannon_JointProbabilities_UniqueElements-1"></a><a class="docs-heading-anchor-permalink" href="#example_MIShannon_JointProbabilities_UniqueElements" title="Permalink"></a></h3><p>The <a href="../../associations/#CausalityTools.JointProbabilities"><code>JointProbabilities</code></a> estimator can also be used with categorical data. For example, let&#39;s compare the Shannon mutual information between the preferences of a population sample with regards to different foods.</p><pre><code class="language-julia hljs">using CausalityTools
+n = 1000
+preferences = rand([&quot;neutral&quot;, &quot;like it&quot;, &quot;hate it&quot;], n);
+random_foods = rand([&quot;water&quot;, &quot;flour&quot;, &quot;bananas&quot;, &quot;booze&quot;, &quot;potatoes&quot;, &quot;beans&quot;, &quot;soup&quot;], n)
+biased_foods = map(preferences) do preference
+    if cmp(preference, &quot;neutral&quot;) == 1
+        return rand([&quot;water&quot;, &quot;flour&quot;])
+    elseif cmp(preference, &quot;like it&quot;) == 1
+        return rand([&quot;bananas&quot;, &quot;booze&quot;])
+    else
+        return rand([&quot;potatoes&quot;, &quot;beans&quot;, &quot;soup&quot;])
+    end
+end
+
+est = JointProbabilities(MIShannon(), UniqueElements())
+association(est, preferences, biased_foods), association(est, preferences, random_foods)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">(0.8958394379643194, 0.005893643436096092)</code></pre><h3 id="example_MIShannon_GaussianMI"><a class="docs-heading-anchor" href="#example_MIShannon_GaussianMI">Dedicated <a href="../../associations/#CausalityTools.GaussianMI"><code>GaussianMI</code></a> estimator</a><a id="example_MIShannon_GaussianMI-1"></a><a class="docs-heading-anchor-permalink" href="#example_MIShannon_GaussianMI" title="Permalink"></a></h3><pre><code class="language-julia hljs">using CausalityTools
+using Distributions
+using Statistics
+
+n = 1000
+using CausalityTools
+x = randn(1000)
+y = rand(1000) .+ x
+association(GaussianMI(MIShannon()), x, y) # defaults to `MIShannon()`</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">1.8004058144247521</code></pre><h3 id="example_MIShannon_KSG1"><a class="docs-heading-anchor" href="#example_MIShannon_KSG1">Dedicated <a href="../../associations/#CausalityTools.KraskovStögbauerGrassberger1"><code>KraskovStögbauerGrassberger1</code></a> estimator</a><a id="example_MIShannon_KSG1-1"></a><a class="docs-heading-anchor-permalink" href="#example_MIShannon_KSG1" title="Permalink"></a></h3><pre><code class="language-julia hljs">using CausalityTools
+x, y = rand(1000), rand(1000)
+association(KSG1(MIShannon(); k = 5), x, y)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">-0.021891007794768953</code></pre><h3 id="example_MIShannon_KSG2"><a class="docs-heading-anchor" href="#example_MIShannon_KSG2">Dedicated <a href="../../associations/#CausalityTools.KraskovStögbauerGrassberger2"><code>KraskovStögbauerGrassberger2</code></a> estimator</a><a id="example_MIShannon_KSG2-1"></a><a class="docs-heading-anchor-permalink" href="#example_MIShannon_KSG2" title="Permalink"></a></h3><pre><code class="language-julia hljs">using CausalityTools
+x, y = rand(1000), rand(1000)
+association(KSG2(MIShannon(); k = 5), x, y)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">0.058567297415518575</code></pre><h3 id="example_MIShannon_GaoKannanOhViswanath"><a class="docs-heading-anchor" href="#example_MIShannon_GaoKannanOhViswanath">Dedicated <a href="../../associations/#CausalityTools.GaoKannanOhViswanath"><code>GaoKannanOhViswanath</code></a> estimator</a><a id="example_MIShannon_GaoKannanOhViswanath-1"></a><a class="docs-heading-anchor-permalink" href="#example_MIShannon_GaoKannanOhViswanath" title="Permalink"></a></h3><pre><code class="language-julia hljs">using CausalityTools
+x, y = rand(1000), rand(1000)
+association(GaoKannanOhViswanath(MIShannon(); k = 10), x, y)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">0.0038856773134891636</code></pre><h3 id="example_MIShannon_EntropyDecomposition_Kraskov"><a class="docs-heading-anchor" href="#example_MIShannon_EntropyDecomposition_Kraskov"><a href="../../associations/#CausalityTools.EntropyDecomposition"><code>EntropyDecomposition</code></a> + <a href="../../associations/#ComplexityMeasures.Kraskov"><code>Kraskov</code></a></a><a id="example_MIShannon_EntropyDecomposition_Kraskov-1"></a><a class="docs-heading-anchor-permalink" href="#example_MIShannon_EntropyDecomposition_Kraskov" title="Permalink"></a></h3><p>We can compute <a href="../../associations/#CausalityTools.MIShannon"><code>MIShannon</code></a> by naively applying a <a href="@ref"><code>DifferentialEntropyEstimator</code></a>. Note that this doesn&#39;t apply any bias correction.</p><pre><code class="language-julia hljs">using CausalityTools
+x, y = rand(1000), rand(1000)
+association(EntropyDecomposition(MIShannon(), Kraskov(k = 3)), x, y)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">-0.1242401403436835</code></pre><h3 id="example_MIShannon_EntropyDecomposition_BubbleSortSwaps"><a class="docs-heading-anchor" href="#example_MIShannon_EntropyDecomposition_BubbleSortSwaps"><a href="../../associations/#CausalityTools.EntropyDecomposition"><code>EntropyDecomposition</code></a> + <a href="../../discretization_tutorial/#ComplexityMeasures.BubbleSortSwaps"><code>BubbleSortSwaps</code></a></a><a id="example_MIShannon_EntropyDecomposition_BubbleSortSwaps-1"></a><a class="docs-heading-anchor-permalink" href="#example_MIShannon_EntropyDecomposition_BubbleSortSwaps" title="Permalink"></a></h3><p>We can also compute <a href="../../associations/#CausalityTools.MIShannon"><code>MIShannon</code></a> by naively applying a <a href="@ref"><code>DiscreteEntropyEstimator</code></a>. Note that this doesn&#39;t apply any bias correction.</p><pre><code class="language-julia hljs">using CausalityTools
+x, y = rand(1000), rand(1000)
+disc = CodifyVariables(BubbleSortSwaps(m=5))
+hest = PlugIn(Shannon())
+association(EntropyDecomposition(MIShannon(), hest, disc), x, y)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">0.08913143183706307</code></pre><h3 id="example_MIShannon_EntropyDecomposition_Jackknife_ValueBinning"><a class="docs-heading-anchor" href="#example_MIShannon_EntropyDecomposition_Jackknife_ValueBinning"><a href="../../associations/#CausalityTools.EntropyDecomposition"><code>EntropyDecomposition</code></a> + <a href="../../associations/#ComplexityMeasures.Jackknife"><code>Jackknife</code></a> + <a href="../../discretization_tutorial/#ComplexityMeasures.ValueBinning"><code>ValueBinning</code></a></a><a id="example_MIShannon_EntropyDecomposition_Jackknife_ValueBinning-1"></a><a class="docs-heading-anchor-permalink" href="#example_MIShannon_EntropyDecomposition_Jackknife_ValueBinning" title="Permalink"></a></h3><p>A <a href="../../discretization_tutorial/#ComplexityMeasures.ValueBinning"><code>ValueBinning</code></a> estimator can be used to bin the data and compute discrete Shannon mutual information.</p><pre><code class="language-julia hljs">using CausalityTools
+using Random; rng = MersenneTwister(1234)
+x = rand(rng, 50)
+y = rand(rng, 50)
+
+# Use the H3-estimation method with a discrete visitation frequency based
+# probabilities estimator over a fixed grid covering the range of the data,
+# which is on [0, 1].
+discretization = CodifyVariables(ValueBinning(FixedRectangularBinning(0, 1, 5)))
+hest = Jackknife(Shannon())
+est = EntropyDecomposition(MIShannon(), hest, discretization)
+association(est, x, y)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">-0.03746574786856627</code></pre><h2 id="[MIRenyiJizba](@ref)"><a class="docs-heading-anchor" href="#[MIRenyiJizba](@ref)"><a href="../../associations/#CausalityTools.MIRenyiJizba"><code>MIRenyiJizba</code></a></a><a id="[MIRenyiJizba](@ref)-1"></a><a class="docs-heading-anchor-permalink" href="#[MIRenyiJizba](@ref)" title="Permalink"></a></h2><h3 id="example_MIRenyiJizba_JointProbabilities_UniqueElements"><a class="docs-heading-anchor" href="#example_MIRenyiJizba_JointProbabilities_UniqueElements"><a href="../../associations/#CausalityTools.JointProbabilities"><code>JointProbabilities</code></a> + <a href="../../discretization_tutorial/#ComplexityMeasures.UniqueElements"><code>UniqueElements</code></a></a><a id="example_MIRenyiJizba_JointProbabilities_UniqueElements-1"></a><a class="docs-heading-anchor-permalink" href="#example_MIRenyiJizba_JointProbabilities_UniqueElements" title="Permalink"></a></h3><p><a href="../../associations/#CausalityTools.MIRenyiJizba"><code>MIRenyiJizba</code></a> can be estimated for categorical data using <a href="../../associations/#CausalityTools.JointProbabilities"><code>JointProbabilities</code></a> estimator with the <a href="../../discretization_tutorial/#ComplexityMeasures.UniqueElements"><code>UniqueElements</code></a> outcome space.</p><pre><code class="language-julia hljs">using CausalityTools
+using Random; rng = Xoshiro(1234)
+x = rand(rng, [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;], 200);
+y = rand(rng, [&quot;hello&quot;, &quot;yoyo&quot;, &quot;heyhey&quot;], 200);
+est = JointProbabilities(MIRenyiJizba(), UniqueElements())
+association(est, x, y)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">-0.014289937341761379</code></pre><h3 id="example_MIRenyiJizba_JointProbabilities_LeonenkoProzantoSavani"><a class="docs-heading-anchor" href="#example_MIRenyiJizba_JointProbabilities_LeonenkoProzantoSavani"><a href="../../associations/#CausalityTools.EntropyDecomposition"><code>EntropyDecomposition</code></a> + <a href="../../associations/#ComplexityMeasures.LeonenkoProzantoSavani"><code>LeonenkoProzantoSavani</code></a></a><a id="example_MIRenyiJizba_JointProbabilities_LeonenkoProzantoSavani-1"></a><a class="docs-heading-anchor-permalink" href="#example_MIRenyiJizba_JointProbabilities_LeonenkoProzantoSavani" title="Permalink"></a></h3><p><a href="../../associations/#CausalityTools.MIRenyiJizba"><code>MIRenyiJizba</code></a> can also estimated for numerical data using <a href="../../associations/#CausalityTools.EntropyDecomposition"><code>EntropyDecomposition</code></a> in combination with any <a href="../../associations/#ComplexityMeasures.DifferentialInfoEstimator"><code>DifferentialInfoEstimator</code></a> capable of estimating differential  <a href="../../associations/#ComplexityMeasures.Renyi"><code>Renyi</code></a> entropy.</p><pre><code class="language-julia hljs">using CausalityTools
+using Random; rng = Xoshiro(1234)
+x = randn(rng, 50); y = randn(rng, 50);
+def = MIRenyiJizba()
+est_diff = EntropyDecomposition(def, LeonenkoProzantoSavani(Renyi(), k=3))
+association(est_diff, x, y)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">-0.05308726289365895</code></pre><h3 id="example_MIRenyiJizba_EntropyDecomposition_ValueBinning"><a class="docs-heading-anchor" href="#example_MIRenyiJizba_EntropyDecomposition_ValueBinning"><a href="../../associations/#CausalityTools.EntropyDecomposition"><code>EntropyDecomposition</code></a> + <a href="../../associations/#ComplexityMeasures.LeonenkoProzantoSavani"><code>LeonenkoProzantoSavani</code></a></a><a id="example_MIRenyiJizba_EntropyDecomposition_ValueBinning-1"></a><a class="docs-heading-anchor-permalink" href="#example_MIRenyiJizba_EntropyDecomposition_ValueBinning" title="Permalink"></a></h3><p><a href="../../associations/#CausalityTools.MIRenyiJizba"><code>MIRenyiJizba</code></a> can also estimated for numerical data using <a href="../../associations/#CausalityTools.EntropyDecomposition"><code>EntropyDecomposition</code></a> in combination with any <a href="../../associations/#ComplexityMeasures.DiscreteInfoEstimator"><code>DiscreteInfoEstimator</code></a> capable of estimating differential  <a href="../../associations/#ComplexityMeasures.Renyi"><code>Renyi</code></a> entropy over some <a href="@ref"><code>OutcomeSpace</code></a>, e.g. <a href="../../discretization_tutorial/#ComplexityMeasures.ValueBinning"><code>ValueBinning</code></a>.</p><pre><code class="language-julia hljs">using CausalityTools
+using Random; rng = Xoshiro(1234)
+x = randn(rng, 50); y = randn(rng, 50);
+def = MIRenyiJizba()
+
+disc = CodifyVariables(ValueBinning(2))
+est_disc = EntropyDecomposition(def, PlugIn(Renyi()), disc);
+association(est_disc, x, y)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">0.044138581955657896</code></pre><h2 id="[MIRenyiSarbu](@ref)"><a class="docs-heading-anchor" href="#[MIRenyiSarbu](@ref)"><a href="../../associations/#CausalityTools.MIRenyiSarbu"><code>MIRenyiSarbu</code></a></a><a id="[MIRenyiSarbu](@ref)-1"></a><a class="docs-heading-anchor-permalink" href="#[MIRenyiSarbu](@ref)" title="Permalink"></a></h2><p><a href="../../associations/#CausalityTools.MIRenyiSarbu"><code>MIRenyiSarbu</code></a> can be estimated using the <a href="../../associations/#CausalityTools.JointProbabilities"><code>JointProbabilities</code></a> estimator  in combination with any <a href="../../discretization_tutorial/#CausalityTools.CodifyVariables"><code>CodifyVariables</code></a> or <a href="../../discretization_tutorial/#CausalityTools.CodifyPoints"><code>CodifyPoints</code></a> discretization scheme.</p><h3 id="example_MIRenyiSarbu_JointProbabilities_UniqueElements"><a class="docs-heading-anchor" href="#example_MIRenyiSarbu_JointProbabilities_UniqueElements"><a href="../../associations/#CausalityTools.JointProbabilities"><code>JointProbabilities</code></a> + <a href="../../discretization_tutorial/#ComplexityMeasures.UniqueElements"><code>UniqueElements</code></a></a><a id="example_MIRenyiSarbu_JointProbabilities_UniqueElements-1"></a><a class="docs-heading-anchor-permalink" href="#example_MIRenyiSarbu_JointProbabilities_UniqueElements" title="Permalink"></a></h3><pre><code class="language-julia hljs">using CausalityTools
+using Random; rng = Xoshiro(1234)
+x = rand(rng, [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;], 200)
+y = rand(rng, [&quot;hello&quot;, &quot;yoyo&quot;, &quot;heyhey&quot;], 200)
+
+est = JointProbabilities(MIRenyiSarbu(), CodifyVariables(UniqueElements()))
+association(est, x, y)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">0.01866831291309387</code></pre><h3 id="example_MIRenyiSarbu_JointProbabilities_CosineSimilarityBinning"><a class="docs-heading-anchor" href="#example_MIRenyiSarbu_JointProbabilities_CosineSimilarityBinning"><a href="../../associations/#CausalityTools.JointProbabilities"><code>JointProbabilities</code></a> + <a href="../../discretization_tutorial/#ComplexityMeasures.CosineSimilarityBinning"><code>CosineSimilarityBinning</code></a></a><a id="example_MIRenyiSarbu_JointProbabilities_CosineSimilarityBinning-1"></a><a class="docs-heading-anchor-permalink" href="#example_MIRenyiSarbu_JointProbabilities_CosineSimilarityBinning" title="Permalink"></a></h3><pre><code class="language-julia hljs">using CausalityTools
+using Random; rng = Xoshiro(1234)
+x = rand(rng, 200)
+y = rand(rng, 200)
+
+est = JointProbabilities(MIRenyiSarbu(), CodifyVariables(CosineSimilarityBinning()))
+association(est, x, y)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">0.044214606254861136</code></pre><h2 id="[MITsallisFuruichi](@ref)"><a class="docs-heading-anchor" href="#[MITsallisFuruichi](@ref)"><a href="../../associations/#CausalityTools.MITsallisFuruichi"><code>MITsallisFuruichi</code></a></a><a id="[MITsallisFuruichi](@ref)-1"></a><a class="docs-heading-anchor-permalink" href="#[MITsallisFuruichi](@ref)" title="Permalink"></a></h2><h3 id="example_MITsallisFuruichi_JointProbabilities_UniqueElements"><a class="docs-heading-anchor" href="#example_MITsallisFuruichi_JointProbabilities_UniqueElements"><a href="../../associations/#CausalityTools.JointProbabilities"><code>JointProbabilities</code></a> + <a href="../../discretization_tutorial/#ComplexityMeasures.UniqueElements"><code>UniqueElements</code></a></a><a id="example_MITsallisFuruichi_JointProbabilities_UniqueElements-1"></a><a class="docs-heading-anchor-permalink" href="#example_MITsallisFuruichi_JointProbabilities_UniqueElements" title="Permalink"></a></h3><p><a href="../../associations/#CausalityTools.MITsallisFuruichi"><code>MITsallisFuruichi</code></a> can be estimated using the <a href="../../associations/#CausalityTools.JointProbabilities"><code>JointProbabilities</code></a> estimator  in combination with any <a href="../../discretization_tutorial/#CausalityTools.CodifyVariables"><code>CodifyVariables</code></a> or <a href="../../discretization_tutorial/#CausalityTools.CodifyPoints"><code>CodifyPoints</code></a> discretization scheme.</p><pre><code class="language-julia hljs">using CausalityTools
+using Random; rng = Xoshiro(1234)
+x = rand(rng, 200)
+y = rand(rng, 200)
+
+est = JointProbabilities(MITsallisFuruichi(q = 0.3), UniqueElements())
+association(est, x, y)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">-2.8721220837828123</code></pre><h3 id="example_MITsallisFuruichi_EntropyDecomposition_LeonenkoProsantoSavani"><a class="docs-heading-anchor" href="#example_MITsallisFuruichi_EntropyDecomposition_LeonenkoProsantoSavani"><a href="../../associations/#CausalityTools.EntropyDecomposition"><code>EntropyDecomposition</code></a> + <a href="../../associations/#ComplexityMeasures.LeonenkoProzantoSavani"><code>LeonenkoProzantoSavani</code></a></a><a id="example_MITsallisFuruichi_EntropyDecomposition_LeonenkoProsantoSavani-1"></a><a class="docs-heading-anchor-permalink" href="#example_MITsallisFuruichi_EntropyDecomposition_LeonenkoProsantoSavani" title="Permalink"></a></h3><pre><code class="language-julia hljs">using CausalityTools
+using Random; rng = Xoshiro(1234)
+x = rand(rng, 200)
+y = rand(rng, 200)
+
+est_diff = EntropyDecomposition(MITsallisFuruichi(), LeonenkoProzantoSavani(Tsallis(q= 2)))
+association(est_diff, x, y)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">-0.11358551843093931</code></pre><h3 id="example_MITsallisFuruichi_EntropyDecomposition_Dispersion"><a class="docs-heading-anchor" href="#example_MITsallisFuruichi_EntropyDecomposition_Dispersion"><a href="../../associations/#CausalityTools.EntropyDecomposition"><code>EntropyDecomposition</code></a> + <a href="../../discretization_tutorial/#ComplexityMeasures.Dispersion"><code>Dispersion</code></a></a><a id="example_MITsallisFuruichi_EntropyDecomposition_Dispersion-1"></a><a class="docs-heading-anchor-permalink" href="#example_MITsallisFuruichi_EntropyDecomposition_Dispersion" title="Permalink"></a></h3><pre><code class="language-julia hljs">using CausalityTools
+using Random; rng = Xoshiro(1234)
+x = rand(rng, 200)
+y = rand(rng, 200)
+disc = CodifyVariables(Dispersion())
+est_disc = EntropyDecomposition(MITsallisFuruichi(), PlugIn(Tsallis()), disc)
+
+association(est_disc, x, y)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">0.345168809758591</code></pre><h2 id="[MITsallisMartin](@ref)"><a class="docs-heading-anchor" href="#[MITsallisMartin](@ref)"><a href="../../associations/#CausalityTools.MITsallisMartin"><code>MITsallisMartin</code></a></a><a id="[MITsallisMartin](@ref)-1"></a><a class="docs-heading-anchor-permalink" href="#[MITsallisMartin](@ref)" title="Permalink"></a></h2><h3 id="example_MITsallisMartin_JointProbabilities_UniqueElements"><a class="docs-heading-anchor" href="#example_MITsallisMartin_JointProbabilities_UniqueElements"><a href="../../associations/#CausalityTools.JointProbabilities"><code>JointProbabilities</code></a> + <a href="../../discretization_tutorial/#ComplexityMeasures.UniqueElements"><code>UniqueElements</code></a></a><a id="example_MITsallisMartin_JointProbabilities_UniqueElements-1"></a><a class="docs-heading-anchor-permalink" href="#example_MITsallisMartin_JointProbabilities_UniqueElements" title="Permalink"></a></h3><pre><code class="language-julia hljs">using CausalityTools
+using Random; rng = Xoshiro(1234)
+x = rand(rng, 200)
+y = rand(rng, 200)
+
+est = JointProbabilities(MITsallisMartin(q = 1.5), UniqueElements())
+association(est, x, y)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">-26.28427124746185</code></pre><h3 id="example_MITsallisMartin_EntropyDecomposition_LeonenkoProsantoSavani"><a class="docs-heading-anchor" href="#example_MITsallisMartin_EntropyDecomposition_LeonenkoProsantoSavani"><a href="../../associations/#CausalityTools.EntropyDecomposition"><code>EntropyDecomposition</code></a> + <a href="../../associations/#ComplexityMeasures.LeonenkoProzantoSavani"><code>LeonenkoProzantoSavani</code></a></a><a id="example_MITsallisMartin_EntropyDecomposition_LeonenkoProsantoSavani-1"></a><a class="docs-heading-anchor-permalink" href="#example_MITsallisMartin_EntropyDecomposition_LeonenkoProsantoSavani" title="Permalink"></a></h3><p><a href="../../associations/#CausalityTools.MITsallisMartin"><code>MITsallisMartin</code></a> can be estimated using a decomposition into entropy  terms using <a href="../../associations/#CausalityTools.EntropyDecomposition"><code>EntropyDecomposition</code></a> with any compatible estimator  that can estimate differential <a href="../../associations/#ComplexityMeasures.Tsallis"><code>Tsallis</code></a> entropy. </p><pre><code class="language-julia hljs">using CausalityTools
+using Random; rng = Xoshiro(1234)
+x = rand(rng, 500)
+y = rand(rng, 500)
+
+est_diff = EntropyDecomposition(MITsallisMartin(), LeonenkoProzantoSavani(Tsallis(q= 1.5)))
+association(est_diff, x, y)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">0.1241248567715774</code></pre><h3 id="example_MITsallisMartin_EntropyDecomposition_OrdinalPatterns"><a class="docs-heading-anchor" href="#example_MITsallisMartin_EntropyDecomposition_OrdinalPatterns"><a href="../../associations/#CausalityTools.EntropyDecomposition"><code>EntropyDecomposition</code></a> + <a href="../../discretization_tutorial/#ComplexityMeasures.OrdinalPatterns"><code>OrdinalPatterns</code></a></a><a id="example_MITsallisMartin_EntropyDecomposition_OrdinalPatterns-1"></a><a class="docs-heading-anchor-permalink" href="#example_MITsallisMartin_EntropyDecomposition_OrdinalPatterns" title="Permalink"></a></h3><pre><code class="language-julia hljs">using CausalityTools
+using Random; rng = Xoshiro(1234)
+x = rand(rng, 200)
+y = rand(rng, 200)
+disc = CodifyVariables(OrdinalPatterns())
+est_disc = EntropyDecomposition(MITsallisMartin(), PlugIn(Tsallis()), disc)
+
+association(est_disc, x, y)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">1.3973731206049993</code></pre><h2 id="[CMIShannon](@ref)"><a class="docs-heading-anchor" href="#[CMIShannon](@ref)"><a href="../../associations/#CausalityTools.CMIShannon"><code>CMIShannon</code></a></a><a id="[CMIShannon](@ref)-1"></a><a class="docs-heading-anchor-permalink" href="#[CMIShannon](@ref)" title="Permalink"></a></h2><h3 id="[CMIShannon](@ref)-with-[GaussianCMI](@ref)"><a class="docs-heading-anchor" href="#[CMIShannon](@ref)-with-[GaussianCMI](@ref)"><a href="../../associations/#CausalityTools.CMIShannon"><code>CMIShannon</code></a> with <a href="../../associations/#CausalityTools.GaussianCMI"><code>GaussianCMI</code></a></a><a id="[CMIShannon](@ref)-with-[GaussianCMI](@ref)-1"></a><a class="docs-heading-anchor-permalink" href="#[CMIShannon](@ref)-with-[GaussianCMI](@ref)" title="Permalink"></a></h3><pre><code class="language-julia hljs">using CausalityTools
+using Distributions
+using Statistics
+
+n = 1000
+# A chain X → Y → Z
+x = randn(1000)
+y = randn(1000) .+ x
+z = randn(1000) .+ y
+association(GaussianCMI(), x, z, y) # defaults to `CMIShannon()`</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">0.7572939037229411</code></pre><h3 id="example_CMIShannon_FPVP"><a class="docs-heading-anchor" href="#example_CMIShannon_FPVP"><a href="../../associations/#CausalityTools.CMIShannon"><code>CMIShannon</code></a> with <a href="../../associations/#CausalityTools.FPVP"><code>FPVP</code></a></a><a id="example_CMIShannon_FPVP-1"></a><a class="docs-heading-anchor-permalink" href="#example_CMIShannon_FPVP" title="Permalink"></a></h3><pre><code class="language-julia hljs">using CausalityTools
+using Distributions
+using Statistics
+
+n = 1000
+# A chain X → Y → Z
+x = rand(Normal(-1, 0.5), n)
+y = rand(BetaPrime(0.5, 1.5), n) .+ x
+z = rand(Chisq(100), n)
+z = (z ./ std(z)) .+ y
+
+# We expect zero (in practice: very low) CMI when computing I(X; Z | Y), because
+# the link between X and Z is exclusively through Y, so when observing Y,
+# X and Z should appear independent.
+association(FPVP(k = 5), x, z, y) # defaults to `CMIShannon()`</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">-0.13660601525207564</code></pre><h3 id="[CMIShannon](@ref)-with-[MesnerShalizi](@ref)"><a class="docs-heading-anchor" href="#[CMIShannon](@ref)-with-[MesnerShalizi](@ref)"><a href="../../associations/#CausalityTools.CMIShannon"><code>CMIShannon</code></a> with <a href="../../associations/#CausalityTools.MesnerShalizi"><code>MesnerShalizi</code></a></a><a id="[CMIShannon](@ref)-with-[MesnerShalizi](@ref)-1"></a><a class="docs-heading-anchor-permalink" href="#[CMIShannon](@ref)-with-[MesnerShalizi](@ref)" title="Permalink"></a></h3><pre><code class="language-julia hljs">using CausalityTools
+using Distributions
+using Statistics
+using Random; rng = Xoshiro(1234)
+
+n = 1000
+# A chain X → Y → Z
+x = rand(rng, Normal(-1, 0.5), n)
+y = rand(rng, BetaPrime(0.5, 1.5), n) .+ x
+z = rand(rng, Chisq(100), n)
+z = (z ./ std(z)) .+ y
+
+# We expect zero (in practice: very low) CMI when computing I(X; Z | Y), because
+# the link between X and Z is exclusively through Y, so when observing Y,
+# X and Z should appear independent.
+association(MesnerShalizi(; k = 10), x, z, y) # defaults to `CMIShannon()`</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">-0.11407574318482466</code></pre><h3 id="[CMIShannon](@ref)-with-[Rahimzamani](@ref)"><a class="docs-heading-anchor" href="#[CMIShannon](@ref)-with-[Rahimzamani](@ref)"><a href="../../associations/#CausalityTools.CMIShannon"><code>CMIShannon</code></a> with <a href="../../associations/#CausalityTools.Rahimzamani"><code>Rahimzamani</code></a></a><a id="[CMIShannon](@ref)-with-[Rahimzamani](@ref)-1"></a><a class="docs-heading-anchor-permalink" href="#[CMIShannon](@ref)-with-[Rahimzamani](@ref)" title="Permalink"></a></h3><pre><code class="language-julia hljs">using CausalityTools
+using Distributions
+using Statistics
+using Random; rng = Xoshiro(1234)
+
+n = 1000
+# A chain X → Y → Z
+x = rand(rng, Normal(-1, 0.5), n)
+y = rand(rng, BetaPrime(0.5, 1.5), n) .+ x
+z = rand(rng, Chisq(100), n)
+z = (z ./ std(z)) .+ y
+
+# We expect zero (in practice: very low) CMI when computing I(X; Z | Y), because
+# the link between X and Z is exclusively through Y, so when observing Y,
+# X and Z should appear independent.
+association(Rahimzamani(CMIShannon(base = 10); k = 10), x, z, y)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">-0.0343402204762932</code></pre><h2 id="[CMIRenyiPoczos](@ref)"><a class="docs-heading-anchor" href="#[CMIRenyiPoczos](@ref)"><a href="../../associations/#CausalityTools.CMIRenyiPoczos"><code>CMIRenyiPoczos</code></a></a><a id="[CMIRenyiPoczos](@ref)-1"></a><a class="docs-heading-anchor-permalink" href="#[CMIRenyiPoczos](@ref)" title="Permalink"></a></h2><h3 id="CMIRenyiPoczos_PoczosSchneiderCMI"><a class="docs-heading-anchor" href="#CMIRenyiPoczos_PoczosSchneiderCMI"><a href="../../associations/#CausalityTools.PoczosSchneiderCMI"><code>PoczosSchneiderCMI</code></a></a><a id="CMIRenyiPoczos_PoczosSchneiderCMI-1"></a><a class="docs-heading-anchor-permalink" href="#CMIRenyiPoczos_PoczosSchneiderCMI" title="Permalink"></a></h3><pre><code class="language-julia hljs">using CausalityTools
+using Distributions
+using Statistics
+using Random; rng = Xoshiro(1234)
+
+n = 1000
+# A chain X → Y → Z
+x = rand(rng, Normal(-1, 0.5), n)
+y = rand(rng, BetaPrime(0.5, 1.5), n) .+ x
+z = rand(rng, Chisq(100), n)
+z = (z ./ std(z)) .+ y
+
+# We expect zero (in practice: very low) CMI when computing I(X; Z | Y), because
+# the link between X and Z is exclusively through Y, so when observing Y,
+# X and Z should appear independent.
+est = PoczosSchneiderCMI(CMIRenyiPoczos(base = 2, q = 1.2); k = 5)
+association(est, x, z, y)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">-0.39801425331961154</code></pre><p>In addition to the dedicated <a href="../../associations/#CausalityTools.ConditionalMutualInformationEstimator"><code>ConditionalMutualInformationEstimator</code></a>s, any <a href="../../associations/#CausalityTools.MutualInformationEstimator"><code>MutualInformationEstimator</code></a> can also be used to compute conditional mutual information using the chain rule of mutual information. However, the naive application of these estimators don&#39;t perform any bias correction when taking the difference of mutual information terms.</p><h2 id="[CMIShannon](@ref)-2"><a class="docs-heading-anchor" href="#[CMIShannon](@ref)-2"><a href="../../associations/#CausalityTools.CMIShannon"><code>CMIShannon</code></a></a><a class="docs-heading-anchor-permalink" href="#[CMIShannon](@ref)-2" title="Permalink"></a></h2><h3 id="example_CMIShannon_MIDecomposition_KSG1"><a class="docs-heading-anchor" href="#example_CMIShannon_MIDecomposition_KSG1"><a href="../../associations/#CausalityTools.MIDecomposition"><code>MIDecomposition</code></a> + <a href="@ref"><code>KSG1</code></a></a><a id="example_CMIShannon_MIDecomposition_KSG1-1"></a><a class="docs-heading-anchor-permalink" href="#example_CMIShannon_MIDecomposition_KSG1" title="Permalink"></a></h3><pre><code class="language-julia hljs">using CausalityTools
+using Distributions
+using Statistics
+
+n = 1000
+# A chain X → Y → Z
+x = rand(Normal(-1, 0.5), n)
+y = rand(BetaPrime(0.5, 1.5), n) .+ x
+z = rand(Chisq(100), n)
+z = (z ./ std(z)) .+ y
+
+# We expect zero (in practice: very low) CMI when computing I(X; Z | Y), because
+# the link between X and Z is exclusively through Y, so when observing Y,
+# X and Z should appear independent.
+est = MIDecomposition(CMIShannon(base = 2), KSG1(k = 10))
+association(est, x, z, y)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">-0.4376205323497916</code></pre><h3 id="example_CMIShannon_EntropyDecomposition_Kraskov"><a class="docs-heading-anchor" href="#example_CMIShannon_EntropyDecomposition_Kraskov"><a href="../../associations/#CausalityTools.EntropyDecomposition"><code>EntropyDecomposition</code></a> + <a href="../../associations/#ComplexityMeasures.Kraskov"><code>Kraskov</code></a></a><a id="example_CMIShannon_EntropyDecomposition_Kraskov-1"></a><a class="docs-heading-anchor-permalink" href="#example_CMIShannon_EntropyDecomposition_Kraskov" title="Permalink"></a></h3><p>Any <a href="@ref"><code>DifferentialEntropyEstimator</code></a> can also be used to compute conditional mutual information using a sum of entropies. For that, we  usethe <a href="../../associations/#CausalityTools.EntropyDecomposition"><code>EntropyDecomposition</code></a> estimator. No bias correction is applied for  <a href="../../associations/#CausalityTools.EntropyDecomposition"><code>EntropyDecomposition</code></a> either.</p><pre><code class="language-julia hljs">using CausalityTools
+using Distributions
+using Random; rng = Xoshiro(1234)
+n = 500
+# A chain X → Y → Z
+x = rand(rng, Epanechnikov(0.5, 1.0), n)
+y = rand(rng, Normal(0, 0.2), n) .+ x
+z = rand(rng, FDist(3, 2), n)
+est = EntropyDecomposition(CMIShannon(), Kraskov(k = 5))
+association(est, x, z, y)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">-0.40513415764994387</code></pre><p>Any <a href="../../associations/#ComplexityMeasures.DiscreteInfoEstimator"><code>DiscreteInfoEstimator</code></a> that computes entropy can also be used to compute conditional mutual information using a sum of entropies. For that, we also use <a href="../../associations/#CausalityTools.EntropyDecomposition"><code>EntropyDecomposition</code></a>. In the discrete case, we also have to specify a discretization (an <a href="@ref"><code>OutcomeSpace</code></a>).</p><h3 id="example_CMIShannon_EntropyDecomposition_ValueBinning"><a class="docs-heading-anchor" href="#example_CMIShannon_EntropyDecomposition_ValueBinning"><a href="../../associations/#CausalityTools.EntropyDecomposition"><code>EntropyDecomposition</code></a> + <a href="../../discretization_tutorial/#ComplexityMeasures.ValueBinning"><code>ValueBinning</code></a></a><a id="example_CMIShannon_EntropyDecomposition_ValueBinning-1"></a><a class="docs-heading-anchor-permalink" href="#example_CMIShannon_EntropyDecomposition_ValueBinning" title="Permalink"></a></h3><pre><code class="language-julia hljs">using CausalityTools
+using Distributions
+using Random; rng = Xoshiro(1234)
+n = 500
+# A chain X → Y → Z
+x = rand(rng, Epanechnikov(0.5, 1.0), n)
+y = rand(rng, Normal(0, 0.2), n) .+ x
+z = rand(rng, FDist(3, 2), n)
+discretization = CodifyVariables(ValueBinning(RectangularBinning(5)))
+hest = PlugIn(Shannon())
+est = EntropyDecomposition(CMIShannon(), hest, discretization)
+association(est, x, y, z)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">0.8238141245350172</code></pre><h2 id="[CMIRenyiJizba](@ref)"><a class="docs-heading-anchor" href="#[CMIRenyiJizba](@ref)"><a href="../../associations/#CausalityTools.CMIRenyiJizba"><code>CMIRenyiJizba</code></a></a><a id="[CMIRenyiJizba](@ref)-1"></a><a class="docs-heading-anchor-permalink" href="#[CMIRenyiJizba](@ref)" title="Permalink"></a></h2><h3 id="example_CMIRenyiJizba_JointProbabilities_BubbleSortSwaps"><a class="docs-heading-anchor" href="#example_CMIRenyiJizba_JointProbabilities_BubbleSortSwaps"><a href="../../associations/#CausalityTools.JointProbabilities"><code>JointProbabilities</code></a> + <a href="../../discretization_tutorial/#ComplexityMeasures.BubbleSortSwaps"><code>BubbleSortSwaps</code></a></a><a id="example_CMIRenyiJizba_JointProbabilities_BubbleSortSwaps-1"></a><a class="docs-heading-anchor-permalink" href="#example_CMIRenyiJizba_JointProbabilities_BubbleSortSwaps" title="Permalink"></a></h3><pre><code class="language-julia hljs">using CausalityTools
+using Random; rng = Xoshiro(1234)
+x = rand(rng, 100)
+y = x .+ rand(rng, 100)
+z = y .+ rand(rng, 100)
+disc = CodifyVariables(BubbleSortSwaps(m = 4))
+est = JointProbabilities(CMIRenyiJizba(), disc)
+association(est, x, z, y)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">0.43284279366170564</code></pre><h3 id="example_CMIRenyiJizba_EntropyDecomposition_LeonenkoProzantoSavani"><a class="docs-heading-anchor" href="#example_CMIRenyiJizba_EntropyDecomposition_LeonenkoProzantoSavani"><a href="../../associations/#CausalityTools.EntropyDecomposition"><code>EntropyDecomposition</code></a> + <a href="@ref"><code>LeonenoProsantoSavani</code></a></a><a id="example_CMIRenyiJizba_EntropyDecomposition_LeonenkoProzantoSavani-1"></a><a class="docs-heading-anchor-permalink" href="#example_CMIRenyiJizba_EntropyDecomposition_LeonenkoProzantoSavani" title="Permalink"></a></h3><pre><code class="language-julia hljs">using CausalityTools
+using Random; rng = Xoshiro(1234)
+x, y, z = rand(rng, 1000), rand(rng, 1000), rand(rng, 1000)
+def = CMIRenyiJizba(q = 1.5)
+
+# Using a differential Rényi entropy estimator
+est = EntropyDecomposition(def, LeonenkoProzantoSavani(Renyi(), k = 10))
+association(est, x, y, z)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">-0.03274084267284355</code></pre><h3 id="example_CMIRenyiJizba_EntropyDecomposition_OrdinalPatterns"><a class="docs-heading-anchor" href="#example_CMIRenyiJizba_EntropyDecomposition_OrdinalPatterns"><a href="../../associations/#CausalityTools.EntropyDecomposition"><code>EntropyDecomposition</code></a> + <a href="../../discretization_tutorial/#ComplexityMeasures.OrdinalPatterns"><code>OrdinalPatterns</code></a></a><a id="example_CMIRenyiJizba_EntropyDecomposition_OrdinalPatterns-1"></a><a class="docs-heading-anchor-permalink" href="#example_CMIRenyiJizba_EntropyDecomposition_OrdinalPatterns" title="Permalink"></a></h3><pre><code class="language-julia hljs">using CausalityTools
+using Random; rng = Xoshiro(1234)
+x, y, z = rand(rng, 1000), rand(rng, 1000), rand(rng, 1000)
+def = CMIRenyiJizba(q = 1.5)
+
+# Using a plug-in Rényi entropy estimator, discretizing using ordinal patterns.
+est = EntropyDecomposition(def, PlugIn(Renyi()), CodifyVariables(OrdinalPatterns(m=2)), RelativeAmount())
+association(est, x, y, z)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">3.961338273517079e-6</code></pre><h2 id="[TEShannon](@ref)"><a class="docs-heading-anchor" href="#[TEShannon](@ref)"><a href="../../associations/#CausalityTools.TEShannon"><code>TEShannon</code></a></a><a id="[TEShannon](@ref)-1"></a><a class="docs-heading-anchor-permalink" href="#[TEShannon](@ref)" title="Permalink"></a></h2><h3 id="example_TEShannon_EntropyDecomposition_TransferOperator"><a class="docs-heading-anchor" href="#example_TEShannon_EntropyDecomposition_TransferOperator"><a href="../../associations/#CausalityTools.EntropyDecomposition"><code>EntropyDecomposition</code></a> + <a href="@ref"><code>TransferOperator</code></a></a><a id="example_TEShannon_EntropyDecomposition_TransferOperator-1"></a><a class="docs-heading-anchor-permalink" href="#example_TEShannon_EntropyDecomposition_TransferOperator" title="Permalink"></a></h3><p>For transfer entropy examples, we&#39;ll construct some time series for which  there is time-delayed forcing between variables.</p><pre><code class="language-julia hljs">using CausalityTools
+using DynamicalSystemsBase
+using StableRNGs
+rng = StableRNG(123)
+
+Base.@kwdef struct Logistic4Chain{V, RX, RY, RZ, RW, C1, C2, C3, Σ1, Σ2, Σ3, RNG}
+    xi::V = [0.1, 0.2, 0.3, 0.4]
+    rx::RX = 3.9
+    ry::RY = 3.6
+    rz::RZ = 3.6
+    rw::RW = 3.8
+    c_xy::C1 = 0.4
+    c_yz::C2 = 0.4
+    c_zw::C3 = 0.35
+    σ_xy::Σ1 = 0.05
+    σ_yz::Σ2 = 0.05
+    σ_zw::Σ3 = 0.05
+    rng::RNG = Random.default_rng()
+end
+
+function eom_logistic4_chain(u, p::Logistic4Chain, t)
+    (; xi, rx, ry, rz, rw, c_xy, c_yz, c_zw, σ_xy, σ_yz, σ_zw, rng) = p
+    x, y, z, w = u
+    f_xy = (y +  c_xy*(x + σ_xy * rand(rng)) ) / (1 + c_xy*(1+σ_xy))
+    f_yz = (z +  c_yz*(y + σ_yz * rand(rng)) ) / (1 + c_yz*(1+σ_yz))
+    f_zw = (w +  c_zw*(z + σ_zw * rand(rng)) ) / (1 + c_zw*(1+σ_zw))
+    dx = rx * x * (1 - x)
+    dy = ry * (f_xy) * (1 - f_xy)
+    dz = rz * (f_yz) * (1 - f_yz)
+    dw = rw * (f_zw) * (1 - f_zw)
+    return SVector{4}(dx, dy, dz, dw)
+end
+
+function system(definition::Logistic4Chain)
+    return DiscreteDynamicalSystem(eom_logistic4_chain, definition.xi, definition)
+end
+
+# An example system where `X → Y → Z → W`.
+sys = system(Logistic4Chain(; rng))
+x, y, z, w = columns(first(trajectory(sys, 300, Ttr = 10000)))
+
+precise = true # precise bin edges
+discretization = CodifyVariables(TransferOperator(RectangularBinning(2, precise))) #
+est_disc_to = EntropyDecomposition(TEShannon(), PlugIn(Shannon()), discretization);
+association(est_disc_to, x, y), association(est_disc_to, y, x)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">(0.25290542205829314, 0.10426214218248453)</code></pre><p>The Shannon-type transfer entropy from <code>x</code> to <code>y</code> is stronger than from <code>y</code> to <code>x</code>, which is what we expect if <code>x</code> drives <code>y</code>.</p><pre><code class="language-julia hljs">association(est_disc_to, x, z), association(est_disc_to, x, z, y)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">(0.05336193821274504, 0.02375651390346789)</code></pre><p>The Shannon-type transfer entropy from <code>x</code> to <code>z</code> is stronger than the transfer entropy from <code>x</code> to <code>z</code> given <code>y</code>. This is expected, because <code>x</code> drives <code>z</code> <em>through</em> <code>y</code>, so &quot;conditioning away&quot; the effect of <code>y</code> should decrease the estimated  information transfer.</p><h3 id="example_TEShannon_SymbolicTransferEntropy"><a class="docs-heading-anchor" href="#example_TEShannon_SymbolicTransferEntropy"><a href="../../associations/#CausalityTools.SymbolicTransferEntropy"><code>SymbolicTransferEntropy</code></a> estimator</a><a id="example_TEShannon_SymbolicTransferEntropy-1"></a><a class="docs-heading-anchor-permalink" href="#example_TEShannon_SymbolicTransferEntropy" title="Permalink"></a></h3><p>The <a href="../../associations/#CausalityTools.SymbolicTransferEntropy"><code>SymbolicTransferEntropy</code></a> estimator is just a convenience wrapper which utilizes <a href="../../discretization_tutorial/#CausalityTools.CodifyVariables"><code>CodifyVariables</code></a>with the <a href="../../discretization_tutorial/#ComplexityMeasures.OrdinalPatterns"><code>OrdinalPatterns</code></a> outcome space to  discretize the input time series before computing transfer entropy.</p><p>We&#39;ll use coupled time series from the <code>logistic4</code> system above, where <code>x → y → z → w</code>. Thus, we expect that the association for the direction <code>x → y</code> is larger than for <code>y → x</code>. We also expect an association <code>x → z</code>, but the association should weaken when conditioning  on the intermediate value <code>y</code>.</p><pre><code class="language-julia hljs">using CausalityTools
+using DynamicalSystemsBase
+using Random; rng = Xoshiro(1234)
+sys = system(Logistic4Chain(; rng))
+x, y, z, w = columns(first(trajectory(sys, 300, Ttr = 10000)))
+est = SymbolicTransferEntropy(m = 5)
+association(est, x, y), association(est, y, x), association(est, x, z), association(est, x, z, y)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">(0.5174597240325244, 0.24773918384758742, 0.7233610447154118, 0.1322241113229709)</code></pre><h2 id="[TERenyiJizba](@ref)"><a class="docs-heading-anchor" href="#[TERenyiJizba](@ref)"><a href="../../associations/#CausalityTools.TERenyiJizba"><code>TERenyiJizba</code></a></a><a id="[TERenyiJizba](@ref)-1"></a><a class="docs-heading-anchor-permalink" href="#[TERenyiJizba](@ref)" title="Permalink"></a></h2><h3 id="example_TERenyiJizba_EntropyDecomposition_TransferOperator"><a class="docs-heading-anchor" href="#example_TERenyiJizba_EntropyDecomposition_TransferOperator"><a href="../../associations/#CausalityTools.EntropyDecomposition"><code>EntropyDecomposition</code></a> + <a href="@ref"><code>TransferOperator</code></a></a><a id="example_TERenyiJizba_EntropyDecomposition_TransferOperator-1"></a><a class="docs-heading-anchor-permalink" href="#example_TERenyiJizba_EntropyDecomposition_TransferOperator" title="Permalink"></a></h3><p>We can perform the same type of analysis as above using <a href="../../associations/#CausalityTools.TERenyiJizba"><code>TERenyiJizba</code></a> instead of <a href="../../associations/#CausalityTools.TEShannon"><code>TEShannon</code></a>.</p><pre><code class="language-julia hljs">using CausalityTools
+using DynamicalSystemsBase
+using StableRNGs; rng = StableRNG(123)
+
+# An example system where `X → Y → Z → W`.
+sys = system(Logistic4Chain(; rng))
+x, y, z, w = columns(first(trajectory(sys, 300, Ttr = 10000)))
+
+precise = true # precise bin edges
+discretization = CodifyVariables(TransferOperator(RectangularBinning(2, precise))) #
+est_disc_to = EntropyDecomposition(TERenyiJizba(), PlugIn(Renyi()), discretization);
+association(est_disc_to, x, y), association(est_disc_to, y, x)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">(0.25514264487492655, 0.11917462385889266)</code></pre><h2 id="[ConvergentCrossMapping](@ref)"><a class="docs-heading-anchor" href="#[ConvergentCrossMapping](@ref)"><a href="../../associations/#CausalityTools.ConvergentCrossMapping"><code>ConvergentCrossMapping</code></a></a><a id="[ConvergentCrossMapping](@ref)-1"></a><a class="docs-heading-anchor-permalink" href="#[ConvergentCrossMapping](@ref)" title="Permalink"></a></h2><h3 id="example_ConvergentCrossMapping_RandomVectors"><a class="docs-heading-anchor" href="#example_ConvergentCrossMapping_RandomVectors"><a href="../../associations/#CausalityTools.RandomVectors"><code>RandomVectors</code></a> estimator</a><a id="example_ConvergentCrossMapping_RandomVectors-1"></a><a class="docs-heading-anchor-permalink" href="#example_ConvergentCrossMapping_RandomVectors" title="Permalink"></a></h3><p>When cross-mapping with the <a href="../../associations/#CausalityTools.RandomVectors"><code>RandomVectors</code></a> estimator, a single random subsample of time indices (i.e. not in any particular order) of length <code>l</code> is drawn for each library size <code>l</code>, and cross mapping is performed using the embedding vectors corresponding to those time indices.</p><pre><code class="language-julia hljs">using CausalityTools
+using Random; rng = MersenneTwister(1234)
+x, y = randn(rng, 200), randn(rng, 200)
+
+# We&#39;ll draw a single sample at each `l ∈ libsizes`. Sampling with replacement is then
+# necessary, because our 200-pt timeseries will result in embeddings with
+# less than 200 points.
+est = RandomVectors(ConvergentCrossMapping(d = 3); libsizes = 50:25:200, replace = true, rng)
+crossmap(est, x, y)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">7-element Vector{Float64}:
+ 0.17433429514274518
+ 0.5142460610784763
+ 0.4641719985078984
+ 0.5662783237063713
+ 0.6370489394540293
+ 0.6882438178857719
+ 0.7259854477313521</code></pre><p>To generate a distribution of cross-map estimates for each <code>l ∈ libsizes</code>, just call crossmap repeatedly, e.g.</p><pre><code class="language-julia hljs">using CausalityTools
+using Random; rng = MersenneTwister(1234)
+using Statistics
+
+x, y = randn(rng, 300), randn(rng, 300)
+def = ConvergentCrossMapping(d = 3)
+libsizes = 25:25:200
+
+ρs = [[crossmap(RandomVectors(def; libsizes = L, replace = true, rng), x, y) for i = 1:50] for L in libsizes]
+
+using CairoMakie
+f = Figure(); ax = Axis(f[1, 1]);
+plot!(ax, libsizes, mean.(ρs))
+errorbars!(ax, libsizes, mean.(ρs), std.(ρs))
+f</code></pre><img src="7c989d10.png" alt="Example block output"/><p>Now, the <code>k</code>-th element of <code>ρs</code> contains <code>80</code> estimates of the correspondence measure <code>ρ</code> at library size <code>libsizes[k]</code>.</p><h3 id="example_ConvergentCrossMapping_RandomSegment"><a class="docs-heading-anchor" href="#example_ConvergentCrossMapping_RandomSegment"><a href="../../associations/#CausalityTools.RandomSegment"><code>RandomSegment</code></a> estimator</a><a id="example_ConvergentCrossMapping_RandomSegment-1"></a><a class="docs-heading-anchor-permalink" href="#example_ConvergentCrossMapping_RandomSegment" title="Permalink"></a></h3><p>When cross-mapping with the <a href="../../associations/#CausalityTools.RandomSegment"><code>RandomSegment</code></a> estimator, a single random subsample of continguous, ordered time indices of length <code>l</code> is drawn for each library size <code>l</code>, and cross mapping is performed using the embedding vectors corresponding to those time indices.</p><pre><code class="language-julia hljs">using CausalityTools
+using Random; rng = MersenneTwister(1234)
+x, y = randn(rng, 200), randn(rng, 200)
+
+# We&#39;ll draw a single sample at each `l ∈ libsizes`. We limit the library size to 100,
+# because drawing segments of the data longer than half the available data doesn&#39;t make
+# much sense.
+est = RandomSegment(ConvergentCrossMapping(d = 3); libsizes = 50:25:100, rng)
+crossmap(est, x, y)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">3-element Vector{Float64}:
+ -0.08620592976464757
+ -0.08267826453406518
+  0.0904172072854787</code></pre><p>As above, to generate a distribution of cross-map estimates for each <code>l ∈ libsizes</code>, just call crossmap repeatedly, e.g.</p><pre><code class="language-julia hljs">using CausalityTools
+using Random; rng = MersenneTwister(1234)
+using Statistics
+
+x, y = randn(rng, 200), randn(rng, 200)
+def = ConvergentCrossMapping(d = 3)
+libsizes = 25:25:100
+
+ρs = [[crossmap(RandomSegment(def; libsizes = L, rng), x, y) for i = 1:50] for L in libsizes]
+
+f = Figure(); ax = Axis(f[1, 1]);
+plot!(ax, libsizes, mean.(ρs))
+errorbars!(ax, libsizes, mean.(ρs), std.(ρs))
+f</code></pre><img src="3f55e189.png" alt="Example block output"/><h2 id="[PairwiseAsymmetricInference](@ref)"><a class="docs-heading-anchor" href="#[PairwiseAsymmetricInference](@ref)"><a href="../../associations/#CausalityTools.PairwiseAsymmetricInference"><code>PairwiseAsymmetricInference</code></a></a><a id="[PairwiseAsymmetricInference](@ref)-1"></a><a class="docs-heading-anchor-permalink" href="#[PairwiseAsymmetricInference](@ref)" title="Permalink"></a></h2><p>We repeat the analyses above, but here use the pairwise asymmetric inference algorithm instead of the convergent cross map algorithm.</p><h3 id="example_PairwiseAsymmetricInference_RandomVectors"><a class="docs-heading-anchor" href="#example_PairwiseAsymmetricInference_RandomVectors"><a href="../../associations/#CausalityTools.RandomVectors"><code>RandomVectors</code></a> estimator</a><a id="example_PairwiseAsymmetricInference_RandomVectors-1"></a><a class="docs-heading-anchor-permalink" href="#example_PairwiseAsymmetricInference_RandomVectors" title="Permalink"></a></h3><pre><code class="language-julia hljs">using CausalityTools
+using Random; rng = MersenneTwister(1234)
+x, y = randn(rng, 300), randn(rng, 300)
+
+# We&#39;ll draw a single sample at each `l ∈ libsizes`. Sampling with replacement is then
+# necessary, because our 200-pt timeseries will result in embeddings with
+# less than 200 points.
+est = RandomVectors(PairwiseAsymmetricInference(d = 3); libsizes = 50:25:200, replace = true, rng)
+crossmap(est, x, y)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">7-element Vector{Float64}:
+ 0.2888296517259285
+ 0.29878693023589387
+ 0.4933507230328284
+ 0.6004837656299017
+ 0.5902032764829309
+ 0.520932297732788
+ 0.523148380266996</code></pre><p>To generate a distribution of cross-map estimates for each <code>l ∈ libsizes</code>, just call crossmap repeatedly, e.g.</p><pre><code class="language-julia hljs">using CausalityTools
+using Random; rng = MersenneTwister(1234)
+using Statistics
+
+x, y = randn(rng, 300), randn(rng,300)
+def = PairwiseAsymmetricInference(d = 3)
+libsizes = 25:25:200
+
+ρs = [[crossmap(RandomVectors(def; libsizes = L, replace = true, rng), x, y) for i = 1:50] for L in libsizes]
+
+using CairoMakie
+f = Figure(); ax = Axis(f[1, 1]);
+plot!(ax, libsizes, mean.(ρs))
+errorbars!(ax, libsizes, mean.(ρs), std.(ρs))
+f</code></pre><img src="0410c9f4.png" alt="Example block output"/><h3 id="example_PairwiseAsymmetricInference_RandomSegment"><a class="docs-heading-anchor" href="#example_PairwiseAsymmetricInference_RandomSegment"><a href="../../associations/#CausalityTools.RandomSegment"><code>RandomSegment</code></a> estimator</a><a id="example_PairwiseAsymmetricInference_RandomSegment-1"></a><a class="docs-heading-anchor-permalink" href="#example_PairwiseAsymmetricInference_RandomSegment" title="Permalink"></a></h3><pre><code class="language-julia hljs">using CausalityTools
+using Random; rng = MersenneTwister(1234)
+x, y = randn(rng, 200), randn(rng, 200)
+
+# We&#39;ll draw a single sample at each `l ∈ libsizes`. We limit the library size to 100,
+# because drawing segments of the data longer than half the available data doesn&#39;t make
+# much sense.
+est = RandomSegment(PairwiseAsymmetricInference(d = 3); libsizes = 50:25:100, rng)
+crossmap(est, x, y)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">3-element Vector{Float64}:
+ -0.2825168824961344
+ -0.2431318705493036
+ -0.2830973260463694</code></pre><p>As above, to generate a distribution of cross-map estimates for each <code>l ∈ libsizes</code>, just call crossmap repeatedly, e.g.</p><pre><code class="language-julia hljs">using CausalityTools
+using Random; rng = MersenneTwister(1234)
+using Statistics
+
+x, y = randn(rng, 300), randn(rng, 300)
+def = PairwiseAsymmetricInference(d = 3)
+libsizes = 25:25:100
+
+ρs = [[crossmap(RandomSegment(def; libsizes = L, rng), x, y) for i = 1:50] for L in libsizes]
+
+using CairoMakie
+f = Figure(); ax = Axis(f[1, 1]);
+plot!(ax, libsizes, mean.(ρs))
+errorbars!(ax, libsizes, mean.(ρs), std.(ρs))
+f</code></pre><img src="49966ebd.png" alt="Example block output"/><h2 id="example_MCR"><a class="docs-heading-anchor" href="#example_MCR"><a href="../../associations/#CausalityTools.MCR"><code>MCR</code></a></a><a id="example_MCR-1"></a><a class="docs-heading-anchor-permalink" href="#example_MCR" title="Permalink"></a></h2><p>To quantify association by the mean conditional probability of recurrence (MCR), we&#39;ll create a chain of variables where <code>X</code> drives <code>Y</code>, which in turn drives  <code>Z</code>. We then expect there to be significant detectable association between both <code>X</code> and <code>Y</code>, <code>Y</code> and <code>Z</code> and also <code>X</code> and <code>Z</code> (because <code>Y</code> transfers information from <code>X</code> to <code>Z</code>. We expect the association between <code>X</code> and <code>Z</code> to disappear when conditioning on <code>Y</code> (since we&#39;re then &quot;removing the effect&quot; of <code>Y</code>).</p><pre><code class="language-julia hljs">using CausalityTools
+using Random; rng = Xoshiro(1234);
+x = rand(rng, 300); y = rand(rng, 300) .* sin.(x); z = rand(rng, 300) .* y;
+est = MCR(r = 0.5)
+association(est, x, y), association(est, x, z), association(est, y, z), association(est, x, z, y)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">(0.7711920426340347, 0.7420689143732229, 0.924270403653336, -0.00798860118526612)</code></pre><h2 id="example_RMCD"><a class="docs-heading-anchor" href="#example_RMCD"><a href="../../associations/#CausalityTools.RMCD"><code>RMCD</code></a></a><a id="example_RMCD-1"></a><a class="docs-heading-anchor-permalink" href="#example_RMCD" title="Permalink"></a></h2><p>To quantify association by the recurrence measure of conditional dependence (RMCD), we&#39;ll create a chain of variables where <code>X</code> drives <code>Y</code>, which in turn drives  <code>Z</code>. We then expect there to be significant detectable association between both <code>X</code> and <code>Y</code>, <code>Y</code> and <code>Z</code> and also <code>X</code> and <code>Z</code> (because <code>Y</code> transfers information from <code>X</code> to <code>Z</code>. We expect the association between <code>X</code> and <code>Z</code> to disappear when conditioning on <code>Y</code> (since we&#39;re then &quot;removing the effect&quot; of <code>Y</code>).</p><pre><code class="language-julia hljs">using CausalityTools
+using Random; rng = Xoshiro(1234);
+x = rand(rng, 300); y = rand(rng, 300) .* sin.(x); z = rand(rng, 300) .* y;
+est = RMCD(r = 0.5)
+association(est, x, y), association(est, x, z), association(est, x, z, y)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">(0.022387457155671135, 0.022129475954601702, 0.0)</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../causal_graphs/">« Network/graph inference</a><a class="docs-footer-nextpage" href="../examples_infer_graphs/">Graph inference »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.5.0 on <span class="colophon-date" title="Wednesday 24 July 2024 01:54">Wednesday 24 July 2024</span>. Using Julia version 1.10.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>

@@ -1,0 +1,1358 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="Causality detection from time series in Julia.">
+      
+      
+      
+        <meta name="author" content="Kristian Agasøster Haaga">
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-0.17.5, mkdocs-material-2.9.4">
+    
+    
+      
+        <title>Low-level estimators - CausalityTools.jl</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.451f80e5.css">
+      
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.1aa3b519.js"></script>
+    
+    
+      <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+      
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+      <link rel="stylesheet" href="../../assets/Documenter.css">
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448"
+    viewBox="0 0 416 448" id="__github">
+  <path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19-18.125
+        8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19 18.125-8.5
+        18.125 8.5 10.75 19 3.125 20.5zM320 304q0 10-3.125 20.5t-10.75
+        19-18.125 8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19
+        18.125-8.5 18.125 8.5 10.75 19 3.125 20.5zM360
+        304q0-30-17.25-51t-46.75-21q-10.25 0-48.75 5.25-17.75 2.75-39.25
+        2.75t-39.25-2.75q-38-5.25-48.75-5.25-29.5 0-46.75 21t-17.25 51q0 22 8
+        38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0
+        37.25-1.75t35-7.375 30.5-15 20.25-25.75 8-38.375zM416 260q0 51.75-15.25
+        82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5-41.75
+        1.125q-19.5 0-35.5-0.75t-36.875-3.125-38.125-7.5-34.25-12.875-30.25-20.25-21.5-28.75q-15.5-30.75-15.5-82.75
+        0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25
+        30.875q36.75-8.75 77.25-8.75 37 0 70 8 26.25-20.5
+        46.75-30.25t47.25-9.75q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34
+        99.5z" />
+</svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#low-level-transfer-entropy-estimators" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="../.." title="CausalityTools.jl" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            
+              <span class="md-header-nav__topic">
+                CausalityTools.jl
+              </span>
+              <span class="md-header-nav__topic">
+                Low-level estimators
+              </span>
+            
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          
+            <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+            
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+          
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+
+  <a href="https://github.com/kahaaga/CausalityTools.jl/" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#__github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="../.." title="CausalityTools.jl" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    CausalityTools.jl
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+
+  <a href="https://github.com/kahaaga/CausalityTools.jl/" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#__github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      Causality tests
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        Causality tests
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/causality_from_time_series/" title="Causality from time series" class="md-nav__link">
+      Causality from time series
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/causality_from_dynamical_systems/" title="Causality from dynamical systems" class="md-nav__link">
+      Causality from dynamical systems
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/causality_tests/" title="Tests" class="md-nav__link">
+      Tests
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2-4" type="checkbox" id="nav-2-4">
+    
+    <label class="md-nav__link" for="nav-2-4">
+      Distance based tests
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-2-4">
+        Distance based tests
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/JointDistanceDistributionTest/" title="JointDistanceDistributionTest" class="md-nav__link">
+      JointDistanceDistributionTest
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/CrossMappingTest/" title="CrossMappingTest" class="md-nav__link">
+      CrossMappingTest
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/ConvergentCrossMappingTest/" title="ConvergentCrossMappingTest" class="md-nav__link">
+      ConvergentCrossMappingTest
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2-5" type="checkbox" id="nav-2-5">
+    
+    <label class="md-nav__link" for="nav-2-5">
+      Entropy based tests
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-2-5">
+        Entropy based tests
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/TransferOperatorGridTest/" title="TransferOperatorGridTest" class="md-nav__link">
+      TransferOperatorGridTest
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/VisitationFrequencyTest/" title="VisitationFrequencyTest" class="md-nav__link">
+      VisitationFrequencyTest
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/ApproximateSimplexIntersectionTest/" title="ApproximateSimplexIntersectionTest" class="md-nav__link">
+      ApproximateSimplexIntersectionTest
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/PredictiveAsymmetryTest/" title="Predictive asymmetry test" class="md-nav__link">
+      Predictive asymmetry test
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2-7" type="checkbox" id="nav-2-7">
+    
+    <label class="md-nav__link" for="nav-2-7">
+      Abstract test types
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-2-7">
+        Abstract test types
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/CausalityTest/" title="CausalityTest" class="md-nav__link">
+      CausalityTest
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/DistanceBasedCausalityTest/" title="Distance based tests" class="md-nav__link">
+      Distance based tests
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/EntropyBasedCausalityTest/" title="Entropy based tests" class="md-nav__link">
+      Entropy based tests
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/TransferEntropyTest/" title="TransferEntropyTest" class="md-nav__link">
+      TransferEntropyTest
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      Fundamentals
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        Fundamentals
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytoolsbase/discretization/" title="Discretization" class="md-nav__link">
+      Discretization
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytoolsbase/delay_reconstructions/" title="Delay reconstruction" class="md-nav__link">
+      Delay reconstruction
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-3" type="checkbox" id="nav-3-3">
+    
+    <label class="md-nav__link" for="nav-3-3">
+      Invariant properties over partitions
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-3">
+        Invariant properties over partitions
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../perronfrobenius/invariantmeasure/" title="Invariant measure" class="md-nav__link">
+      Invariant measure
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../perronfrobenius/transferoperator/" title="Transfer operator" class="md-nav__link">
+      Transfer operator
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4" checked>
+    
+    <label class="md-nav__link" for="nav-4">
+      Estimators and algorithms
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        Estimators and algorithms
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4-1" type="checkbox" id="nav-4-1" checked>
+    
+    <label class="md-nav__link" for="nav-4-1">
+      Transfer entropy
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-4-1">
+        Transfer entropy
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../convenience_functions_te/" title="Convenience functions" class="md-nav__link">
+      Convenience functions
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Low-level estimators
+      </label>
+    
+    <a href="./" title="Low-level estimators" class="md-nav__link md-nav__link--active">
+      Low-level estimators
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#estimators" title="Estimators" class="md-nav__link">
+    Estimators
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#general-workflow-for-te-estimation" title="General workflow for TE estimation" class="md-nav__link">
+    General workflow for TE estimation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rectangular-partitions" title="Rectangular partitions" class="md-nav__link">
+    Rectangular partitions
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#triangulated-partitions" title="Triangulated partitions" class="md-nav__link">
+    Triangulated partitions
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../TEVars/" title="Mapping delay reconstruction to marginals (TEVars)" class="md-nav__link">
+      Mapping delay reconstruction to marginals (TEVars)
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../examples_TE_different_partitionings/" title="Effect of discretization scheme" class="md-nav__link">
+      Effect of discretization scheme
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4-2" type="checkbox" id="nav-4-2">
+    
+    <label class="md-nav__link" for="nav-4-2">
+      CCM
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-4-2">
+        CCM
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../crossmappings/ccm/overview/" title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../crossmappings/ccm/crossmapping/" title="Cross mapping" class="md-nav__link">
+      Cross mapping
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../crossmappings/ccm/convergentcrossmapping/" title="Converent cross mapping" class="md-nav__link">
+      Converent cross mapping
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../algorithms/joint_distance_distribution/" title="Joint distance distribution" class="md-nav__link">
+      Joint distance distribution
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../syntax_overview/" title="Syntax overview" class="md-nav__link">
+      Syntax overview
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      Example systems
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        Example systems
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../example_systems/example_systems_overview/" title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../example_systems/example_systems_discrete/" title="Discrete systems" class="md-nav__link">
+      Discrete systems
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../example_systems/example_systems_continuous/" title="Continuous systems" class="md-nav__link">
+      Continuous systems
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-6" type="checkbox" id="nav-6">
+    
+    <label class="md-nav__link" for="nav-6">
+      Surrogate data
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-6">
+        Surrogate data
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../surrogates/surrogates_overview/" title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-6-2" type="checkbox" id="nav-6-2">
+    
+    <label class="md-nav__link" for="nav-6-2">
+      Methods
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-6-2">
+        Methods
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../surrogates/iaaft_docs/" title="IAAFT" class="md-nav__link">
+      IAAFT
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../surrogates/aaft_docs/" title="AAFT" class="md-nav__link">
+      AAFT
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../surrogates/randomphases_docs/" title="Fourier surrogates, random phases" class="md-nav__link">
+      Fourier surrogates, random phases
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../surrogates/randomamplitudes_docs/" title="Fourier surrogates, random amplitudes" class="md-nav__link">
+      Fourier surrogates, random amplitudes
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../surrogates/randomshuffle_docs/" title="Random shuffle" class="md-nav__link">
+      Random shuffle
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-7" type="checkbox" id="nav-7">
+    
+    <label class="md-nav__link" for="nav-7">
+      Worked examples
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-7">
+        Worked examples
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../worked_examples/worked_example_transferentropy/" title="Transfer entropy" class="md-nav__link">
+      Transfer entropy
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#estimators" title="Estimators" class="md-nav__link">
+    Estimators
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#general-workflow-for-te-estimation" title="General workflow for TE estimation" class="md-nav__link">
+    General workflow for TE estimation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rectangular-partitions" title="Rectangular partitions" class="md-nav__link">
+    Rectangular partitions
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#triangulated-partitions" title="Triangulated partitions" class="md-nav__link">
+    Triangulated partitions
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/kahaaga/CausalityTools.jl/edit/master/docs/transferentropy/transferentropy_estimators.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                
+                
+                <p><a id='Low-level-transfer-entropy-estimators-1'></a></p>
+<h1 id="low-level-transfer-entropy-estimators">Low-level transfer entropy estimators</h1>
+<p>For complete control over the estimation procedure, the analyst must create a <a href="../../causalitytoolsbase/delay_reconstructions/#custom_delay_reconstruction-1">delay  reconstruction</a> from the input data, specify a <a href="../../causalitytoolsbase/discretization/#discretization-1">discretization scheme</a> which can be either <a href="../../causalitytoolsbase/discretization/#partition_rectangular-1">rectangular</a> or <a href="../../causalitytoolsbase/discretization/#partition_triangulated-1">triangulated</a>, and <a href="../TEVars/#TEVars-1">map variables of the delay reconstruction to the correct  marginals</a>.</p>
+<p>The package provides some convenience methods to compute TE directly from time series, see the <a href="wrapper_TE.md#wrapper_TE-1">wrappers</a> for <a href="../convenience_functions_te/#wrapper_te_reg-1">regular TE</a> and <a href="../convenience_functions_te/#wrapper_te_cond-1">conditional TE</a>. However, be absolutely sure that you understand what they do before applying them to real problems.</p>
+<p><a id='te_estimators-1'></a></p>
+<h2 id="estimators">Estimators</h2>
+<p>Valid estimator types for rectangular partitions are </p>
+<ul>
+<li><code>VisitationFrequency</code>. An implementation of the original TE estimator from Schreiber (2000)<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup></li>
+<li><code>TransferOperatorGrid</code>. An implementation of the transfer operator grid estimator from Diego et al. (2019)<sup id="fnref2:2"><a class="footnote-ref" href="#fn:2">2</a></sup></li>
+</ul>
+<p><a id='general_workflow_te-1'></a></p>
+<h2 id="general-workflow-for-te-estimation">General workflow for TE estimation</h2>
+<p>The general workflow for estimating transfer entropy over rectangular partitions is as follows.</p>
+<p><a id='te_estimator_rectangular-1'></a></p>
+<h2 id="rectangular-partitions">Rectangular partitions</h2>
+<p>To estimate transfer entropy over rectangular partitions, you would use the following method, providing either a <code>VisitationFrequency</code> or <code>TransferOperatorGrid</code> instance to the <code>estimator</code> argument.</p>
+<p><a id='TransferEntropy.transferentropy-Tuple{Any,TEVars,RectangularBinning,TransferEntropyEstimator}' href='#TransferEntropy.transferentropy-Tuple{Any,TEVars,RectangularBinning,TransferEntropyEstimator}'>#</a>
+<strong><code>TransferEntropy.transferentropy</code></strong> &mdash; <em>Method</em>.</p>
+<div class="highlight"><pre><span></span><span class="n">transferentropy</span><span class="p">(</span><span class="n">pts</span><span class="p">,</span> <span class="n">vars</span><span class="o">::</span><span class="n">TEVars</span><span class="p">,</span> <span class="n">ϵ</span><span class="o">::</span><span class="n">RectangularBinning</span><span class="p">,</span> 
+    <span class="n">estimator</span><span class="o">::</span><span class="n">TransferEntropyEstimator</span><span class="p">;</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+
+<p><strong>Transfer entropy using a rectangular partition</strong></p>
+<p>Estimate transfer entropy on a rectangular partition over  a set of points <code>pts</code>, which represent a generalised embedding of  data series <span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span>, <span><span class="MathJax_Preview">y</span><script type="math/tex">y</script></span> and (potentially) <span><span class="MathJax_Preview">z</span><script type="math/tex">z</script></span> of the form  outlined below. </p>
+<p>Note: <code>pts</code> must be a vector of states, not a vector of  variables/(time series). Wrap your time series in a <code>Dataset</code> first if the latter is the case.</p>
+<p><strong>Estimators (and their acronyms)</strong></p>
+<ul>
+<li>Visitation frequency estimator: <code>VisitationFrequency</code>; an instance must be provided.</li>
+<li>Transfer operator grid estimator: <code>TransferOperatorGrid</code>; an instance must be provided.</li>
+</ul>
+<p><strong>Relationship between <code>pts</code> and <code>vars</code></strong></p>
+<p><code>pts</code> should be an embedding of the form  <span><span class="MathJax_Preview">(y(t + \eta)^{k}, y(t)^{l}, x(t)^{m}, z(t)^{n}</span><script type="math/tex">(y(t + \eta)^{k}, y(t)^{l}, x(t)^{m}, z(t)^{n}</script></span>.  Here, <span><span class="MathJax_Preview">y(t + \eta)^{k})</span><script type="math/tex">y(t + \eta)^{k})</script></span> indicates that <span><span class="MathJax_Preview">k</span><script type="math/tex">k</script></span> future states of <code>y</code>  should be included, <span><span class="MathJax_Preview">y(t)^{l}</span><script type="math/tex">y(t)^{l}</script></span> indicates that <span><span class="MathJax_Preview">l</span><script type="math/tex">l</script></span> present/past  states of <span><span class="MathJax_Preview">y</span><script type="math/tex">y</script></span> should be included, <span><span class="MathJax_Preview">x(t)^{m}</span><script type="math/tex">x(t)^{m}</script></span> indicates that <span><span class="MathJax_Preview">m</span><script type="math/tex">m</script></span>  present/past states of <span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span> should be included, and <span><span class="MathJax_Preview">z(t)^{n}</span><script type="math/tex">z(t)^{n}</script></span> indicates  that <span><span class="MathJax_Preview">n</span><script type="math/tex">n</script></span> present/past states of the variable we're conditioning on should  be included in the embedding vectors. Thus, the total dimension  of the embedding space will be <span><span class="MathJax_Preview">k + l + m + n</span><script type="math/tex">k + l + m + n</script></span>. </p>
+<p><code>vars</code> is a <code>TEVars</code> instance contain the instruction on which  variables of the embedding will be treated as part of which marginals during transfer entropy computation. Check the documentation of  <code>TEVars</code> for more details.</p>
+<p><strong>Example</strong></p>
+<p><strong>1. Time series</strong></p>
+<p>We'll generate two 80-point long realizations, <span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span> and <span><span class="MathJax_Preview">y</span><script type="math/tex">y</script></span>, of two 1D  logistic maps starting at different initial conditions.</p>
+<div class="highlight"><pre><span></span><span class="n">sys1</span> <span class="o">=</span> <span class="n">DynamicalSystems</span><span class="o">.</span><span class="n">Systems</span><span class="o">.</span><span class="n">logistic</span><span class="p">()</span>
+<span class="n">sys2</span> <span class="o">=</span> <span class="n">DynamicalSystems</span><span class="o">.</span><span class="n">Systems</span><span class="o">.</span><span class="n">logistic</span><span class="p">()</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">trajectory</span><span class="p">(</span><span class="n">sys1</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="n">Ttr</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">);</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">trajectory</span><span class="p">(</span><span class="n">sys1</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="n">Ttr</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">);</span>
+
+<span class="c"># Wrap the time series in a dataset containing the states of the </span>
+<span class="c"># composite system.</span>
+<span class="n">D</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+
+<p><strong>2. Generalised embedding</strong></p>
+<p>Say we want to compute transfer entropy from <span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span> to <span><span class="MathJax_Preview">y</span><script type="math/tex">y</script></span>, and that we  require a 4-dimensional embedding. We do an appropriate delay reconstruction of the data  (<span><span class="MathJax_Preview">E = \{S_{pp}, T_{pp}, T_f \}= \{x_t, (y_t, y_{t-\tau}), y_{t+\eta} \}</span><script type="math/tex">E = \{S_{pp}, T_{pp}, T_f \}= \{x_t, (y_t, y_{t-\tau}), y_{t+\eta} \}</script></span>), so that  we're computing the following TE</p>
+<div>
+<div class="MathJax_Preview">
+TE_{x \to y} =  \int_E P(x_t, y_{t-\tau} y_t, y_{t + \eta}) \log{\left( \dfrac{P(y_{t + \eta} | (y_t, y_{t - \tau}, x_t)}{P(y_{t + \eta} | y_t, y_{t-\tau})} \right)}.
+</div>
+<script type="math/tex; mode=display">
+TE_{x \to y} =  \int_E P(x_t, y_{t-\tau} y_t, y_{t + \eta}) \log{\left( \dfrac{P(y_{t + \eta} | (y_t, y_{t - \tau}, x_t)}{P(y_{t + \eta} | y_t, y_{t-\tau})} \right)}.
+</script>
+</div>
+<p>To create the embedding, we'll use the <code>customembed</code> function (check its  documentation for a detailed explanation on how it works). </p>
+<div class="highlight"><pre><span></span><span class="c"># Embed the data, putting time series in the 2nd column (y) of `data` in the </span>
+<span class="c"># first three embedding columns, lagging them with lags (η, 0, -τ), and </span>
+<span class="c"># putting the 1st column of `data` (x) in the last position of the embedding,</span>
+<span class="c"># not lagging it.</span>
+<span class="n">τ</span> <span class="o">=</span> <span class="n">optimal_delay</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="c"># embedding lag</span>
+<span class="n">η</span> <span class="o">=</span> <span class="mi">2</span> <span class="c"># prediction lag</span>
+
+<span class="n">pts</span> <span class="o">=</span> <span class="n">customembed</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">Positions</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">Lags</span><span class="p">(</span><span class="n">η</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">τ</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+</pre></div>
+
+<p><strong>3. Instructions to the estimator</strong></p>
+<p>Now, tell the estimator how to relative the dynamical variables of the  generalised embedding to the marginals in the transfer entropy computation.</p>
+<div class="highlight"><pre><span></span><span class="n">vars</span> <span class="o">=</span> <span class="n">TEVars</span><span class="p">(</span><span class="n">Tf</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">Tpp</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">Spp</span> <span class="o">=</span> <span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+</pre></div>
+
+<p><strong>4. Rectangular grid specification</strong></p>
+<p>We'll compute transfer entropy using the visitation frequency estimator over  a rectangular partition where the box sizes are determined by  splitting each coordinate axis into <span><span class="MathJax_Preview">6</span><script type="math/tex">6</script></span> equally spaced intervals each.</p>
+<div class="highlight"><pre><span></span><span class="n">binning</span> <span class="o">=</span> <span class="n">RectangularBinning</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+</pre></div>
+
+<p><strong>5. Compute transfer entropy</strong></p>
+<div class="highlight"><pre><span></span><span class="c"># Over a single rectangular grid</span>
+<span class="n">transferentropy</span><span class="p">(</span><span class="n">pts</span><span class="p">,</span> <span class="n">vars</span><span class="p">,</span> <span class="n">binning</span><span class="p">,</span> <span class="n">VisitationFrequency</span><span class="p">())</span> <span class="c">#, or</span>
+<span class="n">transferentropy</span><span class="p">(</span><span class="n">pts</span><span class="p">,</span> <span class="n">vars</span><span class="p">,</span> <span class="n">binning</span><span class="p">,</span> <span class="n">TransferOperatorGrid</span><span class="p">())</span>
+
+<span class="c"># Over multiple cubic grids with differing box sizes</span>
+<span class="c"># logarithmically spaced from edge length 0.001 to 0.3</span>
+<span class="n">ϵs</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">.^</span> <span class="n">range</span><span class="p">(</span><span class="n">log</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">),</span> <span class="n">log10</span><span class="p">(</span><span class="mf">0.3</span><span class="p">),</span> <span class="n">length</span> <span class="o">=</span> <span class="mi">15</span><span class="p">)</span>
+<span class="n">map</span><span class="p">(</span><span class="n">ϵ</span> <span class="o">-&gt;</span> <span class="n">transferentropy</span><span class="p">(</span><span class="n">pts</span><span class="p">,</span> <span class="n">vars</span><span class="p">,</span> <span class="n">RectangularBinning</span><span class="p">(</span><span class="n">ϵ</span><span class="p">),</span> <span class="n">VisitationFrequency</span><span class="p">()))</span> <span class="c">#, or</span>
+<span class="n">map</span><span class="p">(</span><span class="n">ϵ</span> <span class="o">-&gt;</span> <span class="n">transferentropy</span><span class="p">(</span><span class="n">pts</span><span class="p">,</span> <span class="n">vars</span><span class="p">,</span> <span class="n">RectangularBinning</span><span class="p">(</span><span class="n">ϵ</span><span class="p">),</span> <span class="n">TransferOperatorGrid</span><span class="p">()))</span>
+</pre></div>
+
+<p><a id='te_estimator_triangulated-1'></a></p>
+<h2 id="triangulated-partitions">Triangulated partitions</h2>
+<p>Estimators for computing TE on triangulated partitions, whose invariant distribution is obtained  through the transfer operator, was also introduced in Diego et al. (2019)<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup>.</p>
+<p><a id='TransferEntropy.transferentropy-Tuple{AbstractTriangulationInvariantMeasure,TEVars,RectangularBinning}' href='#TransferEntropy.transferentropy-Tuple{AbstractTriangulationInvariantMeasure,TEVars,RectangularBinning}'>#</a>
+<strong><code>TransferEntropy.transferentropy</code></strong> &mdash; <em>Method</em>.</p>
+<div class="highlight"><pre><span></span><span class="n">transferentropy</span><span class="p">(</span><span class="n">μ</span><span class="o">::</span><span class="n">AbstractTriangulationInvariantMeasure</span><span class="p">,</span> <span class="n">vars</span><span class="o">::</span><span class="n">TEVars</span><span class="p">,</span>
+    <span class="n">binning_scheme</span><span class="o">::</span><span class="n">RectangularBinning</span><span class="p">;</span> 
+    <span class="n">estimator</span> <span class="o">=</span> <span class="n">VisitationFrequency</span><span class="p">(),</span> <span class="n">n</span><span class="o">::</span><span class="kt">Int</span> <span class="o">=</span> <span class="mi">10000</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+
+<p><strong>Transfer entropy using a precomputed invariant measure over a triangulated partition</strong></p>
+<p>Estimate transfer entropy from an invariant measure over a triangulation that has been precomputed either as </p>
+<ol>
+<li><code>μ = invariantmeasure(pts, TriangulationBinning(), ApproximateIntersection())</code>, or</li>
+<li><code>μ = invariantmeasure(pts, TriangulationBinning(), ExactIntersection())</code></li>
+</ol>
+<p>where the first method uses approximate simplex intersections (faster) and  the second method uses exact simplex intersections (slow). <code>μ</code> contains  all the information needed to compute transfer entropy. </p>
+<p>Note: <code>pts</code> must be a vector of states, not a vector of  variables/(time series). Wrap your time series in a <code>Dataset</code> first if the latter is the case.</p>
+<p><strong>Computing transfer entropy (triangulation -&gt; rectangular partition)</strong></p>
+<p>Because we need to compute marginals, we need a rectangular grid. To do so, transfer entropy is computed by sampling the simplices of the  triangulation according to their measure with a total of approximately  <code>n</code> points. Introducing multiple points as representatives for the partition elements does not introduce any bias, because we in computing the  invariant measure, we use no more information than what is encoded in the  dynamics of the original data points. However, from the invariant measure, we can get a practically infinite amount of points to estimate transfer  entropy from.</p>
+<p>Then, transfer entropy is estimated using the visitation  frequency estimator on those points (see docs for <code>transferentropy_visitfreq</code>  for more information), on a rectangular grid specified by <code>binning_scheme</code>.</p>
+<p><strong>Common use case</strong></p>
+<p>This method is good to use if you want to explore the sensitivity  of transfer entropy to the bin size in the final rectangular grid,  when you have few observations in the time series. The invariant  measure, which encodes the dynamical information, is slow to compute over  the triangulation, but only needs to be computed once. After that, transfer entropy may be estimated at multiple scales very quickly.</p>
+<p><strong>Example</strong></p>
+<div class="highlight"><pre><span></span><span class="c"># Assume these points are an appropriate delay embedding {(x(t), y(t), y(t+1))} and </span>
+<span class="c"># that we&#39;re measure transfer entropy from x -&gt; y. </span>
+<span class="n">pts</span> <span class="o">=</span> <span class="n">invariantize</span><span class="p">([</span><span class="n">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="o">:</span><span class="mi">30</span><span class="p">])</span>
+
+<span class="n">v</span> <span class="o">=</span> <span class="n">TEVars</span><span class="p">(</span><span class="n">Tf</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">Tpp</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">Spp</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="c"># Compute invariant measure over a triangulation using approximate </span>
+<span class="c"># simplex intersections. This is relatively slow.</span>
+<span class="n">μ</span> <span class="o">=</span> <span class="n">invariantmeasure</span><span class="p">(</span><span class="n">pts</span><span class="p">,</span> <span class="n">TriangulationBinning</span><span class="p">(),</span> <span class="n">ApproximateIntersection</span><span class="p">())</span>
+
+<span class="c"># Compute transfer entropy from the invariant measure over multiple </span>
+<span class="c"># bin sizes. This is fast, because the measure has been precomputed.</span>
+<span class="n">tes</span> <span class="o">=</span> <span class="n">map</span><span class="p">(</span><span class="n">ϵ</span> <span class="o">-&gt;</span> <span class="n">transferentropy</span><span class="p">(</span><span class="n">μ</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">RectangularBinning</span><span class="p">(</span><span class="n">ϵ</span><span class="p">)),</span> <span class="mi">2</span><span class="o">:</span><span class="mi">50</span><span class="p">)</span>
+</pre></div>
+
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>Schreiber, Thomas. "Measuring information transfer." Physical review letters 85.2 (2000): 461.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2">
+<p>Diego, David, Kristian Agasøster Haaga, and Bjarte Hannisdal. "Transfer entropy computation using the Perron-Frobenius operator." Physical Review E 99.4 (2019): 042212.&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../convenience_functions_te/" title="Convenience functions" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Convenience functions
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../TEVars/" title="Mapping delay reconstruction to marginals (TEVars)" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Mapping delay reconstruction to marginals (TEVars)
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+        
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.30f6b8b1.js"></script>
+      
+      <script>app.initialize({version:"0.17.5",url:{base:"../.."}})</script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+      
+        <script src="../../assets/mathjaxhelper.js"></script>
+      
+    
+    
+      
+    
+  </body>
+</html>

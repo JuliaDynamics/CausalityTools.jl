@@ -1,0 +1,2299 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="Causality detection from time series in Julia.">
+      
+      
+      
+        <meta name="author" content="Kristian Agasøster Haaga">
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-0.17.5, mkdocs-material-2.9.4">
+    
+    
+      
+        <title>Effect of discretization scheme - CausalityTools.jl</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.451f80e5.css">
+      
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.1aa3b519.js"></script>
+    
+    
+      <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+      
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+      <link rel="stylesheet" href="../../assets/Documenter.css">
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448"
+    viewBox="0 0 416 448" id="__github">
+  <path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19-18.125
+        8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19 18.125-8.5
+        18.125 8.5 10.75 19 3.125 20.5zM320 304q0 10-3.125 20.5t-10.75
+        19-18.125 8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19
+        18.125-8.5 18.125 8.5 10.75 19 3.125 20.5zM360
+        304q0-30-17.25-51t-46.75-21q-10.25 0-48.75 5.25-17.75 2.75-39.25
+        2.75t-39.25-2.75q-38-5.25-48.75-5.25-29.5 0-46.75 21t-17.25 51q0 22 8
+        38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0
+        37.25-1.75t35-7.375 30.5-15 20.25-25.75 8-38.375zM416 260q0 51.75-15.25
+        82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5-41.75
+        1.125q-19.5 0-35.5-0.75t-36.875-3.125-38.125-7.5-34.25-12.875-30.25-20.25-21.5-28.75q-15.5-30.75-15.5-82.75
+        0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25
+        30.875q36.75-8.75 77.25-8.75 37 0 70 8 26.25-20.5
+        46.75-30.25t47.25-9.75q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34
+        99.5z" />
+</svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#effect-of-dicretization-scheme-on-transfer-entropy-estimates" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="../.." title="CausalityTools.jl" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            
+              <span class="md-header-nav__topic">
+                CausalityTools.jl
+              </span>
+              <span class="md-header-nav__topic">
+                Effect of discretization scheme
+              </span>
+            
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          
+            <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+            
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+          
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+
+  <a href="https://github.com/kahaaga/CausalityTools.jl/" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#__github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="../.." title="CausalityTools.jl" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    CausalityTools.jl
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+
+  <a href="https://github.com/kahaaga/CausalityTools.jl/" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#__github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      Causality estimation
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        Causality estimation
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/causality_from_time_series/" title="Causality from time series" class="md-nav__link">
+      Causality from time series
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2-2" type="checkbox" id="nav-2-2">
+    
+    <label class="md-nav__link" for="nav-2-2">
+      Causality from uncertain data
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-2-2">
+        Causality from uncertain data
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/causality_from_uncertain_data/" title="Methods" class="md-nav__link">
+      Methods
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/causality_from_uncertain_data_naive/" title="Naive resampling" class="md-nav__link">
+      Naive resampling
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/causality_from_uncertain_data_naive_constrained/" title="Constrained resampling" class="md-nav__link">
+      Constrained resampling
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/causality_from_uncertain_data_binneddatacausalitytest/" title="Binned resampling" class="md-nav__link">
+      Binned resampling
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/causality_from_uncertain_data_InterpolateBinTest/" title="Interpolate-and-bin resampling" class="md-nav__link">
+      Interpolate-and-bin resampling
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/causality_from_uncertain_data_RandomSequencesTest/" title="Random chunk resampling" class="md-nav__link">
+      Random chunk resampling
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/causality_from_uncertain_data_strictlyincreasing_interpolated/" title="Strictly increasing and interpolated resampling" class="md-nav__link">
+      Strictly increasing and interpolated resampling
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/causality_from_dynamical_systems/" title="Causality from dynamical systems" class="md-nav__link">
+      Causality from dynamical systems
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      Causality tests
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        Causality tests
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/causality_tests/" title="List of tests" class="md-nav__link">
+      List of tests
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-2" type="checkbox" id="nav-3-2">
+    
+    <label class="md-nav__link" for="nav-3-2">
+      Distance based tests
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-2">
+        Distance based tests
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/JointDistanceDistributionTest/" title="JointDistanceDistributionTest" class="md-nav__link">
+      JointDistanceDistributionTest
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/CrossMappingTest/" title="CrossMappingTest" class="md-nav__link">
+      CrossMappingTest
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/ConvergentCrossMappingTest/" title="ConvergentCrossMappingTest" class="md-nav__link">
+      ConvergentCrossMappingTest
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-3" type="checkbox" id="nav-3-3">
+    
+    <label class="md-nav__link" for="nav-3-3">
+      Entropy based tests
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-3">
+        Entropy based tests
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/TransferOperatorGridTest/" title="TransferOperatorGridTest" class="md-nav__link">
+      TransferOperatorGridTest
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/VisitationFrequencyTest/" title="VisitationFrequencyTest" class="md-nav__link">
+      VisitationFrequencyTest
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/ApproximateSimplexIntersectionTest/" title="ApproximateSimplexIntersectionTest" class="md-nav__link">
+      ApproximateSimplexIntersectionTest
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/ExactSimplexIntersectionTest/" title="ExactSimplexIntersectionTest" class="md-nav__link">
+      ExactSimplexIntersectionTest
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/PredictiveAsymmetryTest/" title="Predictive asymmetry test" class="md-nav__link">
+      Predictive asymmetry test
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-5" type="checkbox" id="nav-3-5">
+    
+    <label class="md-nav__link" for="nav-3-5">
+      Abstract test types
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-5">
+        Abstract test types
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/CausalityTest/" title="CausalityTest" class="md-nav__link">
+      CausalityTest
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/DistanceBasedCausalityTest/" title="Distance based tests" class="md-nav__link">
+      Distance based tests
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/EntropyBasedCausalityTest/" title="Entropy based tests" class="md-nav__link">
+      Entropy based tests
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytests/TransferEntropyTest/" title="TransferEntropyTest" class="md-nav__link">
+      TransferEntropyTest
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      Fundamentals
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        Fundamentals
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytoolsbase/discretization/" title="Discretization" class="md-nav__link">
+      Discretization
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../causalitytoolsbase/delay_reconstructions/" title="Delay reconstruction" class="md-nav__link">
+      Delay reconstruction
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4-3" type="checkbox" id="nav-4-3">
+    
+    <label class="md-nav__link" for="nav-4-3">
+      Invariant properties over partitions
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-4-3">
+        Invariant properties over partitions
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../perronfrobenius/invariantmeasure/" title="Invariant measure" class="md-nav__link">
+      Invariant measure
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../perronfrobenius/transferoperator/" title="Transfer operator" class="md-nav__link">
+      Transfer operator
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5" checked>
+    
+    <label class="md-nav__link" for="nav-5">
+      Estimators and algorithms
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        Estimators and algorithms
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-1" type="checkbox" id="nav-5-1" checked>
+    
+    <label class="md-nav__link" for="nav-5-1">
+      Transfer entropy
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-5-1">
+        Transfer entropy
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../convenience_functions_te/" title="Convenience functions" class="md-nav__link">
+      Convenience functions
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../transferentropy_estimators/" title="Low-level estimators" class="md-nav__link">
+      Low-level estimators
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../TEVars/" title="Mapping delay reconstruction to marginals (TEVars)" class="md-nav__link">
+      Mapping delay reconstruction to marginals (TEVars)
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Effect of discretization scheme
+      </label>
+    
+    <a href="./" title="Effect of discretization scheme" class="md-nav__link md-nav__link--active">
+      Effect of discretization scheme
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#different-ways-of-partitioning" title="Different ways of partitioning" class="md-nav__link">
+    Different ways of partitioning
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hyper-rectangles-by-subdivision-of-axes-int" title="Hyper-rectangles by subdivision of axes (ϵ::Int)" class="md-nav__link">
+    Hyper-rectangles by subdivision of axes (ϵ::Int)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hyper-cubes-of-fixed-size-float" title="Hyper-cubes of fixed size (ϵ::Float)" class="md-nav__link">
+    Hyper-cubes of fixed size (ϵ::Float)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hyper-rectangles-of-fixed-size-vectorfloat" title="Hyper-rectangles of fixed size (ϵ::Vector{Float})" class="md-nav__link">
+    Hyper-rectangles of fixed size (ϵ::Vector{Float})
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hyper-rectangles-by-variable-width-subdivision-of-axes-vectorint" title="Hyper-rectangles by variable-width subdivision of axes (ϵ::Vector{Int})" class="md-nav__link">
+    Hyper-rectangles by variable-width subdivision of axes (ϵ::Vector{Int})
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-2" type="checkbox" id="nav-5-2">
+    
+    <label class="md-nav__link" for="nav-5-2">
+      CCM
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-5-2">
+        CCM
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../crossmappings/ccm/overview/" title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../crossmappings/ccm/crossmapping/" title="Cross mapping" class="md-nav__link">
+      Cross mapping
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../crossmappings/ccm/convergentcrossmapping/" title="Converent cross mapping" class="md-nav__link">
+      Converent cross mapping
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../algorithms/joint_distance_distribution/" title="Joint distance distribution" class="md-nav__link">
+      Joint distance distribution
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../syntax_overview/" title="Syntax overview" class="md-nav__link">
+      Syntax overview
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-6" type="checkbox" id="nav-6">
+    
+    <label class="md-nav__link" for="nav-6">
+      Example systems
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-6">
+        Example systems
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../example_systems/example_systems_overview/" title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../example_systems/example_systems_discrete/" title="Discrete systems" class="md-nav__link">
+      Discrete systems
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../example_systems/example_systems_continuous/" title="Continuous systems" class="md-nav__link">
+      Continuous systems
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../example_systems/noise/" title="Noise processes" class="md-nav__link">
+      Noise processes
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-7" type="checkbox" id="nav-7">
+    
+    <label class="md-nav__link" for="nav-7">
+      Surrogate data
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-7">
+        Surrogate data
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../surrogates/surrogates_overview/" title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-7-2" type="checkbox" id="nav-7-2">
+    
+    <label class="md-nav__link" for="nav-7-2">
+      Methods
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-7-2">
+        Methods
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../surrogates/iaaft_docs/" title="IAAFT" class="md-nav__link">
+      IAAFT
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../surrogates/aaft_docs/" title="AAFT" class="md-nav__link">
+      AAFT
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../surrogates/randomphases_docs/" title="Fourier surrogates, random phases" class="md-nav__link">
+      Fourier surrogates, random phases
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../surrogates/randomamplitudes_docs/" title="Fourier surrogates, random amplitudes" class="md-nav__link">
+      Fourier surrogates, random amplitudes
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../surrogates/randomshuffle_docs/" title="Random shuffle" class="md-nav__link">
+      Random shuffle
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-8" type="checkbox" id="nav-8">
+    
+    <label class="md-nav__link" for="nav-8">
+      Uncertain data handling
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-8">
+        Uncertain data handling
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../uncertaindata/BinnedDataCausalityTest/" title="BinnedDataCausalityTest" class="md-nav__link">
+      BinnedDataCausalityTest
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-9" type="checkbox" id="nav-9">
+    
+    <label class="md-nav__link" for="nav-9">
+      Tutorials/examples
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-9">
+        Tutorials/examples
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/list_of_tutorials/" title="List of tutorials" class="md-nav__link">
+      List of tutorials
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-9-2" type="checkbox" id="nav-9-2">
+    
+    <label class="md-nav__link" for="nav-9-2">
+      Causality test on uncertain data
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-9-2">
+        Causality test on uncertain data
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-9-2-1" type="checkbox" id="nav-9-2-1">
+    
+    <label class="md-nav__link" for="nav-9-2-1">
+      PredictiveAsymmetryTest
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="3">
+      <label class="md-nav__title" for="nav-9-2-1">
+        PredictiveAsymmetryTest
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/causality/binned_uncertain_data/tutorial_BinnedDataCausalityTest_PredictiveAsymmetryTest_BinnedResampling/" title="BinnedResampling" class="md-nav__link">
+      BinnedResampling
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/causality/binned_uncertain_data/tutorial_BinnedDataCausalityTest_PredictiveAsymmetryTest_BinnedMeanResampling/" title="BinnedMeanResampling" class="md-nav__link">
+      BinnedMeanResampling
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-9-3" type="checkbox" id="nav-9-3">
+    
+    <label class="md-nav__link" for="nav-9-3">
+      Worked examples
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-9-3">
+        Worked examples
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../worked_examples/worked_example_transferentropy/" title="Transfer entropy" class="md-nav__link">
+      Transfer entropy
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../CHANGELOG/" title="Changelog" class="md-nav__link">
+      Changelog
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#different-ways-of-partitioning" title="Different ways of partitioning" class="md-nav__link">
+    Different ways of partitioning
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hyper-rectangles-by-subdivision-of-axes-int" title="Hyper-rectangles by subdivision of axes (ϵ::Int)" class="md-nav__link">
+    Hyper-rectangles by subdivision of axes (ϵ::Int)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hyper-cubes-of-fixed-size-float" title="Hyper-cubes of fixed size (ϵ::Float)" class="md-nav__link">
+    Hyper-cubes of fixed size (ϵ::Float)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hyper-rectangles-of-fixed-size-vectorfloat" title="Hyper-rectangles of fixed size (ϵ::Vector{Float})" class="md-nav__link">
+    Hyper-rectangles of fixed size (ϵ::Vector{Float})
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hyper-rectangles-by-variable-width-subdivision-of-axes-vectorint" title="Hyper-rectangles by variable-width subdivision of axes (ϵ::Vector{Int})" class="md-nav__link">
+    Hyper-rectangles by variable-width subdivision of axes (ϵ::Vector{Int})
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/kahaaga/CausalityTools.jl/edit/master/docs/transferentropy/examples_TE_different_partitionings.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                
+                
+                <p><a id='Effect-of-dicretization-scheme-on-transfer-entropy-estimates-1'></a></p>
+<h1 id="effect-of-dicretization-scheme-on-transfer-entropy-estimates">Effect of dicretization scheme on transfer entropy estimates</h1>
+<p><a id='Different-ways-of-partitioning-1'></a></p>
+<h2 id="different-ways-of-partitioning">Different ways of partitioning</h2>
+<p>The <code>TransferOperatorGrid</code> and <code>VisitationFrequency</code> transfer entropy estimators both operate on partitions on the delay reconstructions. Below, we demonstrate the four different ways of discretizing the state space.</p>
+<p>First, let's create some example time series, embed them and organize the computation of marginal probabilities.</p>
+<div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">cumsum</span><span class="p">(</span><span class="n">rand</span><span class="p">(</span><span class="mi">300</span><span class="p">))</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">sin</span><span class="o">.</span><span class="p">(</span><span class="n">cumsum</span><span class="p">(</span><span class="n">rand</span><span class="p">(</span><span class="mi">300</span><span class="p">)))</span><span class="o">*</span><span class="mf">0.3</span> <span class="o">.+</span> <span class="n">x</span>
+
+<span class="n">τ</span> <span class="o">=</span> <span class="mi">1</span> <span class="c"># embedding lag</span>
+<span class="n">ν</span> <span class="o">=</span> <span class="mi">1</span> <span class="c"># forward prediction lag</span>
+<span class="n">E_xtoy</span> <span class="o">=</span> <span class="n">customembed</span><span class="p">(</span><span class="n">Dataset</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">Positions</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span> <span class="n">Lags</span><span class="p">([</span><span class="n">ν</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">τ</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span>
+<span class="n">E_ytox</span> <span class="o">=</span> <span class="n">customembed</span><span class="p">(</span><span class="n">Dataset</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">Positions</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span> <span class="n">Lags</span><span class="p">([</span><span class="n">ν</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">τ</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span>
+
+<span class="c"># Organize marginals</span>
+<span class="n">Tf</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>     <span class="c"># target, future</span>
+<span class="n">Tpp</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="c"># target, present and past</span>
+<span class="n">Spp</span> <span class="o">=</span> <span class="p">[</span><span class="mi">4</span><span class="p">]</span>    <span class="c"># source, present (and past, if we wanted)</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">TEVars</span><span class="p">(</span><span class="n">Tf</span><span class="p">,</span> <span class="n">Tpp</span><span class="p">,</span> <span class="n">Spp</span><span class="p">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span>TEVars([1], [2, 3], [4], Int64[])
+</pre></div>
+
+<p><a id='Hyper-rectangles-by-subdivision-of-axes-(ϵ::Int)-1'></a></p>
+<h3 id="hyper-rectangles-by-subdivision-of-axes-int">Hyper-rectangles by subdivision of axes (<code>ϵ::Int</code>)</h3>
+<p>First, we use an integer number of subdivisions along each axis of the delay embedding when partitioning.</p>
+<div class="highlight"><pre><span></span><span class="n">ϵs</span> <span class="o">=</span> <span class="mi">1</span><span class="o">:</span><span class="mi">2</span><span class="o">:</span><span class="mi">50</span> <span class="c"># integer number of subdivisions along each axis of the embedding</span>
+<span class="n">te_estimates_xtoy</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">ϵs</span><span class="p">))</span>
+<span class="n">te_estimates_ytox</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">ϵs</span><span class="p">))</span>
+<span class="n">vars</span> <span class="o">=</span> <span class="n">TEVars</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+<span class="n">estimator</span> <span class="o">=</span> <span class="n">VisitationFrequency</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">ϵ</span><span class="p">)</span> <span class="kp">in</span> <span class="n">enumerate</span><span class="p">(</span><span class="n">ϵs</span><span class="p">)</span>
+    <span class="n">te_estimates_xtoy</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">transferentropy</span><span class="p">(</span><span class="n">E_xtoy</span><span class="p">,</span> <span class="n">vars</span><span class="p">,</span> <span class="n">RectangularBinning</span><span class="p">(</span><span class="n">ϵ</span><span class="p">),</span> <span class="n">estimator</span><span class="p">)</span>
+    <span class="n">te_estimates_ytox</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">transferentropy</span><span class="p">(</span><span class="n">E_ytox</span><span class="p">,</span> <span class="n">vars</span><span class="p">,</span> <span class="n">RectangularBinning</span><span class="p">(</span><span class="n">ϵ</span><span class="p">),</span> <span class="n">estimator</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="n">plot</span><span class="p">(</span><span class="n">ϵs</span><span class="p">,</span> <span class="n">te_estimates_xtoy</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;TE(x -&gt; y)&quot;</span><span class="p">,</span> <span class="n">lc</span> <span class="o">=</span> <span class="o">:</span><span class="n">black</span><span class="p">)</span>
+<span class="n">plot!</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">ϵs</span><span class="p">,</span> <span class="n">te_estimates_ytox</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;TE(y -&gt; x)&quot;</span><span class="p">,</span> <span class="n">lc</span> <span class="o">=</span> <span class="o">:</span><span class="n">red</span><span class="p">)</span>
+<span class="n">xlabel!</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="s">&quot;# subdivisions along each axis&quot;</span><span class="p">)</span>
+<span class="n">ylabel!</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="s">&quot;Transfer entropy (bits)&quot;</span><span class="p">)</span>
+</pre></div>
+
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="600" height="400" viewBox="0 0 2400 1600">
+<defs>
+  <clipPath id="clip4100">
+    <rect x="0" y="0" width="2400" height="1600"/>
+  </clipPath>
+</defs>
+<path clip-path="url(#clip4100)" d="
+M0 1600 L2400 1600 L2400 0 L0 0  Z
+  " fill="#ffffff" fill-rule="evenodd" fill-opacity="1"/>
+<defs>
+  <clipPath id="clip4101">
+    <rect x="480" y="0" width="1681" height="1600"/>
+  </clipPath>
+</defs>
+<path clip-path="url(#clip4100)" d="
+M269.279 1425.62 L2352.76 1425.62 L2352.76 47.2441 L269.279 47.2441  Z
+  " fill="#ffffff" fill-rule="evenodd" fill-opacity="1"/>
+<defs>
+  <clipPath id="clip4102">
+    <rect x="269" y="47" width="2084" height="1379"/>
+  </clipPath>
+</defs>
+<polyline clip-path="url(#clip4102)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  287.296,1425.62 287.296,47.2441 
+  "/>
+<polyline clip-path="url(#clip4102)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  696.785,1425.62 696.785,47.2441 
+  "/>
+<polyline clip-path="url(#clip4102)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  1106.27,1425.62 1106.27,47.2441 
+  "/>
+<polyline clip-path="url(#clip4102)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  1515.76,1425.62 1515.76,47.2441 
+  "/>
+<polyline clip-path="url(#clip4102)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  1925.25,1425.62 1925.25,47.2441 
+  "/>
+<polyline clip-path="url(#clip4102)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  2334.74,1425.62 2334.74,47.2441 
+  "/>
+<polyline clip-path="url(#clip4102)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  269.279,1386.61 2352.76,1386.61 
+  "/>
+<polyline clip-path="url(#clip4102)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  269.279,1063.51 2352.76,1063.51 
+  "/>
+<polyline clip-path="url(#clip4102)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  269.279,740.421 2352.76,740.421 
+  "/>
+<polyline clip-path="url(#clip4102)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  269.279,417.327 2352.76,417.327 
+  "/>
+<polyline clip-path="url(#clip4102)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  269.279,94.2339 2352.76,94.2339 
+  "/>
+<polyline clip-path="url(#clip4100)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  269.279,1425.62 2352.76,1425.62 
+  "/>
+<polyline clip-path="url(#clip4100)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  269.279,1425.62 269.279,47.2441 
+  "/>
+<polyline clip-path="url(#clip4100)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  287.296,1425.62 287.296,1404.94 
+  "/>
+<polyline clip-path="url(#clip4100)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  696.785,1425.62 696.785,1404.94 
+  "/>
+<polyline clip-path="url(#clip4100)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  1106.27,1425.62 1106.27,1404.94 
+  "/>
+<polyline clip-path="url(#clip4100)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  1515.76,1425.62 1515.76,1404.94 
+  "/>
+<polyline clip-path="url(#clip4100)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  1925.25,1425.62 1925.25,1404.94 
+  "/>
+<polyline clip-path="url(#clip4100)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  2334.74,1425.62 2334.74,1404.94 
+  "/>
+<polyline clip-path="url(#clip4100)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  269.279,1386.61 300.531,1386.61 
+  "/>
+<polyline clip-path="url(#clip4100)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  269.279,1063.51 300.531,1063.51 
+  "/>
+<polyline clip-path="url(#clip4100)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  269.279,740.421 300.531,740.421 
+  "/>
+<polyline clip-path="url(#clip4100)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  269.279,417.327 300.531,417.327 
+  "/>
+<polyline clip-path="url(#clip4100)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  269.279,94.2339 300.531,94.2339 
+  "/>
+<g clip-path="url(#clip4100)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:middle;" transform="rotate(0, 287.296, 1479.62)" x="287.296" y="1479.62">0</text>
+</g>
+<g clip-path="url(#clip4100)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:middle;" transform="rotate(0, 696.785, 1479.62)" x="696.785" y="1479.62">10</text>
+</g>
+<g clip-path="url(#clip4100)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:middle;" transform="rotate(0, 1106.27, 1479.62)" x="1106.27" y="1479.62">20</text>
+</g>
+<g clip-path="url(#clip4100)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:middle;" transform="rotate(0, 1515.76, 1479.62)" x="1515.76" y="1479.62">30</text>
+</g>
+<g clip-path="url(#clip4100)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:middle;" transform="rotate(0, 1925.25, 1479.62)" x="1925.25" y="1479.62">40</text>
+</g>
+<g clip-path="url(#clip4100)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:middle;" transform="rotate(0, 2334.74, 1479.62)" x="2334.74" y="1479.62">50</text>
+</g>
+<g clip-path="url(#clip4100)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:end;" transform="rotate(0, 245.279, 1404.11)" x="245.279" y="1404.11">0.000</text>
+</g>
+<g clip-path="url(#clip4100)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:end;" transform="rotate(0, 245.279, 1081.01)" x="245.279" y="1081.01">0.025</text>
+</g>
+<g clip-path="url(#clip4100)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:end;" transform="rotate(0, 245.279, 757.921)" x="245.279" y="757.921">0.050</text>
+</g>
+<g clip-path="url(#clip4100)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:end;" transform="rotate(0, 245.279, 434.827)" x="245.279" y="434.827">0.075</text>
+</g>
+<g clip-path="url(#clip4100)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:end;" transform="rotate(0, 245.279, 111.734)" x="245.279" y="111.734">0.100</text>
+</g>
+<g clip-path="url(#clip4100)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:66px; text-anchor:middle;" transform="rotate(0, 1311.02, 1559.48)" x="1311.02" y="1559.48"># subdivisions along each axis</text>
+</g>
+<g clip-path="url(#clip4100)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:66px; text-anchor:middle;" transform="rotate(-90, 89.2861, 736.431)" x="89.2861" y="736.431">Transfer entropy (bits)</text>
+</g>
+<polyline clip-path="url(#clip4102)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  328.245,1386.61 410.143,1386.61 492.04,1386.61 573.938,1299.87 655.836,1386.61 737.734,943.335 819.631,1386.61 901.529,722.8 983.427,1386.61 1065.32,748.634 
+  1147.22,1213.13 1229.12,585.46 1311.02,1386.61 1392.92,602.095 1474.81,913.406 1556.71,1021.85 1638.61,375.134 1720.51,337.108 1802.4,730.779 1884.3,985.664 
+  1966.2,825.483 2048.1,745.901 2129.99,269.817 2211.89,491.53 2293.79,86.2547 
+  "/>
+<polyline clip-path="url(#clip4102)" style="stroke:#ff0000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  328.245,1386.61 410.143,1386.61 492.04,1068.39 573.938,1089.45 655.836,1102.5 737.734,1124.02 819.631,1121.41 901.529,1144.97 983.427,1138.2 1065.32,1231.71 
+  1147.22,947.077 1229.12,1379.64 1311.02,1380.34 1392.92,1190.18 1474.81,1371.8 1556.71,666.73 1638.61,695.232 1720.51,652.831 1802.4,601.775 1884.3,895.41 
+  1966.2,1000.08 2048.1,549.046 2129.99,525.695 2211.89,860.35 2293.79,645.565 
+  "/>
+<path clip-path="url(#clip4100)" d="
+M1816.07 312.204 L2280.76 312.204 L2280.76 130.764 L1816.07 130.764  Z
+  " fill="#ffffff" fill-rule="evenodd" fill-opacity="1"/>
+<polyline clip-path="url(#clip4100)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  1816.07,312.204 2280.76,312.204 2280.76,130.764 1816.07,130.764 1816.07,312.204 
+  "/>
+<polyline clip-path="url(#clip4100)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  1840.07,191.244 1984.07,191.244 
+  "/>
+<g clip-path="url(#clip4100)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:start;" transform="rotate(0, 2008.07, 208.744)" x="2008.07" y="208.744">TE(x -&gt; y)</text>
+</g>
+<polyline clip-path="url(#clip4100)" style="stroke:#ff0000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  1840.07,251.724 1984.07,251.724 
+  "/>
+<g clip-path="url(#clip4100)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:start;" transform="rotate(0, 2008.07, 269.224)" x="2008.07" y="269.224">TE(y -&gt; x)</text>
+</g>
+</svg>
+
+<p><a id='Hyper-cubes-of-fixed-size-(ϵ::Float)-1'></a></p>
+<h3 id="hyper-cubes-of-fixed-size-float">Hyper-cubes of fixed size (<code>ϵ::Float</code>)</h3>
+<p>We do precisely the same, but use fixed-width hyper-cube bins. The values of the logistic map take values on <code>[0, 1]</code>, so using bins width edge lengths <code>0.1</code> should give a covering corresponding to using <code>10</code> subdivisions along each axis of the delay embedding. We let <code>ϵ</code> take values on <code>[0.05, 0.5]</code>.</p>
+<div class="highlight"><pre><span></span><span class="n">ϵs</span> <span class="o">=</span> <span class="mf">0.02</span><span class="o">:</span><span class="mf">0.02</span><span class="o">:</span><span class="mf">0.5</span>
+<span class="n">te_estimates_xtoy</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">ϵs</span><span class="p">))</span>
+<span class="n">te_estimates_ytox</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">ϵs</span><span class="p">))</span>
+<span class="n">vars</span> <span class="o">=</span> <span class="n">TEVars</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+<span class="n">estimator</span> <span class="o">=</span> <span class="n">VisitationFrequency</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">ϵ</span><span class="p">)</span> <span class="kp">in</span> <span class="n">enumerate</span><span class="p">(</span><span class="n">ϵs</span><span class="p">)</span>
+    <span class="n">te_estimates_xtoy</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">transferentropy</span><span class="p">(</span><span class="n">E_xtoy</span><span class="p">,</span> <span class="n">vars</span><span class="p">,</span> <span class="n">RectangularBinning</span><span class="p">(</span><span class="n">ϵ</span><span class="p">),</span> <span class="n">estimator</span><span class="p">)</span>
+    <span class="n">te_estimates_ytox</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">transferentropy</span><span class="p">(</span><span class="n">E_ytox</span><span class="p">,</span> <span class="n">vars</span><span class="p">,</span> <span class="n">RectangularBinning</span><span class="p">(</span><span class="n">ϵ</span><span class="p">),</span> <span class="n">estimator</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="n">plot</span><span class="p">(</span><span class="n">ϵs</span><span class="p">,</span> <span class="n">te_estimates_xtoy</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;TE(x -&gt; y)&quot;</span><span class="p">,</span> <span class="n">lc</span> <span class="o">=</span> <span class="o">:</span><span class="n">black</span><span class="p">)</span>
+<span class="n">plot!</span><span class="p">(</span><span class="n">ϵs</span><span class="p">,</span> <span class="n">te_estimates_ytox</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;TE(y -&gt; x)&quot;</span><span class="p">,</span> <span class="n">lc</span> <span class="o">=</span> <span class="o">:</span><span class="n">red</span><span class="p">)</span>
+<span class="n">xlabel!</span><span class="p">(</span><span class="s">&quot;Hypercube edge length&quot;</span><span class="p">)</span>
+<span class="n">ylabel!</span><span class="p">(</span><span class="s">&quot;Transfer entropy (bits)&quot;</span><span class="p">)</span>
+<span class="n">xflip!</span><span class="p">()</span>
+</pre></div>
+
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="600" height="400" viewBox="0 0 2400 1600">
+<defs>
+  <clipPath id="clip4700">
+    <rect x="0" y="0" width="2400" height="1600"/>
+  </clipPath>
+</defs>
+<path clip-path="url(#clip4700)" d="
+M0 1600 L2400 1600 L2400 0 L0 0  Z
+  " fill="#ffffff" fill-rule="evenodd" fill-opacity="1"/>
+<defs>
+  <clipPath id="clip4701">
+    <rect x="480" y="0" width="1681" height="1600"/>
+  </clipPath>
+</defs>
+<path clip-path="url(#clip4700)" d="
+M242.516 1425.62 L2352.76 1425.62 L2352.76 47.2441 L242.516 47.2441  Z
+  " fill="#ffffff" fill-rule="evenodd" fill-opacity="1"/>
+<defs>
+  <clipPath id="clip4702">
+    <rect x="242" y="47" width="2111" height="1379"/>
+  </clipPath>
+</defs>
+<polyline clip-path="url(#clip4702)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  1961.23,1425.62 1961.23,47.2441 
+  "/>
+<polyline clip-path="url(#clip4702)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  1546.49,1425.62 1546.49,47.2441 
+  "/>
+<polyline clip-path="url(#clip4702)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  1131.74,1425.62 1131.74,47.2441 
+  "/>
+<polyline clip-path="url(#clip4702)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  716.989,1425.62 716.989,47.2441 
+  "/>
+<polyline clip-path="url(#clip4702)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  302.24,1425.62 302.24,47.2441 
+  "/>
+<polyline clip-path="url(#clip4702)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  2352.76,1386.61 242.516,1386.61 
+  "/>
+<polyline clip-path="url(#clip4702)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  2352.76,1171.33 242.516,1171.33 
+  "/>
+<polyline clip-path="url(#clip4702)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  2352.76,956.047 242.516,956.047 
+  "/>
+<polyline clip-path="url(#clip4702)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  2352.76,740.766 242.516,740.766 
+  "/>
+<polyline clip-path="url(#clip4702)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  2352.76,525.485 242.516,525.485 
+  "/>
+<polyline clip-path="url(#clip4702)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  2352.76,310.204 242.516,310.204 
+  "/>
+<polyline clip-path="url(#clip4702)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  2352.76,94.9237 242.516,94.9237 
+  "/>
+<polyline clip-path="url(#clip4700)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  2352.76,1425.62 242.516,1425.62 
+  "/>
+<polyline clip-path="url(#clip4700)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  242.516,1425.62 242.516,47.2441 
+  "/>
+<polyline clip-path="url(#clip4700)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  1961.23,1425.62 1961.23,1404.94 
+  "/>
+<polyline clip-path="url(#clip4700)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  1546.49,1425.62 1546.49,1404.94 
+  "/>
+<polyline clip-path="url(#clip4700)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  1131.74,1425.62 1131.74,1404.94 
+  "/>
+<polyline clip-path="url(#clip4700)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  716.989,1425.62 716.989,1404.94 
+  "/>
+<polyline clip-path="url(#clip4700)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  302.24,1425.62 302.24,1404.94 
+  "/>
+<polyline clip-path="url(#clip4700)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  242.516,1386.61 274.17,1386.61 
+  "/>
+<polyline clip-path="url(#clip4700)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  242.516,1171.33 274.17,1171.33 
+  "/>
+<polyline clip-path="url(#clip4700)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  242.516,956.047 274.17,956.047 
+  "/>
+<polyline clip-path="url(#clip4700)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  242.516,740.766 274.17,740.766 
+  "/>
+<polyline clip-path="url(#clip4700)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  242.516,525.485 274.17,525.485 
+  "/>
+<polyline clip-path="url(#clip4700)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  242.516,310.204 274.17,310.204 
+  "/>
+<polyline clip-path="url(#clip4700)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  242.516,94.9237 274.17,94.9237 
+  "/>
+<g clip-path="url(#clip4700)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:middle;" transform="rotate(0, 1961.23, 1479.62)" x="1961.23" y="1479.62">0.1</text>
+</g>
+<g clip-path="url(#clip4700)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:middle;" transform="rotate(0, 1546.49, 1479.62)" x="1546.49" y="1479.62">0.2</text>
+</g>
+<g clip-path="url(#clip4700)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:middle;" transform="rotate(0, 1131.74, 1479.62)" x="1131.74" y="1479.62">0.3</text>
+</g>
+<g clip-path="url(#clip4700)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:middle;" transform="rotate(0, 716.989, 1479.62)" x="716.989" y="1479.62">0.4</text>
+</g>
+<g clip-path="url(#clip4700)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:middle;" transform="rotate(0, 302.24, 1479.62)" x="302.24" y="1479.62">0.5</text>
+</g>
+<g clip-path="url(#clip4700)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:end;" transform="rotate(0, 218.516, 1404.11)" x="218.516" y="1404.11">0.00</text>
+</g>
+<g clip-path="url(#clip4700)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:end;" transform="rotate(0, 218.516, 1188.83)" x="218.516" y="1188.83">0.01</text>
+</g>
+<g clip-path="url(#clip4700)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:end;" transform="rotate(0, 218.516, 973.547)" x="218.516" y="973.547">0.02</text>
+</g>
+<g clip-path="url(#clip4700)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:end;" transform="rotate(0, 218.516, 758.266)" x="218.516" y="758.266">0.03</text>
+</g>
+<g clip-path="url(#clip4700)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:end;" transform="rotate(0, 218.516, 542.985)" x="218.516" y="542.985">0.04</text>
+</g>
+<g clip-path="url(#clip4700)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:end;" transform="rotate(0, 218.516, 327.704)" x="218.516" y="327.704">0.05</text>
+</g>
+<g clip-path="url(#clip4700)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:end;" transform="rotate(0, 218.516, 112.424)" x="218.516" y="112.424">0.06</text>
+</g>
+<g clip-path="url(#clip4700)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:66px; text-anchor:middle;" transform="rotate(0, 1297.64, 1559.48)" x="1297.64" y="1559.48">Hypercube edge length</text>
+</g>
+<g clip-path="url(#clip4700)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:66px; text-anchor:middle;" transform="rotate(-90, 89.2861, 736.431)" x="89.2861" y="736.431">Transfer entropy (bits)</text>
+</g>
+<polyline clip-path="url(#clip4702)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  2293.03,1386.61 2210.08,1386.61 2127.13,1386.61 2044.18,1386.61 1961.23,1386.61 1878.28,1242.12 1795.33,1097.64 1712.38,1242.12 1629.43,1097.64 1546.49,1386.61 
+  1463.54,1097.64 1380.59,1097.64 1297.64,664.19 1214.69,808.673 1131.74,808.673 1048.79,808.673 965.838,500.586 882.888,988.572 799.938,699.604 716.989,808.673 
+  634.039,465.171 551.089,519.706 468.14,86.2547 385.19,375.222 302.24,176.204 
+  "/>
+<polyline clip-path="url(#clip4702)" style="stroke:#ff0000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  2293.03,1386.61 2210.08,1386.61 2127.13,1386.61 2044.18,1386.61 1961.23,1386.61 1878.28,1242.12 1795.33,1386.61 1712.38,1242.12 1629.43,1242.12 1546.49,1386.61 
+  1463.54,1097.64 1380.59,1097.64 1297.64,1097.64 1214.69,1097.64 1131.74,1242.12 1048.79,1097.64 965.838,754.139 882.888,1242.12 799.938,609.655 716.989,754.139 
+  634.039,1043.11 551.089,898.622 468.14,988.572 385.19,988.572 302.24,1386.61 
+  "/>
+<path clip-path="url(#clip4700)" d="
+M1816.07 312.204 L2280.76 312.204 L2280.76 130.764 L1816.07 130.764  Z
+  " fill="#ffffff" fill-rule="evenodd" fill-opacity="1"/>
+<polyline clip-path="url(#clip4700)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  1816.07,312.204 2280.76,312.204 2280.76,130.764 1816.07,130.764 1816.07,312.204 
+  "/>
+<polyline clip-path="url(#clip4700)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  1840.07,191.244 1984.07,191.244 
+  "/>
+<g clip-path="url(#clip4700)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:start;" transform="rotate(0, 2008.07, 208.744)" x="2008.07" y="208.744">TE(x -&gt; y)</text>
+</g>
+<polyline clip-path="url(#clip4700)" style="stroke:#ff0000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  1840.07,251.724 1984.07,251.724 
+  "/>
+<g clip-path="url(#clip4700)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:start;" transform="rotate(0, 2008.07, 269.224)" x="2008.07" y="269.224">TE(y -&gt; x)</text>
+</g>
+</svg>
+
+<p><a id='Hyper-rectangles-of-fixed-size-(ϵ::Vector{Float})-1'></a></p>
+<h3 id="hyper-rectangles-of-fixed-size-vectorfloat">Hyper-rectangles of fixed size (<code>ϵ::Vector{Float}</code>)</h3>
+<p>It is also possible to use hyper-rectangles, by specifying the edge lengths along each coordinate axis of the delay embedding. In our case, we use a four-dimensional, embedding, so we must provide a 4-element vector of edge lengths</p>
+<div class="highlight"><pre><span></span><span class="c"># Define slightly different edge lengths along each axis</span>
+<span class="n">ϵs_x1</span> <span class="o">=</span> <span class="n">LinRange</span><span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">ϵs_x2</span> <span class="o">=</span> <span class="n">LinRange</span><span class="p">(</span><span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">ϵs_x3</span> <span class="o">=</span> <span class="n">LinRange</span><span class="p">(</span><span class="mf">0.08</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">ϵs_x4</span> <span class="o">=</span> <span class="n">LinRange</span><span class="p">(</span><span class="mf">0.10</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+
+<span class="n">te_estimates_xtoy</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">ϵs_x1</span><span class="p">))</span>
+<span class="n">te_estimates_ytox</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">ϵs_x1</span><span class="p">))</span>
+<span class="n">vars</span> <span class="o">=</span> <span class="n">TEVars</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+<span class="n">estimator</span> <span class="o">=</span> <span class="n">VisitationFrequency</span><span class="p">()</span>
+
+
+<span class="n">mean_ϵs</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="o">∈</span> <span class="mi">1</span><span class="o">:</span><span class="mi">10</span>
+    <span class="n">ϵ</span> <span class="o">=</span> <span class="p">[</span><span class="n">ϵs_x1</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">ϵs_x2</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">ϵs_x3</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">ϵs_x4</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+    <span class="n">te_estimates_xtoy</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">transferentropy</span><span class="p">(</span><span class="n">E_xtoy</span><span class="p">,</span> <span class="n">vars</span><span class="p">,</span> <span class="n">RectangularBinning</span><span class="p">(</span><span class="n">ϵ</span><span class="p">),</span> <span class="n">estimator</span><span class="p">)</span>
+    <span class="n">te_estimates_ytox</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">transferentropy</span><span class="p">(</span><span class="n">E_ytox</span><span class="p">,</span> <span class="n">vars</span><span class="p">,</span> <span class="n">RectangularBinning</span><span class="p">(</span><span class="n">ϵ</span><span class="p">),</span> <span class="n">estimator</span><span class="p">)</span>
+
+    <span class="c"># Store average edge length (for plotting)</span>
+    <span class="n">mean_ϵs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">mean</span><span class="p">(</span><span class="n">ϵ</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="n">plot</span><span class="p">(</span><span class="n">mean_ϵs</span><span class="p">,</span> <span class="n">te_estimates_xtoy</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;TE(x -&gt; y)&quot;</span><span class="p">,</span> <span class="n">lc</span> <span class="o">=</span> <span class="o">:</span><span class="n">black</span><span class="p">)</span>
+<span class="n">plot!</span><span class="p">(</span><span class="n">mean_ϵs</span><span class="p">,</span> <span class="n">te_estimates_ytox</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;TE(y -&gt; x)&quot;</span><span class="p">,</span> <span class="n">lc</span> <span class="o">=</span> <span class="o">:</span><span class="n">red</span><span class="p">)</span>
+<span class="n">xlabel!</span><span class="p">(</span><span class="s">&quot;Average hypercube edge length&quot;</span><span class="p">)</span>
+<span class="n">ylabel!</span><span class="p">(</span><span class="s">&quot;Transfer entropy (bits)&quot;</span><span class="p">)</span>
+<span class="n">xflip!</span><span class="p">()</span>
+</pre></div>
+
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="600" height="400" viewBox="0 0 2400 1600">
+<defs>
+  <clipPath id="clip5300">
+    <rect x="0" y="0" width="2400" height="1600"/>
+  </clipPath>
+</defs>
+<path clip-path="url(#clip5300)" d="
+M0 1600 L2400 1600 L2400 0 L0 0  Z
+  " fill="#ffffff" fill-rule="evenodd" fill-opacity="1"/>
+<defs>
+  <clipPath id="clip5301">
+    <rect x="480" y="0" width="1681" height="1600"/>
+  </clipPath>
+</defs>
+<path clip-path="url(#clip5300)" d="
+M242.516 1425.62 L2352.76 1425.62 L2352.76 47.2441 L242.516 47.2441  Z
+  " fill="#ffffff" fill-rule="evenodd" fill-opacity="1"/>
+<defs>
+  <clipPath id="clip5302">
+    <rect x="242" y="47" width="2111" height="1379"/>
+  </clipPath>
+</defs>
+<polyline clip-path="url(#clip5302)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  2100.37,1425.62 2100.37,47.2441 
+  "/>
+<polyline clip-path="url(#clip5302)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  1586.62,1425.62 1586.62,47.2441 
+  "/>
+<polyline clip-path="url(#clip5302)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  1072.87,1425.62 1072.87,47.2441 
+  "/>
+<polyline clip-path="url(#clip5302)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  559.117,1425.62 559.117,47.2441 
+  "/>
+<polyline clip-path="url(#clip5302)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  2352.76,1386.61 242.516,1386.61 
+  "/>
+<polyline clip-path="url(#clip5302)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  2352.76,1034.33 242.516,1034.33 
+  "/>
+<polyline clip-path="url(#clip5302)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  2352.76,682.053 242.516,682.053 
+  "/>
+<polyline clip-path="url(#clip5302)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  2352.76,329.775 242.516,329.775 
+  "/>
+<polyline clip-path="url(#clip5300)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  2352.76,1425.62 242.516,1425.62 
+  "/>
+<polyline clip-path="url(#clip5300)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  242.516,1425.62 242.516,47.2441 
+  "/>
+<polyline clip-path="url(#clip5300)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  2100.37,1425.62 2100.37,1404.94 
+  "/>
+<polyline clip-path="url(#clip5300)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  1586.62,1425.62 1586.62,1404.94 
+  "/>
+<polyline clip-path="url(#clip5300)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  1072.87,1425.62 1072.87,1404.94 
+  "/>
+<polyline clip-path="url(#clip5300)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  559.117,1425.62 559.117,1404.94 
+  "/>
+<polyline clip-path="url(#clip5300)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  242.516,1386.61 274.17,1386.61 
+  "/>
+<polyline clip-path="url(#clip5300)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  242.516,1034.33 274.17,1034.33 
+  "/>
+<polyline clip-path="url(#clip5300)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  242.516,682.053 274.17,682.053 
+  "/>
+<polyline clip-path="url(#clip5300)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  242.516,329.775 274.17,329.775 
+  "/>
+<g clip-path="url(#clip5300)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:middle;" transform="rotate(0, 2100.37, 1479.62)" x="2100.37" y="1479.62">0.1</text>
+</g>
+<g clip-path="url(#clip5300)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:middle;" transform="rotate(0, 1586.62, 1479.62)" x="1586.62" y="1479.62">0.2</text>
+</g>
+<g clip-path="url(#clip5300)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:middle;" transform="rotate(0, 1072.87, 1479.62)" x="1072.87" y="1479.62">0.3</text>
+</g>
+<g clip-path="url(#clip5300)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:middle;" transform="rotate(0, 559.117, 1479.62)" x="559.117" y="1479.62">0.4</text>
+</g>
+<g clip-path="url(#clip5300)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:end;" transform="rotate(0, 218.516, 1404.11)" x="218.516" y="1404.11">0.00</text>
+</g>
+<g clip-path="url(#clip5300)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:end;" transform="rotate(0, 218.516, 1051.83)" x="218.516" y="1051.83">0.02</text>
+</g>
+<g clip-path="url(#clip5300)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:end;" transform="rotate(0, 218.516, 699.553)" x="218.516" y="699.553">0.04</text>
+</g>
+<g clip-path="url(#clip5300)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:end;" transform="rotate(0, 218.516, 347.275)" x="218.516" y="347.275">0.06</text>
+</g>
+<g clip-path="url(#clip5300)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:66px; text-anchor:middle;" transform="rotate(0, 1297.64, 1559.48)" x="1297.64" y="1559.48">Average hypercube edge length</text>
+</g>
+<g clip-path="url(#clip5300)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:66px; text-anchor:middle;" transform="rotate(-90, 89.2861, 736.431)" x="89.2861" y="736.431">Transfer entropy (bits)</text>
+</g>
+<polyline clip-path="url(#clip5302)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  2293.03,1386.61 2071.83,1386.61 1850.63,1268.39 1629.43,1268.39 1408.24,913.752 1187.04,677.324 965.838,824.514 744.638,425.253 523.439,869.133 302.24,632.705
+
+<p>"/&gt;
+&lt;polyline clip-path="url(#clip5302)" style="stroke:#ff0000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  2293.03,1386.61 2071.83,1386.61 1850.63,1386.61 1629.43,1268.39 1408.24,1223.77 1187.04,913.752 965.838,913.752 744.638,913.752 523.439,869.133 302.24,86.2547 </p>
+<p>"/&gt;
+<path clip-path="url(#clip5300)" d="
+M1816.07 312.204 L2280.76 312.204 L2280.76 130.764 L1816.07 130.764  Z
+  " fill="#ffffff" fill-rule="evenodd" fill-opacity="1"/>
+<polyline clip-path="url(#clip5300)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  1816.07,312.204 2280.76,312.204 2280.76,130.764 1816.07,130.764 1816.07,312.204 
+  "/>
+<polyline clip-path="url(#clip5300)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  1840.07,191.244 1984.07,191.244 
+  "/>
+<g clip-path="url(#clip5300)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:start;" transform="rotate(0, 2008.07, 208.744)" x="2008.07" y="208.744">TE(x -&gt; y)</text>
+</g>
+<polyline clip-path="url(#clip5300)" style="stroke:#ff0000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  1840.07,251.724 1984.07,251.724 
+  "/>
+<g clip-path="url(#clip5300)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:start;" transform="rotate(0, 2008.07, 269.224)" x="2008.07" y="269.224">TE(y -&gt; x)</text>
+</g>
+</svg></p>
+<p><a id='Hyper-rectangles-by-variable-width-subdivision-of-axes-(ϵ::Vector{Int})-1'></a></p>
+<h3 id="hyper-rectangles-by-variable-width-subdivision-of-axes-vectorint">Hyper-rectangles by variable-width subdivision of axes (<code>ϵ::Vector{Int}</code>)</h3>
+<p>Another way to construct hyper-rectangles is to subdivide each coordinate axis into segments of equal length. In our case, we use a four-dimensional, embedding, so we must provide a 4-element vector providing the number of subdivisions we want along each axis.</p>
+<div class="highlight"><pre><span></span><span class="c"># Define different number of subdivisions along each axis.</span>
+<span class="n">ϵs</span> <span class="o">=</span> <span class="mi">3</span><span class="o">:</span><span class="mi">50</span>
+<span class="n">mean_ϵs</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">ϵs</span><span class="p">))</span>
+
+<span class="n">te_estimates_xtoy</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">ϵs</span><span class="p">))</span>
+<span class="n">te_estimates_ytox</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">ϵs</span><span class="p">))</span>
+<span class="n">vars</span> <span class="o">=</span> <span class="n">TEVars</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">ϵᵢ</span><span class="p">)</span> <span class="o">∈</span> <span class="n">enumerate</span><span class="p">(</span><span class="n">ϵs</span><span class="p">)</span>
+    <span class="n">ϵ</span> <span class="o">=</span> <span class="p">[</span><span class="n">ϵᵢ</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ϵᵢ</span><span class="p">,</span> <span class="n">ϵᵢ</span><span class="p">,</span> <span class="n">ϵᵢ</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">te_estimates_xtoy</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">transferentropy</span><span class="p">(</span><span class="n">E_xtoy</span><span class="p">,</span> <span class="n">vars</span><span class="p">,</span> <span class="n">RectangularBinning</span><span class="p">(</span><span class="n">ϵ</span><span class="p">),</span> <span class="n">estimator</span><span class="p">)</span>
+    <span class="n">te_estimates_ytox</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">transferentropy</span><span class="p">(</span><span class="n">E_ytox</span><span class="p">,</span> <span class="n">vars</span><span class="p">,</span> <span class="n">RectangularBinning</span><span class="p">(</span><span class="n">ϵ</span><span class="p">),</span> <span class="n">estimator</span><span class="p">)</span>
+
+    <span class="c"># Store average number of subdivisions for plotting</span>
+    <span class="n">mean_ϵs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">mean</span><span class="p">(</span><span class="n">ϵ</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="n">plot</span><span class="p">(</span><span class="n">mean_ϵs</span><span class="p">,</span> <span class="n">te_estimates_xtoy</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;TE(x -&gt; y)&quot;</span><span class="p">,</span> <span class="n">lc</span> <span class="o">=</span> <span class="o">:</span><span class="n">black</span><span class="p">)</span>
+<span class="n">plot!</span><span class="p">(</span><span class="n">mean_ϵs</span><span class="p">,</span> <span class="n">te_estimates_ytox</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;TE(y -&gt; x)&quot;</span><span class="p">,</span> <span class="n">lc</span> <span class="o">=</span> <span class="o">:</span><span class="n">red</span><span class="p">)</span>
+<span class="n">xlabel!</span><span class="p">(</span><span class="s">&quot;Average number of subdivisions along the embedding axes&quot;</span><span class="p">)</span>
+<span class="n">ylabel!</span><span class="p">(</span><span class="s">&quot;Transfer entropy (bits)&quot;</span><span class="p">)</span>
+</pre></div>
+
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="600" height="400" viewBox="0 0 2400 1600">
+<defs>
+  <clipPath id="clip5900">
+    <rect x="0" y="0" width="2400" height="1600"/>
+  </clipPath>
+</defs>
+<path clip-path="url(#clip5900)" d="
+M0 1600 L2400 1600 L2400 0 L0 0  Z
+  " fill="#ffffff" fill-rule="evenodd" fill-opacity="1"/>
+<defs>
+  <clipPath id="clip5901">
+    <rect x="480" y="0" width="1681" height="1600"/>
+  </clipPath>
+</defs>
+<path clip-path="url(#clip5900)" d="
+M242.516 1425.62 L2352.76 1425.62 L2352.76 47.2441 L242.516 47.2441  Z
+  " fill="#ffffff" fill-rule="evenodd" fill-opacity="1"/>
+<defs>
+  <clipPath id="clip5902">
+    <rect x="242" y="47" width="2111" height="1379"/>
+  </clipPath>
+</defs>
+<polyline clip-path="url(#clip5902)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  598.741,1425.62 598.741,47.2441 
+  "/>
+<polyline clip-path="url(#clip5902)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  1022.31,1425.62 1022.31,47.2441 
+  "/>
+<polyline clip-path="url(#clip5902)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  1445.89,1425.62 1445.89,47.2441 
+  "/>
+<polyline clip-path="url(#clip5902)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  1869.46,1425.62 1869.46,47.2441 
+  "/>
+<polyline clip-path="url(#clip5902)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  2293.03,1425.62 2293.03,47.2441 
+  "/>
+<polyline clip-path="url(#clip5902)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  242.516,1267.7 2352.76,1267.7 
+  "/>
+<polyline clip-path="url(#clip5902)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  242.516,917.673 2352.76,917.673 
+  "/>
+<polyline clip-path="url(#clip5902)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  242.516,567.651 2352.76,567.651 
+  "/>
+<polyline clip-path="url(#clip5902)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  242.516,217.628 2352.76,217.628 
+  "/>
+<polyline clip-path="url(#clip5900)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  242.516,1425.62 2352.76,1425.62 
+  "/>
+<polyline clip-path="url(#clip5900)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  242.516,1425.62 242.516,47.2441 
+  "/>
+<polyline clip-path="url(#clip5900)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  598.741,1425.62 598.741,1404.94 
+  "/>
+<polyline clip-path="url(#clip5900)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  1022.31,1425.62 1022.31,1404.94 
+  "/>
+<polyline clip-path="url(#clip5900)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  1445.89,1425.62 1445.89,1404.94 
+  "/>
+<polyline clip-path="url(#clip5900)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  1869.46,1425.62 1869.46,1404.94 
+  "/>
+<polyline clip-path="url(#clip5900)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  2293.03,1425.62 2293.03,1404.94 
+  "/>
+<polyline clip-path="url(#clip5900)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  242.516,1267.7 274.17,1267.7 
+  "/>
+<polyline clip-path="url(#clip5900)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  242.516,917.673 274.17,917.673 
+  "/>
+<polyline clip-path="url(#clip5900)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  242.516,567.651 274.17,567.651 
+  "/>
+<polyline clip-path="url(#clip5900)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  242.516,217.628 274.17,217.628 
+  "/>
+<g clip-path="url(#clip5900)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:middle;" transform="rotate(0, 598.741, 1479.62)" x="598.741" y="1479.62">10</text>
+</g>
+<g clip-path="url(#clip5900)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:middle;" transform="rotate(0, 1022.31, 1479.62)" x="1022.31" y="1479.62">20</text>
+</g>
+<g clip-path="url(#clip5900)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:middle;" transform="rotate(0, 1445.89, 1479.62)" x="1445.89" y="1479.62">30</text>
+</g>
+<g clip-path="url(#clip5900)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:middle;" transform="rotate(0, 1869.46, 1479.62)" x="1869.46" y="1479.62">40</text>
+</g>
+<g clip-path="url(#clip5900)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:middle;" transform="rotate(0, 2293.03, 1479.62)" x="2293.03" y="1479.62">50</text>
+</g>
+<g clip-path="url(#clip5900)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:end;" transform="rotate(0, 218.516, 1285.2)" x="218.516" y="1285.2">0.15</text>
+</g>
+<g clip-path="url(#clip5900)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:end;" transform="rotate(0, 218.516, 935.173)" x="218.516" y="935.173">0.20</text>
+</g>
+<g clip-path="url(#clip5900)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:end;" transform="rotate(0, 218.516, 585.151)" x="218.516" y="585.151">0.25</text>
+</g>
+<g clip-path="url(#clip5900)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:end;" transform="rotate(0, 218.516, 235.128)" x="218.516" y="235.128">0.30</text>
+</g>
+<g clip-path="url(#clip5900)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:66px; text-anchor:middle;" transform="rotate(0, 1297.64, 1559.48)" x="1297.64" y="1559.48">Average number of subdivisions along the embedding axes</text>
+</g>
+<g clip-path="url(#clip5900)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:66px; text-anchor:middle;" transform="rotate(-90, 89.2861, 736.431)" x="89.2861" y="736.431">Transfer entropy (bits)</text>
+</g>
+<polyline clip-path="url(#clip5902)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  302.24,86.2547 344.597,1163.61 386.955,486.477 429.312,1297.1 471.669,754.213 514.027,808.209 556.384,805.221 598.741,822.114 641.098,751.714 683.456,1015 
+  725.813,1099.22 768.17,738.819 810.527,699.207 852.885,1002.54 895.242,781.783 937.599,1156.71 979.957,698.568 1022.31,1086.52 1064.67,638.449 1107.03,835.841 
+  1149.39,978.548 1191.74,1035.5 1234.1,1173.55 1276.46,782.985 1318.81,817.806 1361.17,952.472 1403.53,809.321 1445.89,925.557 1488.24,991.114 1530.6,931.211 
+  1572.96,921.181 1615.32,926.166 1657.67,605.66 1700.03,862.738 1742.39,1021.06 1784.74,954.373 1827.1,1089.84 1869.46,890.49 1911.82,900.705 1954.17,938.993 
+  1996.53,761.422 2038.89,888.508 2081.25,952.917 2123.6,979.214 2165.96,1076.19 2208.32,905.717 2250.67,1225.8 2293.03,1057.18 
+  "/>
+<polyline clip-path="url(#clip5902)" style="stroke:#ff0000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  302.24,251.695 344.597,1174.38 386.955,606.704 429.312,1338.23 471.669,859.399 514.027,936.82 556.384,847.992 598.741,817.336 641.098,910.267 683.456,1014.19 
+  725.813,1157.1 768.17,765.807 810.527,1162.71 852.885,752.876 895.242,997.022 937.599,1069.07 979.957,793.596 1022.31,1150.61 1064.67,863.973 1107.03,1001.6 
+  1149.39,1133.63 1191.74,975.258 1234.1,1206.74 1276.46,968.302 1318.81,1029.17 1361.17,1041.52 1403.53,1146.55 1445.89,933.566 1488.24,1224.16 1530.6,1208.15 
+  1572.96,1215.88 1615.32,1097.16 1657.67,1272.46 1700.03,1295.95 1742.39,863.285 1784.74,1220.85 1827.1,1354.45 1869.46,976.01 1911.82,1195.91 1954.17,832.865 
+  1996.53,1070.33 2038.89,1134.57 2081.25,976.153 2123.6,1145.74 2165.96,1386.61 2208.32,1013.7 2250.67,1291.03 2293.03,1358.41 
+  "/>
+<path clip-path="url(#clip5900)" d="
+M1816.07 312.204 L2280.76 312.204 L2280.76 130.764 L1816.07 130.764  Z
+  " fill="#ffffff" fill-rule="evenodd" fill-opacity="1"/>
+<polyline clip-path="url(#clip5900)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  1816.07,312.204 2280.76,312.204 2280.76,130.764 1816.07,130.764 1816.07,312.204 
+  "/>
+<polyline clip-path="url(#clip5900)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  1840.07,191.244 1984.07,191.244 
+  "/>
+<g clip-path="url(#clip5900)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:start;" transform="rotate(0, 2008.07, 208.744)" x="2008.07" y="208.744">TE(x -&gt; y)</text>
+</g>
+<polyline clip-path="url(#clip5900)" style="stroke:#ff0000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  1840.07,251.724 1984.07,251.724 
+  "/>
+<g clip-path="url(#clip5900)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:start;" transform="rotate(0, 2008.07, 269.224)" x="2008.07" y="269.224">TE(y -&gt; x)</text>
+</g>
+</svg>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../TEVars/" title="Mapping delay reconstruction to marginals (TEVars)" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Mapping delay reconstruction to marginals (TEVars)
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../../crossmappings/ccm/overview/" title="Overview" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Overview
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+        
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.30f6b8b1.js"></script>
+      
+      <script>app.initialize({version:"0.17.5",url:{base:"../.."}})</script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+      
+        <script src="../../assets/mathjaxhelper.js"></script>
+      
+    
+    
+      
+    
+  </body>
+</html>

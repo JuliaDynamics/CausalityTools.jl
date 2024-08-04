@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Graph inference · CausalityTools.jl</title><meta name="title" content="Graph inference · CausalityTools.jl"/><meta property="og:title" content="Graph inference · CausalityTools.jl"/><meta property="twitter:title" content="Graph inference · CausalityTools.jl"/><meta name="description" content="Documentation for CausalityTools.jl."/><meta property="og:description" content="Documentation for CausalityTools.jl."/><meta property="twitter:description" content="Documentation for CausalityTools.jl."/><script data-outdated-warner src="../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../search_index.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script><link href="https://fonts.googleapis.com/css?family=Montserrat|Source+Code+Pro&amp;display=swap" rel="stylesheet" type="text/css"/></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../../"><img class="docs-light-only" src="../../assets/logo.png" alt="CausalityTools.jl logo"/><img class="docs-dark-only" src="../../assets/logo-dark.png" alt="CausalityTools.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit"><a href="../../">CausalityTools.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../../">CausalityTools.jl</a></li><li><a class="tocitem" href="../../associations/">Association measures</a></li><li><a class="tocitem" href="../../independence/">Independence</a></li><li><a class="tocitem" href="../../causal_graphs/">Network/graph inference</a></li><li><span class="tocitem">Examples</span><ul><li><a class="tocitem" href="../examples_associations/">Association measures</a></li><li class="is-active"><a class="tocitem" href>Graph inference</a><ul class="internal"><li><a class="tocitem" href="#Example-data"><span>Example data</span></a></li><li><a class="tocitem" href="#oce_example"><span>Optimal causation entropy</span></a></li><li><a class="tocitem" href="#pc_examples"><span>PC-algorithm</span></a></li></ul></li><li><span class="tocitem">Extended examples</span><ul><li><a class="tocitem" href="../../extended_examples/cross_mapping/"><code>ConvergentCrossMapping</code></a></li><li><a class="tocitem" href="../../extended_examples/pairwise_asymmetric_inference/"><code>PairwiseAsymmetricInference</code></a></li><li><a class="tocitem" href="../../extended_examples/mutual_information/"><code>MIShannon</code></a></li></ul></li></ul></li><li><span class="tocitem">Basics and tutorials</span><ul><li><a class="tocitem" href="../../encoding_tutorial/">Encoding elements</a></li><li><a class="tocitem" href="../../discretization_tutorial/">Encoding input datasets</a></li><li><a class="tocitem" href="../../probabilities_tutorial/">Counts and probabilities</a></li><li><a class="tocitem" href="../../info_tutorial/">Information measures</a></li></ul></li><li><a class="tocitem" href="../../references/">References</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Examples</a></li><li class="is-active"><a href>Graph inference</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Graph inference</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/JuliaDynamics/CausalityTools.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/JuliaDynamics/CausalityTools.jl/blob/main/docs/src/examples/examples_infer_graphs.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="Causal-graphs"><a class="docs-heading-anchor" href="#Causal-graphs">Causal graphs</a><a id="Causal-graphs-1"></a><a class="docs-heading-anchor-permalink" href="#Causal-graphs" title="Permalink"></a></h1><p>Before introducing the causal graph examples, let&#39;s create a function that can plot directed graphs that we&#39;ll use below.</p><pre><code class="language-julia hljs">using Graphs, CairoMakie, GraphMakie
+
+function plotgraph(g; nlabels = repr.(1:nv(g)))
+    f, ax, p = graphplot(g,
+        ilabels = nlabels,
+        ilabels_color = [:white for i in 1:nv(g)],
+        node_color = :blue,
+        node_size = 80,
+        arrow_size = 15,
+    )
+    offsets = 0.02 * (p[:node_pos][] .- p[:node_pos][][1])
+    offsets[1] = Point2f(0, 0.2)
+    p.nlabels_offset[] = offsets
+    autolimits!(ax)
+    hidedecorations!(ax)
+    hidespines!(ax)
+    ax.aspect = DataAspect()
+    return f
+end</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">plotgraph (generic function with 1 method)</code></pre><h2 id="Example-data"><a class="docs-heading-anchor" href="#Example-data">Example data</a><a id="Example-data-1"></a><a class="docs-heading-anchor-permalink" href="#Example-data" title="Permalink"></a></h2><p>We&#39;ll implement a set of chained logistic maps with unidirectional coupling.</p><pre><code class="language-julia hljs">using DynamicalSystemsBase
+Base.@kwdef struct Logistic4Chain{V, RX, RY, RZ, RW, C1, C2, C3, Σ1, Σ2, Σ3, RNG}
+    xi::V = [0.1, 0.2, 0.3, 0.4]
+    rx::RX = 3.9
+    ry::RY = 3.6
+    rz::RZ = 3.6
+    rw::RW = 3.8
+    c_xy::C1 = 0.4
+    c_yz::C2 = 0.4
+    c_zw::C3 = 0.35
+    σ_xy::Σ1 = 0.05
+    σ_yz::Σ2 = 0.05
+    σ_zw::Σ3 = 0.05
+    rng::RNG = Random.default_rng()
+end
+
+function eom_logistic4_chain(u, p::Logistic4Chain, t)
+    (; xi, rx, ry, rz, rw, c_xy, c_yz, c_zw, σ_xy, σ_yz, σ_zw, rng) = p
+    x, y, z, w = u
+    f_xy = (y +  c_xy*(x + σ_xy * rand(rng)) ) / (1 + c_xy*(1+σ_xy))
+    f_yz = (z +  c_yz*(y + σ_yz * rand(rng)) ) / (1 + c_yz*(1+σ_yz))
+    f_zw = (w +  c_zw*(z + σ_zw * rand(rng)) ) / (1 + c_zw*(1+σ_zw))
+    dx = rx * x * (1 - x)
+    dy = ry * (f_xy) * (1 - f_xy)
+    dz = rz * (f_yz) * (1 - f_yz)
+    dw = rw * (f_zw) * (1 - f_zw)
+    return SVector{4}(dx, dy, dz, dw)
+end
+
+
+function system(definition::Logistic4Chain)
+    return DiscreteDynamicalSystem(eom_logistic4_chain, definition.xi, definition)
+end</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">system (generic function with 1 method)</code></pre><h2 id="oce_example"><a class="docs-heading-anchor" href="#oce_example">Optimal causation entropy</a><a id="oce_example-1"></a><a class="docs-heading-anchor-permalink" href="#oce_example" title="Permalink"></a></h2><p>Here, we use the <a href="../../causal_graphs/#CausalityTools.OCE"><code>OCE</code></a> algorithm to infer a time series graph. We use a <a href="../../independence/#CausalityTools.SurrogateAssociationTest"><code>SurrogateAssociationTest</code></a> for the initial step, and a <a href="../../independence/#CausalityTools.LocalPermutationTest"><code>LocalPermutationTest</code></a> for the conditional steps.</p><pre><code class="language-julia hljs">using CausalityTools
+using StableRNGs
+rng = StableRNG(123)
+
+# An example system where `X → Y → Z → W`.
+sys = system(Logistic4Chain(; rng))
+x, y, z, w = columns(first(trajectory(sys, 300, Ttr = 10000)))
+
+# Independence tests for unconditional and conditional stages.
+uest = KSG2(MIShannon(); k = 3, w = 1)
+utest = SurrogateAssociationTest(uest; rng, nshuffles = 19)
+cest =  MesnerShalizi(CMIShannon(); k = 3, w = 1)
+ctest = LocalPermutationTest(cest; rng, nshuffles = 19)
+
+# Infer graph
+alg = OCE(; utest, ctest, α = 0.05, τmax = 1)
+parents = infer_graph(alg, [x, y, z, w])
+
+# Convert to graph and inspect edges
+g = SimpleDiGraph(parents)
+collect(edges(g))</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">3-element Vector{Graphs.SimpleGraphs.SimpleEdge{Int64}}:
+ Edge 1 =&gt; 2
+ Edge 2 =&gt; 3
+ Edge 3 =&gt; 4</code></pre><p>The algorithm nicely recovers the true causal directions. We can also plot the graph using the function we made above.</p><pre><code class="language-julia hljs">plotgraph(g; nlabels = [&quot;x&quot;, &quot;y&quot;, &quot;z&quot;, &quot;w&quot;])</code></pre><img src="bc2baa3e.png" alt="Example block output"/><h2 id="pc_examples"><a class="docs-heading-anchor" href="#pc_examples">PC-algorithm</a><a id="pc_examples-1"></a><a class="docs-heading-anchor-permalink" href="#pc_examples" title="Permalink"></a></h2><h3 id="pc_examples_corr"><a class="docs-heading-anchor" href="#pc_examples_corr">Correlation-based tests</a><a id="pc_examples_corr-1"></a><a class="docs-heading-anchor-permalink" href="#pc_examples_corr" title="Permalink"></a></h3><p>Here, we demonstrate the use of the <a href="../../causal_graphs/#CausalityTools.PC"><code>PC</code></a>-algorithm with the correlation-based <a href="../../independence/#CausalityTools.CorrTest"><code>CorrTest</code></a> both for the pairwise (i.e. using <a href="../../associations/#CausalityTools.PearsonCorrelation"><code>PearsonCorrelation</code></a>) and conditional (i.e. using <a href="../../associations/#CausalityTools.PartialCorrelation"><code>PartialCorrelation</code></a>) case.</p><p>We&#39;ll reproduce the first example from <a href="https://github.com/mschauer/CausalInference.jl">CausalInference.jl</a>, where they also use a parametric correlation test to infer the skeleton graph for some  normally distributed data.</p><pre><code class="language-julia hljs">using CausalityTools
+using StableRNGs
+rng = StableRNG(123)
+n = 300
+v = randn(rng, n)
+x = v + randn(rng, n)*0.25
+w = x + randn(rng, n)*0.25
+z = v + w + randn(rng, n)*0.25
+s = z + randn(rng, n)*0.25
+X = [x, v, w, z, s]
+
+# Infer a completed partially directed acyclic graph (CPDAG)
+alg = PC(CorrTest(), CorrTest(); α = 0.05)
+est_cpdag_parametric = infer_graph(alg, X; verbose = false)
+
+# Plot the graph
+plotgraph(est_cpdag_parametric; nlabels = [&quot;x&quot;, &quot;v&quot;, &quot;w&quot;, &quot;z&quot;, &quot;s&quot;])</code></pre><img src="eebd37df.png" alt="Example block output"/><h3 id="pc_examples_nonparametric"><a class="docs-heading-anchor" href="#pc_examples_nonparametric">Nonparametric tests</a><a id="pc_examples_nonparametric-1"></a><a class="docs-heading-anchor-permalink" href="#pc_examples_nonparametric" title="Permalink"></a></h3><p>The main difference between the PC algorithm implementation here and in CausalInference.jl is that our implementation automatically works with any compatible and <a href="../../independence/#CausalityTools.IndependenceTest"><code>IndependenceTest</code></a>, and thus any combination of (nondirectional) <a href="../../associations/#CausalityTools.AssociationMeasure"><code>AssociationMeasure</code></a> and estimator.</p><p>Here, we replicate the example above, but using a nonparametric <a href="../../independence/#CausalityTools.SurrogateAssociationTest"><code>SurrogateAssociationTest</code></a> with the Shannon mutual information <a href="../../associations/#CausalityTools.MIShannon"><code>MIShannon</code></a> measure and the <a href="../../associations/#CausalityTools.GaoOhViswanath"><code>GaoOhViswanath</code></a> estimator for the pairwise independence tests, and a <a href="../../independence/#CausalityTools.LocalPermutationTest"><code>LocalPermutationTest</code></a> with conditional mutual information <a href="../../associations/#CausalityTools.CMIShannon"><code>CMIShannon</code></a> and the <a href="../../associations/#CausalityTools.MesnerShalizi"><code>MesnerShalizi</code></a>.</p><pre><code class="language-julia hljs">rng = StableRNG(123)
+
+# Use fewer observations, because MI/CMI takes longer to estimate
+n = 300
+v = randn(rng, n)
+x = v + randn(rng, n)*0.25
+w = x + randn(rng, n)*0.25
+z = v + w + randn(rng, n)*0.25
+s = z + randn(rng, n)*0.25
+X = [x, v, w, z, s]
+
+est_pairwise = JointProbabilities(MIShannon(), CodifyVariables(ValueBinning(3)))
+est_cond = MesnerShalizi(CMIShannon(); k = 5)
+pairwise_test = SurrogateAssociationTest(est_pairwise; rng, nshuffles = 50)
+cond_test = LocalPermutationTest(est_cond; rng, nshuffles = 50)
+alg = PC(pairwise_test, cond_test; α = 0.05)
+est_cpdag_nonparametric = infer_graph(alg, X; verbose = false)
+plotgraph(est_cpdag_nonparametric)</code></pre><img src="5bea05af.png" alt="Example block output"/><p>We get the same basic structure of the graph, but which directional associations  are correctly ruled out varies. In general, using different types of  association measures with different independence tests, applied to general  non-gaussian data, will not give the same results as the correlation-based tests.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../examples_associations/">« Association measures</a><a class="docs-footer-nextpage" href="../../extended_examples/cross_mapping/"><code>ConvergentCrossMapping</code> »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.5.0 on <span class="colophon-date" title="Wednesday 24 July 2024 01:54">Wednesday 24 July 2024</span>. Using Julia version 1.10.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
