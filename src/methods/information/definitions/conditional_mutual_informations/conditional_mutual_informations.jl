@@ -41,10 +41,10 @@ function marginal_entropies_cmi4h_differential(est::EntropyDecomposition{<:Condi
     XYZ = StateSpaceSet(X, Y, Z)
 
     modified_est = estimator_with_overridden_parameters(est.definition, est.est)
-    HXZ = entropy(modified_est, XZ)
-    HYZ = entropy(modified_est, YZ)
-    HXYZ = entropy(modified_est, XYZ)
-    HZ = entropy(modified_est, Z)
+    HXZ = information(modified_est, XZ)
+    HYZ = information(modified_est, YZ)
+    HXYZ = information(modified_est, XYZ)
+    HZ = information(modified_est, Z)
 
     return HXZ, HYZ, HXYZ, HZ
 end

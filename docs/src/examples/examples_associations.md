@@ -1093,6 +1093,24 @@ est = MIDecomposition(CMIShannon(base = 2), KSG1(k = 10))
 association(est, x, z, y)
 ```
 
+## [`ShortExpansionConditionalMutualInformation`](@ref)
+
+### [[`JointProbabilities`](@ref) with [`CodifyVariables`](@ref) and [`ValueBinning`](@ref)](@id example_ShortExpansionConditionalMutualInformation_JointProbabilities_CodifyVariables_ValueBinning)
+
+```@example
+using Associations
+using Test
+using Random; rng = Xoshiro(1234)
+n = 20
+x = rand(rng, n)
+y = randn(rng, n) .+ x .^ 2
+z = randn(rng, n) .* y
+
+# An estimator for estimating the SECMI measure
+est = JointProbabilities(SECMI(base = 2), CodifyVariables(ValueBinning(3)))
+association(est, x, z, y)
+```
+
 ### [[`EntropyDecomposition`](@ref) + [`Kraskov`](@ref)](@id example_CMIShannon_EntropyDecomposition_Kraskov)
 
 Any [`DifferentialInfoEstimator`](@ref) can also be used to compute conditional

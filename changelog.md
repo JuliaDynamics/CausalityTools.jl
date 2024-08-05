@@ -2,6 +2,11 @@
 
 From version v4.0 onwards, this package has been renamed to to Associations.jl.
 
+# 4.3 
+
+- New association measure: `SECMI` (`ShortExpansionConditionalMutualInformation`)
+- New independence test: `SECMITest`, which is based on `SECMI`.
+
 # 4.2
 
 - New association measure: `AzadkiaChatterjeeCoefficient`.

@@ -107,6 +107,12 @@ EmbeddingTE
 PartialMutualInformation
 ```
 
+### Short expansion of conditional mutual information
+
+```@docs
+ShortExpansionConditionalMutualInformation
+```
+
 ## [Correlation measures](@id correlation_api)
 
 ```@docs

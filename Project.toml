@@ -2,7 +2,7 @@ name = "Associations"
 uuid = "614afb3a-e278-4863-8805-9959372b9ec2"
 authors = ["Kristian Agasøster Haaga <kahaaga@gmail.com>", "Tor Einar Møller <temolle@gmail.com>", "George Datseris <datseris.george@gmail.com>"]
 repo = "https://github.com/kahaaga/Associations.jl.git"
-version = "4.2.0"
+version = "4.3.0"
 
 [deps]
 Accessors = "7d9f7c33-5ae7-4f3b-8dc6-eff91059b697"

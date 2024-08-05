@@ -204,6 +204,11 @@ function counts(discretization::CodifyVariables{1}, x::Vararg{ArrayOrStateSpaceS
     return counts(x̂...)
 end
 
+function counts(d::CodifyVariables{1, UniqueElements}, x::Vararg{ArrayOrStateSpaceSet, N}) where N
+    o = first(d.outcome_spaces)
+    return counts(o, x...)
+end
+
 as_vec(x::AbstractStateSpaceSet{1}) = [first(xᵢ) for xᵢ in vec(x)]
 
 
